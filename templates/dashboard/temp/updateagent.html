@@ -1,0 +1,542 @@
+{% extends 'dashboard/temp/maincontent.html' %}
+{% load static %}
+{%block clientheading%}
+<a href="{%url 'homes'%}">Dashboard</a><br>
+<h3 class="content-header-title mb-0">Edit User</h3>
+<hr>
+{%endblock%}
+{% block client %}
+<div class="container-fluid">
+  <div class="row">
+      <div class="col-lg-7 col-md-7">
+        <form method="POST" action="{%url 'updateagent' id=ag.id %}">
+          {% csrf_token %}
+          <h4 style="color:red">{{error}}</h4>
+      <hr>
+  
+  <div class="row">
+
+      <div class="col-lg-6 col-md-6">
+          <div class="form-group">
+
+              <label for="fname"><b>First Name:</b></label>
+              <input type="text" class="form-control" name="fname" value={{ag.firstname}}>
+            </div>
+      </div>
+      <div class="col-lg-6 col-md-6">
+          <div class="form-group">
+              <label for="lname"><b>Last Name:</b></label>
+              <input type="text" class="form-control" name="lname" value={{ag.lastname}}>
+            </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-lg-6 col-md-6">
+          <div class="form-group">
+              <label for="uname"><b>User Name:</b></label>
+              <input type="text" class="form-control" name="uname" value={{ag.username}}>
+            </div>
+      </div>
+      <div class="col-lg-6 col-md-6">
+          <div class="form-group">
+              <label for="email"><b>Email address:</b></label>
+              <input type="email" class="form-control" name="email" value={{ag.email}}>
+            </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-lg-6 col-md-6">
+          <div class="form-group">
+              <label for="department" name="department"><b>Department:</b></label>
+              <select class="form-control" name="department">
+                  <!-- <option selected>{{ ag.department }}</option> -->
+                  {% for d in department %}
+                    <option value="{{d.name}}" {% if d.name == ag.department %} selected {% endif %}>{{d.name}}</option>
+                  {% endfor %}
+              </select>
+            </div>
+      </div>
+      <div class="col-lg-6 col-md-6">
+          <div class="form-group">
+              <label for="office" name="office"><b>Office:</b></label>
+              <select class="form-control" name="office">
+                  <!-- <option disabled selected>{{ ag.office }}</option> -->
+                  {% for o in office %}
+                    <option value="{{o.name}}" {% if o.name == ag.office %} selected {% endif %}>{{o.name}}</option>
+                  {% endfor %}
+              </select>
+            </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-lg-6 col-md-6">
+          <div class="form-group">
+              <label for="office"><b>Brand Visibility:</b></label>
+              <select class="form-control" name="brandvisibility">
+                  <!-- <option disabled selected>{{ ag.brandvisibility }}</option> -->
+                  {% for b in brand %}
+                  <option value="{{b.name}}" {% if b.name == ag.brandvisibility %} selected {% endif %}>{{b.name}}</option>
+                  {% endfor %}
+              </select>
+            </div>
+      </div>
+      <div class="col-lg-6 col-md-6">
+          <div class="form-group">
+              <label for="accesslevel"><b>Access Level:</b></label>
+              <select class="form-control" name="accesslevel">
+                  <!-- <option disabled selected>{{ ag.accesslevel }}</option> -->
+                  {% for l in accesslevel %}
+                  <option value="{{l.name}}" {% if l.name == ag.accesslevel %} selected {% endif %}>{{l.name}}</option>
+                  {% endfor %}
+              </select>
+            </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-lg-6 col-md-6">
+          <div class="form-group">
+              <label for="leads_access_level"><b>Leads Access Level :</b></label>
+              <select class="form-control" name="leadsaccesslevel">
+                  <!-- <option disabled selected>{{ ag.leadsaccesslevel }}</option> -->
+                  {% for la in leadsaccesslevel %}
+                  <option value="{{la.name}}" {% if la.name == ag.leadsaccesslevel %} selected {% endif %}>{{la.name}}</option>
+                  {% endfor %}
+              </select>
+            </div>
+      </div>
+      <div class="col-lg-6 col-md-6">
+          <div class="form-group">
+              <label for="leads_regi"><b>Leads Regions:</b></label>
+
+              <select id="lstFruits" multiple="multiple" class="form-control" name="leadsregions">
+                <!-- <option disabled selected>{{ ag.leadsregions }}</option> -->
+                {% for lr in leadsregions %}
+                <option value="{{lr.name}}" {% if lr.name == ag.leadsregions %} selected {% endif %}>{{lr.name}}</option>
+                {% endfor %}
+              </select>
+
+            </div>
+
+      </div>
+  </div>
+  <hr>
+  <div class="row">
+      <div class="col-lg-6 col-md-6">
+          <div class="form-group">
+              <label for="password1"><b><i class="fa fa-key" aria-hidden="true"></i>
+                  Password:</b></label>
+              <input type="password" class="form-control" name="pwd1" value={{ag.password}} disabled>
+            </div>
+      </div>
+      <div class="col-lg-6 col-md-6">
+          <div class="form-group">
+              <label for="password2"><b><i class="fa fa-key" aria-hidden="true"></i>
+                  Confirm Password:</b></label>
+              <input type="password" class="form-control"  name="pwd2" value={{ag.confirmpassword}} disabled>
+            </div>
+      </div>
+  </div>
+  <input type="submit" class="btn btn-primary" value="SAVE"/>
+</form>
+
+    </div>
+    <div class="col-lg-5 col-md-5">
+        <label><b>Permission</b></label>
+        <div class="row">
+            <table class="table">
+
+                <tbody>
+                  <tr>
+                    <td>Edit Client Save</td>
+                    <td class="text-right">
+                        <label class="toggle-switchy" for="example" data-size="sm">
+                            <input checked type="checkbox" id="example">
+                            <span class="toggle">
+                              <span class="switch"></span>
+                            </span>
+                          </label>
+                    </td>
+
+                  </tr>
+                  <tr>
+                    <td>View Changelog</td>
+                    <td class="text-right">
+                        <label class="toggle-switchy" for="example" data-size="sm">
+                            <input checked type="checkbox" id="example">
+                            <span class="toggle">
+                              <span class="switch"></span>
+                            </span>
+                          </label>
+                    </td>
+
+                  </tr>
+                  <tr>
+                    <td>Change Compliance Status</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+                   <tr>
+                    <td>Notes - Add Note</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+                   <tr>
+                    <td>Notes - Edit Note</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+                   <tr>
+                    <td>Notes - Delete Note</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+                   <tr>
+                    <td>Sales Agent Update</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+                   <tr>
+                    <td>Sales Notes & Follow Ups</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+                   <tr>
+                    <td>MT4 Demo Accounts - Settings Save</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+                   <tr>
+                    <td>MT4 Demo Accounts - Balance Operations</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+                   <tr>
+                    <td>MT4 Demo Accounts - Changelog</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+                   <tr>
+                    <td>MT4 Live Accounts - Changelog</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+                   <tr>
+                    <td>Documents - Upload</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+
+                   <tr>
+                    <td>Documents - Delete</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+                   <tr>
+                    <td><b>Pending Clients</b></td>
+                </tr>
+                   <tr>
+                    <td>Pending Clients</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+                   <tr>
+                    <td>Pending Clients - Actions</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+                   <tr>
+                    <td>Pending Partners</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+                   <tr>
+                    <td>Pending Partners - Actions</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+                   <tr>
+                    <td>Pending Leverage Change Request</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+                   <tr><td><b>
+                    Finances
+                   </b></td></tr>
+                   <tr>
+                    <td>View Finances</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+
+                   </tr>
+                   <tr>
+                    <td>Deposits Actions</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+                   <tr>
+                    <td>Withdrawals Actions</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+                   <tr>
+                       <td><b>Leads</b></td>
+                   </tr>
+                   <tr>
+                    <td>Add Lead
+                        Not needed if Leads Access Level is Admin</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+                   <tr>
+                       <td><b>Administration</b></td>
+                   </tr>
+                   <tr>
+                    <td>Sales Assignment Administrator</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+                   <tr>
+                    <td>View Management Dashboard</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+                   <tr><td><b>Reports</b></td></tr>
+                   <tr>
+                    <td>Accounts Approved</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+                   <tr>
+                    <td>Equity Change Report</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+                   <tr>
+                    <td>First Time Deposits</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="example">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+                   <tr>
+                    <td>Lead Conversion Report</td>
+                   <td class="text-right">
+                    <label class="toggle-switchy" for="example" data-size="sm">
+                        <input checked type="checkbox" id="examples">
+                        <span class="toggle">
+                          <span class="switch"></span>
+                        </span>
+                      </label>
+                    </td>
+
+                   </tr>
+                </tbody>
+              </table>
+
+        </div>
+    </div>
+
+    </div>
+
+</div>
+
+
+{%endblock%}
+{% block multipleslect%}
+
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+
+<link href="http://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/css/bootstrap-multiselect.css"
+    rel="stylesheet" type="text/css" />
+<script src="http://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/js/bootstrap-multiselect.js"
+    type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#lstFruits').multiselect({
+            includeSelectAllOption: true
+        });
+    });
+</script>
+
+
+{% endblock%}

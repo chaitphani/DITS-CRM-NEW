@@ -1,0 +1,71 @@
+{% extends 'clientportal/client_index.html' %} 
+{% load i18n %} 
+{%load static%} 
+{% block all_page %}
+  
+<div class="container mt-5" style="border:1px solid #191919">
+    <div class="row py-2" style="background-color:#191919;">
+        <div class="col-lg-12 col-md-12">
+            <h5 class="text-uppercase f1 text-center text-white pt-2"> {% trans "Wallet Finance"%} </h5>
+        </div>
+        <br>
+    </div>
+    <br>
+    
+    <div style="float:right;margin-bottom:15px;">
+        <button class="exportFile btn btn-success" id="excel" value="excel" style="border-radius:5px; padding:7px 20px;">{% trans "Export as Excel "%} </button>
+        <button class="exportFile btn btn-danger" id="csv" value="csv" style="border-radius:5px; padding:7px 20px;margin-left:10px;">{% trans "Export as CSV "%} </button>
+        <button class="exportFile btn btn-primary" id="pdf" value="pdf" style="border-radius:5px; padding:7px 20px;margin-left:10px;"> {% trans "Export as PDF"%} </button>
+    </div>
+    
+    {% include 'dashboard/temp/customfilter.html' %}
+    <table class="table my_account_table table-sm table-bordered" id="table_id">
+        <thead class="thead-dark">
+            <tr>
+                <th> {% trans "Details"%} </th>
+                <th>{% trans "Amount "%} </th>
+                <th> {% trans "Currency"%} </th>
+                <th>{% trans "Status"%} </th>
+                <th>{% trans "Date "%} </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for list in response_list %}
+                <tr>
+                    <td>{% if list.comments %}
+                            {{ list.transfer_type }}-{{list.comments}}
+                        {% else %}
+                            {{ list.transfer_type }}-{{list.transfer_to}}
+                        {% endif %}
+                    </td>
+                    <td>{{list.amount|floatformat:2}}</td>
+                    <td>USD</td>
+                    <td>Completed</td>
+                    <td>{{list.added_on_year_val}}-{{list.added_on_month_val}}-{{list.added_on_date_val}} {{list.added_on|date:"H:i:s"}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/d3js/6.7.0/d3.min.js"></script>
+<script>
+    const exportFile = document.querySelectorAll(".exportFile");
+    exportFile.forEach((e) => {
+        e.addEventListener("click", () => {
+            const url = new URL(window.location.href);
+            console.log(url);
+            const query_string = url.search;
+            let new_url = `${url.origin}${url.pathname}/${e.value}${query_string}`;
+            console.log(new_url);
+            window.location.href = new_url;
+        });
+    });
+</script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+<script>
+    $(document).ready( function () {
+        $('#table_id').DataTable();
+    });
+</script>
+{% endblock %}

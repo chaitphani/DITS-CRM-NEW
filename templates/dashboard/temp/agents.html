@@ -1,0 +1,154 @@
+{% extends 'dashboard/temp/maincontent.html' %} {% load i18n %} {% load static %} {% block client %}
+<div class="row">
+    <div class="card card-hd">
+        <a><i class="fas fa-user-tie" aria-hidden="true" style="font-size: 25px;"></i>&nbsp;Agents {% trans "Profile" %}
+        </a>
+    </div>
+</div>
+<div class="content-body card dash-cnt">
+    <!-- Description -->
+    <div class="container-fluid">
+        {%block table%}
+        <table class="table table-bordered table-sm clienttable" id="agenttable">
+            <thead class="thead-dark">
+                <tr>
+                    <!-- <th class=" text-center th-sm"> Select</th> -->
+                    <th class=" text-center th-sm">{% trans "Username" %} </th>
+                    <th class=" text-center th-sm">{% trans "Name" %} </th>
+                    <th class=" text-center th-sm">{% trans "Email" %} </th>
+                    <!-- <th class=" text-center th-sm">Department</th> -->
+                    <th class=" text-center th-sm">{% trans "Office" %} </th>
+                    <th class=" text-center th-sm">{% trans "Department" %} </th>
+                    <th class=" text-center th-sm"> {% trans "Registered Date" %} </th>
+                    <th class=" text-center th-sm">{% trans "Role" %} </th>
+                    <th class=" text-center th-sm">{% trans "Action " %} </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in ag %}
+                <tr>
+                    <td class="text-center"> {{a.username}}</td>
+                    <td class="text-center">{{a.firstname}}</td>
+                    <td class="text-center">{{a.email}}</td>
+                    <!-- <td class="text-center">{{a.department}}</td> -->
+                    <td class="text-center">{{a.office}}</td>
+                    <td class="text-center">{{a.department}}</td>
+                    <td class="text-center">{{a.added_on}}</td>
+                    <td class="text-center">{{a.accesslevel}}</td>
+                    <td class="text-center">
+                        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                            <div class="btn-group mr-2" role="group" aria-label="First group">
+                                <a type="button" class="btn btn-info btn-sm" href="{%url 'updateagent' id=a.id %}"><i
+                                        class="fa fa-pen"></i> {% trans "Edit" %} </a>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-times"></i> {% trans "Remove" %} </button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-default btn-sm" data-toggle="modal"
+                                    data-target="#userlogmdl"><i class="fa fa-list "></i> User Logs</button>&nbsp;&nbsp;
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {%endfor%}
+            </tbody>
+           </table>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 text-center"> <a href="{%url 'adduser'%} " class="btn btn-primary "><i
+                        class="fa fa-bars "></i>&nbsp;<i class="fa fa-plus "></i>&nbsp; {% trans "Add User " %}</a>
+                {%endblock%}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Default checked -->
+<div class="modal fade " id="userlogmdl" tabindex="-1 " role="dialog " aria-labelledby="exampleModalLabel "
+    aria-hidden="true ">
+    <div class="modal-dialog modal-lg" role="document ">
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <h5 class="modal-title " id="exampleModalLabel ">User log for xxx</h5>
+                <button type="button " class="close " data-dismiss="modal " aria-label="Close ">
+                    <span aria-hidden="true ">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body ">
+                <div class="row" class="table-responsive">
+                    <table class="table table-bordered table-sm clienttable " id="userlogtbl ">
+
+                        <thead class="thead-dark ">
+                            <tr>
+                                <th class=" text-center th-sm ">{% trans "DateTime" %} </th>
+                                <th class=" text-center th-sm ">{% trans "ClientID" %} </th>
+                                <th class=" text-center th-sm ">{% trans "Action" %} </th>
+                                <th class=" text-center th-sm ">{% trans "Description" %} </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-center ">xxx</td>
+                                <td class="text-center ">xxx</td>
+                                <td class="text-center ">xxx</td>
+                                <td class="text-center ">xxx</td>
+                            </tr>
+                        </tbody>
+                        <tfoot class="thead-dark ">
+                            <tr>
+                                <th class=" text-center th-sm "> </th>
+                                <th class=" text-center th-sm "> </th>
+                                <th class=" text-center th-sm "> </th>
+                                <th class="text-center th-sm"></th>
+                            </tr>
+
+
+
+
+
+
+
+                        </tfoot>
+
+
+
+                    </table>
+                    <script>
+                        $(document).ready(function () {
+                            $('#userlogtbl').DataTable();
+                        });
+                    </script>
+                </div>
+            </div>
+            <div class="modal-footer ">
+                <button type="button " class="btn btn-secondary " data-dismiss="modal ">Close</button>
+                <button type="button " class="btn btn-primary ">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{%endblock%} {% block js%}
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#agenttable').DataTable({
+            "language": {
+                "lengthMenu": "预览   _MENU_  次 ",
+                "search": "搜索",
+                "zeroRecords": "暂无数据显示",
+                "info": "预览页 _PAGE_  _PAGES_",
+                "infoEmpty": "暂无数据显示",
+                // "previous": "Previous page",
+                "infoFiltered": "(从....过滤 _MAX_ 总记录)",
+                "paginate": {
+                    "previous": "前",
+                    "next": "后",
+
+                },
+
+            }
+
+        });
+
+    });
+</script>
+{%endblock%}

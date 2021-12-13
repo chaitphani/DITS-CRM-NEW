@@ -1,0 +1,86 @@
+{% extends 'dashboard/temp/clientview.html' %} {% load i18n %} {% load static %} {%block finance%}
+<div class="container-fluid" style="margin-top:2%">
+
+    <h4 class="text-info"><b>{% trans "Finance " %}</b></h4>
+    <div style="float:right;margin-top:15px;">
+        <button class="exportFile" id="excel" value="excel" style="background-color:green; color:white; border:none; border-radius:5px; padding:7px 20px;">Export as Excel</button>
+        <button class="exportFile" id="csv" value="csv" style="background-color:red; color:white; border:none; border-radius:5px; padding:7px 20px;margin-left:10px;">Export as CSV</button>
+        <button class="exportFile" id="pdf" value="pdf" style="background-color:blue; color:white; border:none; border-radius:5px; padding:7px 20px;margin-left:10px;">Export as PDF</button>
+    </div>
+
+    <hr>
+
+    <table class="table table-bordered" id="wallet_finance">
+        <thead class="thead-dark">
+            <tr class="text-center">
+                <th scope="col"> {% trans "Date" %} </th>
+                <!--                    <th scope="col"> {% trans "Type" %} </th>-->
+                <th scope="col"> {% trans "Details" %} </th>
+                <th scope="col"> {% trans "Amount" %} </th>
+                <th scope="col"> {% trans "Currency" %} </th>
+                <th scope="col"> {% trans "Status" %} </th>
+
+                <!-- <th scope="col">{% trans "Status" %} </th> -->
+                <!-- <th scope="col"> {% trans "Action" %} </th> -->
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for w in response_list %}
+
+
+            <tr class="text-center">
+                <td>{{w.added_on_year_val}}年{{w.added_on_month_val}}月{{w.added_on_date_val}}日 </td>
+                <!--                  <td>{{w.type}}</td>-->
+                {% if w.comments %}
+                <td>{{w.transfer_type}} {{w.comments}} </td>
+                {% else %}
+                <td>
+                    {{w.transfer_type}} {{w.transfer_to}} {{w.wallet_details}}
+                </td>
+                {% endif %}
+                <td>{{w.amount|floatformat:2}}</td>
+                <td>{{w.currency}}</td>
+                <td>{{w.get_status_display}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{%endblock%} {% block js%}
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+    const exportFile = document.querySelectorAll(".exportFile");
+    exportFile.forEach((e) => {
+        e.addEventListener("click", () => {
+            const url = new URL(window.location.href);
+            console.log(url);
+            const query_string = url.search;
+            let new_url = `${url.origin}${url.pathname}/${e.value}${query_string}`;
+            console.log(new_url);
+            window.location.href = new_url;
+        });
+    });
+    $(document).ready(function() {
+        $('#wallet_finance').DataTable({
+            "language": {
+                "lengthMenu": "预览   _MENU_  次 ",
+                "search": "搜索",
+                "zeroRecords": "暂无数据显示",
+                "info": "预览页 _PAGE_  _PAGES_",
+                "infoEmpty": "暂无数据显示",
+                // "previous": "Previous page",
+                "infoFiltered": "(从....过滤 _MAX_ 总记录)",
+                "paginate": {
+                    "previous": "前",
+                    "next": "后"
+                },
+            }
+        });
+    });
+</script>
+
+{% endblock %}

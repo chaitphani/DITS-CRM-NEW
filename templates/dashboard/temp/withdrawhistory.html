@@ -1,0 +1,152 @@
+{% extends 'dashboard/temp/dash-index.html' %} {% load i18n %} {% load static %} {%block clientheading%}
+<a href="{%url 'homes'%}">{% trans "Dashboard" %}</a><br>
+<h3 class="content-header-title mb-0"> {% trans "Withdraw History" %} </h3>
+
+{%endblock%} {% block client %}
+<div class="row">
+    <div class="card card-hd">
+        <a><i class="fa fa-arrow-down" aria-hidden="true" style="font-size: 25px;"></i>&nbsp;{% trans "Withdraw History" %}</a>
+    </div>
+</div>
+<div class="content-body card dash-cnt">
+    <!-- Description -->
+    <div class="container-fluid">
+        <div style="float:right;">
+            <button class="exportFile" id="excel" value="excel" style="background-color:green; color:white; border:none; border-radius:5px; padding:7px 20px;">Export as Excel</button>
+            <button class="exportFile" id="csv" value="csv" style="background-color:red; color:white; border:none; border-radius:5px; padding:7px 20px;margin-left:10px;">Export as CSV</button>
+            <button class="exportFile" id="pdf" value="pdf" style="background-color:blue; color:white; border:none; border-radius:5px; padding:7px 20px;margin-left:10px;">Export as PDF</button>
+        </div>
+        {%block table%} {% include 'dashboard/temp/customfilter.html' %}
+        <table class="table  table-bordered table-sm clienttable" width="100%" id="withdrawtablehistory">
+            <thead class="thead-dark">
+                <tr>
+                    <!-- <th class=" text-center th-sm"> Select</th> -->
+                    <th class=" text-center th-sm"> {% trans "Date" %} </th>
+                    <th class=" text-center th-sm"> {% trans "Tran.ID" %} </th>
+                    <th class=" text-center th-sm"> {% trans "Client ID" %} </th>
+                    <th class=" text-center th-sm"> {% trans "Name" %} </th>
+                    <!-- <th class=" text-center th-sm">Country</th> -->
+
+                    <!-- <th class=" text-center th-sm">W.ID</th> -->
+                    <!-- <th class=" text-center th-sm">Tr.IP</th> -->
+                    <!-- <th class=" text-center th-sm">Mt4 Acc</th> -->
+                    <!-- <th class=" text-center th-sm">Tr.Country</th> -->
+                    <th class=" text-center th-sm">{% trans "Comment " %} </th>
+                    <th class=" text-center th-sm">{% trans "Batch " %} </th>
+                    <th class=" text-center th-sm">{% trans "Amount " %} </th>
+                    <th class=" text-center th-sm">{% trans "Currency " %} </th>
+                    <!-- <th class=" text-center th-sm">{% trans "Type " %} </th> -->
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for i in deposit_history %} {% for key, value in i.items %}
+                <tr class="text-center">
+                    {% for k, v in value.items %}
+                    <td>{% if k == "amount" %}{{ v|floatformat:2 }}{% else %}{{v}}{% endif %} </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %} {% endfor %}
+
+
+
+            </tbody>
+            <tfoot class="thead-dark">
+                <tr>
+                    <th class=" text-center th-sm"> </th>
+                    <th class=" text-center th-sm"> </th>
+                    <th class="text-center"></th>
+                    <th class=" text-center th-sm"> </th>
+                    <th class="text-center th-sm"> </th>
+                    <th class="text-center"></th>
+                    <th class=" text-center th-sm"> </th>
+                    <th class="text-center th-sm"> </th>
+                    <!-- <th class="text-center th-sm">  </th> -->
+                    <!-- <th class="text-center"></th> -->
+
+                </tr>
+
+
+
+
+
+
+
+            </tfoot>
+
+
+
+        </table>
+        {%endblock%}
+
+    </div>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+{%endblock%} {% block js%}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#withdrawtablehistory').DataTable({
+            "language": {
+                "lengthMenu": "预览   _MENU_  次 ",
+                "search": "搜索",
+                "zeroRecords": "暂无数据显示",
+                "info": "预览页 _PAGE_  _PAGES_",
+                "infoEmpty": "暂无数据显示",
+                // "previous": "Previous page",
+                "infoFiltered": "(从....过滤 _MAX_ 总记录)",
+                "paginate": {
+                    "previous": "前",
+                    "next": "后",
+
+                },
+
+            }
+
+        });
+
+    });
+</script>
+<script>
+    const exportFile = document.querySelectorAll(".exportFile");
+    exportFile.forEach((e) => {
+        e.addEventListener("click", () => {
+            const url = new URL(window.location.href);
+            console.log(url);
+            const query_string = url.search;
+            let new_url = `${url.origin}${url.pathname}/${e.value}${query_string}`;
+            console.log(new_url);
+            window.location.href = new_url
+        })
+    })
+
+    $(document).ready(function() {
+        $('#withdrawtablehistory').DataTable();
+    });
+
+    function filter_function(input_attr) {
+        var custom_var_val = $(`#${input_attr.getAttribute('name')}`).val();
+        if (parseInt(custom_var_val) != 7) {
+            var url = new URL(window.location.href);
+            var query_string = url.search;
+            var search_params = new URLSearchParams(query_string);
+            // if (search_params.get('page')) {
+            //   search_params.set(`page`, `1`);
+            // }
+            search_params.set(`${input_attr.getAttribute('name')}`, `${custom_var_val}`);
+            url.search = search_params.toString();
+            var new_url = url.toString();
+            window.location.href = new_url;
+        }
+    }
+</script>
+{%endblock%}

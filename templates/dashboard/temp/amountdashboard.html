@@ -1,0 +1,439 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Amount Dashboard</title>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/bootstrap/3/css/bootstrap.css" />
+
+  <!-- Include Date Range Picker -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+
+</head>
+
+<body>
+
+  <table style="width:100%;">
+    <tr colspan="12">
+      <td>
+        <div style="padding-bottom:30px;width:90%;margin:30px auto;">
+          {% trans "Date Filter" %} :
+          <select class="inputxlg" id="d3-filter" class="custom-select" onchange="update_filter(this)">
+            <option value="1">{% trans "Today" %}</option>
+            <option value="7" selected>{% trans "Last Week" %}</option>
+            <option value="15">{% trans "Last 15 days" %}</option>
+            <option value="30">{% trans "Last 30 days" %}</option>
+            <option value="custom">{% trans "Custom" %}</option>
+          </select>
+          <canvas id="bar-chart-reg" style="margin:0 auto;height:400px;width:100%;"></canvas>
+        </div>
+      </td>
+    </tr>
+    <tr colspan="12">
+      <td>
+        <div style="padding-bottom:30px;width:90%;margin:30px auto;">
+          {% trans "Date Filter" %} :
+          <select class="inputxlg" id="d1-filter" onchange="update_filter(this)">
+            <option value="1">{% trans "Today" %}</option>
+            <option value="7" selected>{% trans "Last Week" %}</option>
+            <option value="15">{% trans "Last 15 days" %}</option>
+            <option value="30">{% trans "Last 30 days" %}</option>
+            <option value="custom">{% trans "Custom" %}</option>
+          </select>
+          <canvas id="bar-chart-debit" style="margin:0 auto;height:400px;width:100%;"></canvas>
+        </div>
+      </td>
+    </tr>
+    <tr colspan="12">
+      <td>
+        <div style="padding-bottom:30px;width:90%;margin:30px auto;">
+          {% trans "Date Filter" %} :
+          <select class="inputxlg" id="d2-filter" onchange="update_filter(this)">
+            <option value="1">{% trans "Today" %}</option>
+            <option value="7" selected>{% trans "Last Week" %}</option>
+            <option value="15">{% trans "Last 15 days" %}</option>
+            <option value="30">{% trans "Last 30 days" %}</option>
+            <option value="custom">{% trans "Custom" %}</option>
+          </select>
+          <canvas id="bar-chart-credit" style="margin:0 auto;height:400px;width:100%;"></canvas>
+        </div>
+      </td>
+      </div>
+    </tr>
+    <table>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+  var url_val = new URL(document.location.href);
+  // console.log("Presen URL----",url_val)
+  var d1_val = url_val.searchParams.get("d1");
+  var d2_val = url_val.searchParams.get("d2");
+  var d3_val = url_val.searchParams.get("d3");
+  var d1_start = url_val.searchParams.get("d1start");
+  var d1_end = url_val.searchParams.get("d1end");
+  var d2_start = url_val.searchParams.get("d2start");
+  var d2_end = url_val.searchParams.get("d2end");
+  var d3_start = url_val.searchParams.get("d3start");
+  var d3_end = url_val.searchParams.get("d3end");
+
+  function setSelectedIndex(s, valsearch) {
+    for (i = 0; i < s.options.length; i++) {
+      if (s.options[i].value == valsearch) {
+        s.options[i].selected = true;
+        break;
+      }
+    }
+    return;
+
+  }
+  if (d3_start != null && d3_end != null && d3_start != 'null' && d3_end != 'null') {
+    d3_val = 'custom'
+  }
+  if (d2_start != null && d2_end != null && d2_start != 'null' && d2_end != 'null') {
+    d2_val = 'custom'
+  }
+  if (d1_start != null && d1_end != null && d1_start != 'null' && d1_end != 'null') {
+    d1_val = 'custom'
+  }
+  setSelectedIndex(document.getElementById("d1-filter"), d1_val);
+  setSelectedIndex(document.getElementById("d2-filter"), d2_val);
+  setSelectedIndex(document.getElementById("d3-filter"), d3_val);
+
+  function update_filter(t) {
+    console.log('t.id++>', t.id)
+    d1 = document.getElementById('d1-filter').value
+    d2 = document.getElementById('d2-filter').value
+    d3 = document.getElementById('d3-filter').value
+    if (d1 != 'custom' && d2 != 'custom' && d3 != 'custom') {
+      window.location = document.location.origin + document.location.pathname + '?d1=' + d1 + '&d2=' + d2 + '&d3=' + d3;
+    }
+    else if (t.id == 'd1-filter' && d1 != 'custom') {
+      // console.log('d1 not a custom')
+      window.location = document.location.origin + document.location.pathname + '?d1=' + d1 + '&d2start=' + d2_start + '&d2end=' + d2_end + '&d3start=' + d3_start + '&d3end=' + d3_end;
+    }
+    else if (t.id == 'd2-filter' && d2 != 'custom') {
+      // console.log('d2 not a custom')
+      window.location = document.location.origin + document.location.pathname + '?d2=' + d2 + '&d1start=' + d1_start + '&d1end=' + d1_end + '&d3start=' + d3_start + '&d3end=' + d3_end;
+    }
+    else if (t.id == 'd3-filter' && d3 != 'custom') {
+      // console.log('d3 not a custom')
+      window.location = document.location.origin + document.location.pathname + '?d3=' + d3 + '&d1start=' + d1_start + '&d1end=' + d1_end + '&d2start=' + d2_start + '&d2end=' + d2_end;
+    }
+  }
+
+  new Chart(document.getElementById("bar-chart-debit"), {
+    
+    type: 'bar',
+    data: {
+      labels: {{ labels_deposit| safe}},
+    datasets: [{
+      label: "{% trans 'Deposit' %}",
+      backgroundColor: 'rgba(40,167,69,0.7)',
+      data: {{ values_deposit| safe}}
+            }]
+          },
+    options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    title: {
+      display: true,
+      text: '{% trans "Deposit" %}'
+    },
+    legend: {
+      display: false
+    },
+    responsive: false,
+    scales: {
+      xAxes: [{
+        gridLines: {
+          display: false
+        },
+        scaleLabel: {
+          display: true,
+          // beginAtZero: true,
+          labelString: '{% trans "Date" %}'
+        }
+      }],
+      yAxes: [{
+        gridLines: {
+          display: false
+        },
+        scaleLabel: {
+          display: true,
+          beginAtZero: true,
+          labelString: '{% trans "Amount" %}'
+        }
+      }]
+    }
+    
+  }
+    });
+
+  new Chart(document.getElementById("bar-chart-credit"), {
+    type: 'bar',
+    data: {
+      labels: {{ labels_withdraw| safe}},
+    datasets: [{
+      label: "{% trans 'Withdrawal' %}",
+      backgroundColor: 'rgba(220,53,69,0.7)',
+      data: {{ values_withdraw| safe}}
+            }]
+          },
+    options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    title: {
+      display: true,
+      text: '{% trans "Withdrawal" %}'
+    },
+    legend: {
+      display: false
+    },
+    responsive: false,
+    scales: {
+      xAxes: [{
+        gridLines: {
+          display: false
+        },
+        scaleLabel: {
+          display: true,
+          labelString: '{% trans "Date" %}'
+        }
+      }],
+      yAxes: [{
+        gridLines: {
+          display: false
+        },
+        scaleLabel: {
+          display: true,
+          labelString: '{% trans "Amount" %}'
+        }
+      }]
+    }
+  }
+        });
+
+  new Chart(document.getElementById("bar-chart-reg"), {
+    type: 'bar',
+    data: {
+      labels: {{ labels_register| safe}},
+    datasets: [{
+      label: "{% trans 'Registration' %}",
+      backgroundColor: 'rgba(28,132,198,0.7)',
+      data: {{ values_register| safe}}
+                }]
+              },
+    options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    title: {
+      display: true,
+      text: '{% trans "Registration" %}'
+    },
+    legend: {
+      display: false
+    },
+    responsive: false,
+    scales: {
+      xAxes: [{
+        gridLines: {
+          display: false
+        },
+        scaleLabel: {
+          display: true,
+          labelString: '{% trans "Date" %}'
+        }
+      }],
+      yAxes: [{
+        gridLines: {
+          display: false
+        },
+        scaleLabel: {
+          display: true,
+          labelString: '{% trans "Number of Clients" %}',
+        },
+        ticks: {
+          min: 0,
+          stepSize: 1
+        },
+      }]
+    }
+  }
+            });
+
+
+  var startDateD1 = '';
+  var endDateD1 = '';
+  if ($('#d1-filter').children("option:selected").val() == 'custom') {
+    // console.log('params added');
+    customdatepicker1('custom');
+  }
+  $(document).ready(function () {
+    // console.log('initial call')
+    const d1Filter = document.querySelector('#d1-filter');
+    $("#d1-filter").change(function () {
+      // console.log('without param');
+      var selectedval1 = $(this).children("option:selected").val();
+      // console.log('selectedval1', selectedval1);
+      customdatepicker1(selectedval1);
+    });
+  });
+
+
+  function customdatepicker1(selectedval) {
+    if (selectedval == 'custom') {
+      var startd1 = moment().subtract(29, 'days');
+      var endd1 = moment();
+      var url_val = new URL(document.location.href);
+      var d2_val = url_val.searchParams.get("d2");
+      var d2_start = url_val.searchParams.get("d2start");
+      var d2_end = url_val.searchParams.get("d2end");
+      var d3_val = url_val.searchParams.get("d3");
+      var d3_start = url_val.searchParams.get("d3start");
+      var d3_end = url_val.searchParams.get("d3end");
+      function cb1(startd1, endd1) {
+        startDateD1 = startd1.format('YYYY-MM-DD')
+        endDateD1 = endd1.format('YYYY-MM-DD')
+        $('#d1-filter').on('apply.daterangepicker', function (ev, picker) {
+          window_url = window.location.origin + window.location.pathname + '?d1start=' + startDateD1 + '&d1end=' + endDateD1 + '&d2start=' + d2_start + '&d2end=' + d2_end + '&d3start=' + d3_start + '&d3end=' + d3_end;
+          if (d2_val != null && d2_val != 'null') {
+            window_url += '&d2=' + d2_val
+          }
+          if (d3_val != null && d3_val != 'null') {
+            window_url += '&d3=' + d3_val
+          }
+          window.location.href = window_url
+        });
+
+      }
+      // console.log('selectedvalue1', selectedval)
+
+      $('#d1-filter').daterangepicker({
+        locale: {
+          format: 'YYYY-MM-DD',
+          language: 'en'
+        }
+      }, cb1);
+      cb1(startd1, endd1);
+    }
+  }
+
+
+  var startDateD2 = '';
+  var endDateD2 = '';
+  if ($('#d2-filter').children("option:selected").val() == 'custom') {
+    // console.log('params added')
+    customdatepicker2('custom')
+  }
+  $(document).ready(function () {
+    // console.log('initial call')
+    $("#d2-filter").change(function () {
+      // console.log('without param')
+      var selectedval2 = $(this).children("option:selected").val();
+      // console.log('selectedval2', selectedval2)
+      customdatepicker2(selectedval2);
+    });
+  });
+
+
+  function customdatepicker2(selectedval) {
+    if (selectedval == 'custom') {
+      var startd2 = moment().subtract(29, 'days');
+      var endd2 = moment();
+      var url_val = new URL(document.location.href);
+      var d1_val = url_val.searchParams.get("d1");
+      var d1_start = url_val.searchParams.get("d1start");
+      var d1_end = url_val.searchParams.get("d1end");
+      var d3_val = url_val.searchParams.get("d3");
+      var d3_start = url_val.searchParams.get("d3start");
+      var d3_end = url_val.searchParams.get("d3end");
+      function cb2(startd2, endd2) {
+        startDateD2 = startd2.format('YYYY-MM-DD')
+        endDateD2 = endd2.format('YYYY-MM-DD')
+        $('#d2-filter').on('apply.daterangepicker', function (ev, picker) {
+          window_url = window.location.origin + window.location.pathname + '?d2start=' + startDateD2 + '&d2end=' + endDateD2 + '&d1start=' + d1_start + '&d1end=' + d1_end + '&d3start=' + d3_start + '&d3end=' + d3_end
+          if (d1_val != null && d1_val != 'null') {
+            window_url += '&d1=' + d1_val
+          }
+          if (d3_val != null && d3_val != 'null') {
+            window_url += '&d3=' + d3_val
+          }
+          window.location.href = window_url
+        });
+      }
+      // console.log('selectedvalue2', selectedval)
+
+      $('#d2-filter').daterangepicker({
+
+        locale: {
+          format: 'YYYY-MM-DD',
+          language: 'en'
+        }
+      }, cb2);
+      cb2(startd2, endd2);
+    }
+  }
+
+
+  var startDateD3 = '';
+  var endDateD3 = '';
+  if ($('#d3-filter').children("option:selected").val() == 'custom') {
+    // console.log('params added')
+    customdatepicker3('custom')
+  }
+  $(document).ready(function () {
+    console.log('initial call')
+    $("#d3-filter").change(function () {
+      // console.log('without param')
+      var selectedval3 = $(this).children("option:selected").val();
+      // console.log('selectedval3', selectedval3)
+      customdatepicker3(selectedval3);
+    });
+  });
+
+
+  function customdatepicker3(selectedval) {
+
+    if (selectedval == 'custom') {
+      var startd3 = moment().subtract(29, 'days');
+      var endd3 = moment();
+      var url_val = new URL(document.location.href);
+      var d2_val = url_val.searchParams.get("d2");
+      var d2_start = url_val.searchParams.get("d2start");
+      var d2_end = url_val.searchParams.get("d2end");
+      var d1_val = url_val.searchParams.get("d1");
+      var d1_start = url_val.searchParams.get("d1start");
+      var d1_end = url_val.searchParams.get("d1end");
+
+      function cb3(startd3, endd3) {
+        startDateD3 = startd3.format('YYYY-MM-DD')
+        endDateD3 = endd3.format('YYYY-MM-DD')
+        $('#d3-filter').on('apply.daterangepicker', function (ev, picker) {
+          window_url = window.location.origin + window.location.pathname + '?d2start=' + d2_start + '&d2end=' + d2_end + '&d3start=' + startDateD3 + '&d3end=' + endDateD3 + '&d1start=' + d1_start + '&d1end=' + d1_end
+          if (d1_val != null && d1_val != 'null') {
+            window_url += '&d1=' + d1_val
+          }
+          if (d2_val != null && d2_val != 'null') {
+            window_url += '&d2=' + d2_val
+          }
+          window.location.href = window_url
+        });
+      }
+      // console.log('selectedvalue3', selectedval)
+
+      $('#d3-filter').daterangepicker({
+        locale: {
+          format: 'YYYY-MM-DD',
+          language: 'en'
+        }
+      }, cb3);
+      cb3(startd3, endd3);
+    }
+  }
+</script>
+
+</html>

@@ -1,0 +1,67 @@
+{% extends 'dashboard/temp/crm_index.html' %} 
+{% load i18n %} 
+{% load static %} 
+{%block content%}
+<div class="section-heading row mt-3">
+    <div class="col-lg-12 col-md-12 py-2 bg-primary">
+        <h5 class="f1 text-white pt-2 pl-4"><i class="fas fa-user-tie txt-red" aria-hidden="true"></i>{% trans "Agent Information" %}
+            <span class="float-right"><a class="btn btn-primaryk btn-sm f1" href="{%url 'adduser'%}"><i class="fa fa-plus"></i>{% trans "Add User" %}</a></span>
+        </h5>
+    </div>
+</div>
+<div class="section-client-detail-table mt-4">
+    <table class="table table-bordered table-sm" id="example">
+        <thead class="thead-dark">
+            <tr>
+                <th class=" text-center th-sm">{% trans "S no" %} </th>
+                <th class=" text-center th-sm">{% trans "Username" %} </th>
+                <!-- <th class=" text-center th-sm">{% trans "Name" %} </th> -->
+                <th class=" text-center th-sm">{% trans "Email" %} </th>
+                <th class=" text-center th-sm">{% trans "Office" %} </th>
+                <th class=" text-center th-sm">{% trans "Department" %} </th>
+                <th class=" text-center th-sm"> {% trans "Registered Date" %} </th>
+                <th class=" text-center th-sm">{% trans "Role" %} </th>
+                <th class=" text-center th-sm">{% trans "Action " %} </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for agent in agents %}
+            <tr>
+                <td class="text-center"> {{forloop.counter}}</td>
+                <td class="text-center"> {{agent.username|title}}</td>
+                <!-- <td class="text-center">{{agent.firstname}} {{agent.lastname}}</td> -->
+                <td class="text-center">{{agent.email}}</td>
+                <td class="text-center">{{agent.office|title}}</td>
+                <td class="text-center">{{agent.department|title}}</td>
+                <td class="text-center">{{agent.added_on|date:'d-m-Y @H:i'}}</td>
+                <td class="text-center">{{agent.accesslevel}}</td>
+                <td class="text-center">
+                    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="btn-group mr-2" role="group" aria-label="First group">
+                            <a type="button" class="btn btn-info btn-sm" href="{% url 'updateagent' id=agent.id %}"><i class="fa fa-pen"></i>  {% trans "Edit" %} </a>&nbsp;&nbsp;
+                            <!-- <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-times"></i>  {% trans "Remove" %}  </button>&nbsp;&nbsp; -->
+                            <!-- <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#userlogmdl"><i class="fa fa-list "></i> User Logs</button>&nbsp;&nbsp; -->
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="section-pagination">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-end">
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" style="background-color: #122b88;color: white;">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#" style="color:#122b88">1</a></li>
+            <li class="page-item"><a class="page-link" href="#" style="color:#122b88">2</a></li>
+            <li class="page-item"><a class="page-link" href="#" style="color:#122b88">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" style="color:#122b88">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+{% endblock %}

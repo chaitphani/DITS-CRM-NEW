@@ -1,0 +1,124 @@
+{% load i18n %}
+
+<ul class="list-group">
+
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        {% trans "Client ID" %}
+        <span class="badge badge-primary badge-pill" id="client_id">{{user.client_id}}</span>
+    </li>
+
+    <li class="list-group-item">
+        <i class="fa fa-user"></i>&nbsp;{% trans "Name" %}
+        <span class="badge badge-primary badge-pill pull-right" style="float:right">&nbsp;{{user.fname}}&nbsp;{{user.lname}}</span>
+    </li>
+    <li class="list-group-item">
+        <i class="fa fa-user"></i>&nbsp;{% trans "Username" %}
+        <span class="badge badge-primary badge-pill pull-right" style="float:right">&nbsp;{{user.uname}}</span>
+    </li>
+    <li class="list-group-item">
+        <i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;{% trans "Email" %}
+        <span class="badge badge-primary badge-pill pull-right" style="float:right">{{user.email}}</span>
+    </li>
+    <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
+      <i class="fa fa-user-check"></i>Client Email Approved
+      {% if user.verify%}
+
+      <span class="badge badge-warning badge-pill" style="color:white">Yes</span>
+      {%else%}
+      <span class="badge badge-danger badge-pill">No</span>
+      {%endif%}
+    </li> -->
+    <li class="list-group-item">
+        <i class="fa fa-user-check"></i>&nbsp;{% trans "Client Approved " %} {% if document %} {% for x in document %} {% if x.approve %}
+        <span class="badge badge-info badge-pill pull-right" style="float:right">{% trans "yes" %} </span> {% else %}
+        <span class="badge badge-danger badge-pill pull-right" style="float:right"> {% trans "No" %} </span> {% endif %} {% endfor %} {% else %}
+        <span class="badge badge-warning badge-pill pull-right" style="float:right"> {% trans "Not Uploaded yet" %} </span> {% endif %}
+
+    </li>
+
+
+    <li class="list-group-item">
+        <i class="fa fa-calendar-alt"></i>&nbsp;{% trans "Reg Date" %}
+        <span class="badge badge-primary badge-pill pull-right" style="float:right">
+        {{added_on_year_val}}年{{added_on_month_val}}月{{added_on_date_val}}日
+      </span>
+    </li>
+    <li class="list-group-item">
+        <i class="fa fa-globe-americas"></i>&nbsp;{% trans "Country" %}
+        <span class="badge badge-primary badge-pill pull-right" style="float:right">{{user.country}}</span>
+    </li>
+
+    <li class="list-group-item">
+        <i class="fa fa-globe-americas"></i>&nbsp;{% trans "Address" %}
+        <span class="badge badge-primary badge-pill pull-right" style="float:right">{{user.address}}</span>
+    </li>
+
+    <li class="list-group-item">
+        <i class="fa fa-mobile-alt"></i>&nbsp;{% trans "Phone" %}
+        <span class="badge badge-primary badge-pill pull-right" style="float:right">{{user.mob}}</span>
+    </li>
+    <li class="list-group-item">
+        <i class="fas fa-gift"></i>&nbsp;{% trans "Birthday" %}
+        <span class="badge badge-primary badge-pill pull-right" style="float:right"><td>{{dob_year}}年{{dob_month}}月{{dob_date}}日 </td></span>
+    </li>
+
+
+    <li class="list-group-item">
+        <i class="fas fa-list text-success"></i>&nbsp;{% trans "Live Accounts" %}
+        <span class="badge badge-primary badge-pill pull-right" style="float:right">{{ user.user.liveaccount_set.count }}</span>
+    </li>
+    <li class="list-group-item">
+        <i class="fas fa-list text-danger"></i>&nbsp;{% trans "Demo Accounts" %}
+        <span class="badge badge-primary badge-pill pull-right" style="float:right">{{ user.user.demoaccount_set.count }}</span>
+    </li>
+
+    <li class="list-group-item">
+        <i class="fa fa-wallet"></i>&nbsp;{% trans "User_Client Wallet" %}
+        <span class="badge badge-primary badge-pill pull-right" style="float:right">$ {{ wallet.amount|floatformat:2 }}</span>
+    </li>
+    <li class="list-group-item">
+        <i class="fa fa-wallet" style="color:red"></i>&nbsp;{% trans "User_IB Wallet" %}
+        <span class="badge badge-primary badge-pill pull-right" style="float:right">$ {{ib_wallet|floatformat:2}}</span>
+    </li>
+    <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
+      <i class="fa fa-line-chart" aria-hidden="true"></i>Volume
+      <span class="badge badge-primary badge-pill">1994-09-09</span>
+    </li> -->
+    <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
+      <i class="fa fa-arrow-up text-success" aria-hidden="true"></i>Deposits
+      <span class="badge badge-primary badge-pill">1</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <i class="fa fa-arrow-down text-danger" aria-hidden="true"></i>Withdraws
+      <span class="badge badge-primary badge-pill">2</span>
+    </li> -->
+    <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
+      <i class="fas fa-user-tie"></i>Client Partner ID
+      <span class="badge badge-primary badge-pill">-</span>
+    </li> -->
+    <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
+      <i class="fas fa-user-tie"></i> Own Partner ID
+      <span class="badge badge-primary badge-pill">-</span>
+    </li> -->
+    <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
+      <i class="fas fa-file-upload"></i> POA  Uploaded
+      <span class="badge badge-primary badge-pill">-</span>
+    </li> -->
+    <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
+      <i class="fas fa-calendar-week"></i> POA Date
+      <span class="badge badge-primary badge-pill">1994-09-09</span>
+    </li> -->
+    <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
+      <i class="fas fa-file-upload"></i> POI  Uploaded
+      <span class="badge badge-primary badge-pill">-</span>
+    </li> -->
+    <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
+      <i class="fas fa-calendar-week"></i> POI  Expiry
+      <span class="badge badge-primary badge-pill">1994-09-09</span>
+    </li> -->
+    <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
+      <i class="fas fa-braille"></i> Reg. Version
+      <span class="badge badge-primary badge-pill">1994-09-09</span>
+    </li> -->
+
+</ul>

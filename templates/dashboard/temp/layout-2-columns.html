@@ -1,0 +1,366 @@
+{% extends 'dashboard/temp/dash-index.html' %}
+{% load i18n %}
+
+{% load static %}
+{% block dashboard %}
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/bootstrap/3/css/bootstrap.css" />
+<!-- Include Date Range Picker -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+<div class="container-fluid">
+  <div class="row">
+    <div class="card card-hd shadow">
+        <a><i class="fa fa-home" style="font-size:25px"></i>&nbsp;{% trans "Dashboard" %}</a>
+    </div>
+</div>
+
+<div class="row dash-cnt">
+  <div class="col-lg-3 col-md-3">
+   <div class="card">
+   <div class="card-body bg-light shadow-lg">
+    <span class="span-card"><b>{{ total_clients }}</b></span>
+     <span class="pull-right"><i class="fa fa-user" aria-hidden="true" style="font-size:25px"></i></span>
+     <h3 class="h3-card"><b>{% trans "Clients" %} </b></h3>
+   </div>
+   </div>
+ </div>
+
+ <div class="col-lg-3 col-md-3 ">
+   <div class="card ">
+   <div class="card-body bg-blue shadow-lg">
+    <span class="span-card"><b>{{ today_register }}</b></span>
+     <span class="pull-right"><i class="fa fa-line-chart dash-icon" style="font-size:25px"></i></span>
+     <h3 class="h3-card"><b>{% trans "Today Registrations" %} </b></h3>
+   </div>
+   </div>
+ </div>
+  <div class="col-lg-3 col-md-3 ">
+   <div class="card ">
+   <div class="card-body bg-success shadow-lg">
+       <span class="span-card"><b>{{ this_month_deposit.amount__sum }}</b></span>
+     <span class="pull-right"><i class="fa fa-arrow-up" style="font-size:25px"></i></span>
+     <h3 class="h3-card"><b> {% trans "This Month Deposits" %} </b></h3>
+   </div>
+   </div>
+ </div>
+ <div class="col-lg-3 col-md-3">
+   <div class="card">
+   <div class="card-body bg-danger shadow-lg">
+       <span class="span-card"><b>{{ this_month_withdraw.amount__sum }}</b></span>
+     <span class="pull-right"><i class="fa fa-arrow-down" style="font-size:25px"></i></span>
+     <h3 class="h3-card"><b> {% trans " This Month Withdrawals" %} </b></h3>
+   </div>
+   </div>
+ </div>
+ </div>
+
+<div class="row dash-cnt" >
+  <div class="col-lg-8 col-md-8">
+    <iframe src="https://hnxinluan.cn/api/v1/auth/amount_dashboard?d1=30&d2=30&d3=30" height="1550" style="margin:0 auto;width:100%;box-shadow:20px 20px 50px grey;"></iframe>
+
+  </div>
+  <div class="col-lg-4 col-md-4">
+    <div class="section sales-section  mt-3" style="background-color: lightgray;padding: 15px;">
+      <div class="row pl-5">
+          <p><i class="fa fa-user-secret" aria-hidden="true"></i>
+              Sales Details </p><hr>
+      </div>
+      <hr>
+      
+      <p class="mt-3">Sales Agents</p>
+      <div class="input-group mb-3">
+      
+          <select class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+              <option>DITS CRM</option>
+              <option>DITS CRM</option>
+          </select>
+          <div class="input-group-append">
+            <span class="input-group-text btn btn-info" id="basic-addon2" style="background-color: blue;border-color:blue;color:white">Update</span>
+          </div>
+        </div>
+
+        <h6 class="panel-body bg-gray p-2"> Sales Notes <span class="float-right"><i class="fa fa-plus-circle" data-toggle="modal" data-target="#exampleModal"></i></span></h6>
+        <ul class="list-unstyled panel-body bg-gray text-center">
+            <li>No notes added</li>
+        </ul>
+
+        <h6 class="panel-body bg-gray p-2"> Upcoming Follows Up <span class="float-right"><i class="fa fa-plus-circle" data-toggle="modal" data-target="#exampleModalk"></i></span></h6>
+
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+          <label class="btn btn-primary active">
+            <input type="radio" name="options" id="option1" autocomplete="off" checked><i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;Pending&nbsp;<span class="circle" style="background-color: #ddd;color:black;border-radius: 50%;padding: 3px;">0</span>
+          </label>
+          <label class="btn btn-info">
+            <input type="radio" name="options" id="option2" autocomplete="off"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;Completed&nbsp;<span class="circle" style="background-color: #ddd;color:black;border-radius: 50%;padding: 3px;">0</span>
+          </label>
+          <label class="btn btn-default" style="border-color: #ddd;">
+            <input type="radio" name="options" id="option3" autocomplete="off"> All <span class="circle" style="background-color: #ddd;color:black;border-radius: 50%;padding: 3px;">0</span>
+          </label>
+      </div>
+
+      <ul class="panel-body bg-gray list-unstyled p-2 mt-3">
+          <li>
+                
+April 13 2020 11:44 by gopal
+7417
+client request to call back in 2 days at...
+<span class="float=right">
+<i class="fa fa-edit"></i>
+</span>
+          </li>
+
+      </ul>
+  </div>
+
+
+  <!--Sales Note  Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Sales Note</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+          </div>
+          <div class="modal-body">
+          
+              <div class="form-group">
+                  <label for="exampleFormControlTextarea1">Notes</label>
+                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="8" placeholder="Enter Text..."></textarea>
+                </div>
+
+          </div>
+          <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary btn-sm">Save</button>
+          </div>
+      </div>
+      </div>
+  </div>
+   <!--Sales Note  Modal end here -->
+
+   <!--upcoming Follows up  Modal  here -->
+
+   <div class="modal fade" id="exampleModalk" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Client Follow Up</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+          </div>
+          <div class="modal-body">
+          
+              <div class="form-group row">
+                  <div class="col-lg-6">
+                  <label for="exampleFormControlTextarea1">Type</label>
+                  <select class="form-control">
+                      <option>Call</option>
+                      <option>Chat</option>
+                      <option>Email</option>
+                  </select>
+                </div>
+                <div class="col-lg-6">
+                    <label>Datetime</label>
+                    <input type="datetime-local" class="form-control"> 
+                </div>                                    
+              </div>
+              <div class="form-group row">
+                  <div class="col-sm-12">
+                      <label>Message</label>
+                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="8" placeholder="Enter Message"></textarea>
+
+                  </div>
+              </div>
+
+          </div>
+          <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary btn-sm">Save</button>
+          </div>
+      </div>
+      </div>
+  </div>
+   <!--upcoming Follows up  Modal end here -->
+
+  </div>
+</div>
+
+
+
+<!--<div class="row dash-cnt">-->
+<!--    <div class="col-sm-4">-->
+<!--        <div id="chart_div" style="width:100%; height: 500px;"></div>-->
+<!---->
+<!--    </div>-->
+<!---->
+<!--    <div class="col-sm-4">-->
+<!--    <div id="chart_divs" style="width:100%; height: 500px;"></div>-->
+<!---->
+<!--    </div>-->
+<!--    -->
+<!--    <div class="col-sm-4">-->
+<!--    <div id="chart_divss" style="width:100%; height: 500px;"></div>-->
+<!---->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>-->
+<!--   <script type="text/javascript">-->
+<!--     google.charts.load("current", {packages:["corechart"]});-->
+<!--     google.charts.setOnLoadCallback(drawChart);-->
+<!--     function drawChart() {-->
+<!--       var data = google.visualization.arrayToDataTable([-->
+<!--         ['Dinosaur', 'Length'],-->
+<!--         ['Acrocanthosaurus (top-spined lizard)', 12.2],-->
+<!--         ['Albertosaurus (Alberta lizard)', 9.1],-->
+<!--         ['Allosaurus (other lizard)', 12.2],-->
+<!--         ['Apatosaurus (deceptive lizard)', 22.9],-->
+<!--         ['Archaeopteryx (ancient wing)', 0.9],-->
+<!--         ['Argentinosaurus (Argentina lizard)', 36.6],-->
+<!--         ['Baryonyx (heavy claws)', 9.1],-->
+<!--         ['Brachiosaurus (arm lizard)', 30.5],-->
+<!--         ['Ceratosaurus (horned lizard)', 6.1],-->
+<!--         ['Coelophysis (hollow form)', 2.7],-->
+<!--         ['Compsognathus (elegant jaw)', 0.9],-->
+<!--         ['Deinonychus (terrible claw)', 2.7],-->
+<!--         ['Diplodocus (double beam)', 27.1],-->
+<!--         ['Dromicelomimus (emu mimic)', 3.4],-->
+<!--         ['Gallimimus (fowl mimic)', 5.5],-->
+<!--         ['Mamenchisaurus (Mamenchi lizard)', 21.0],-->
+<!--         ['Megalosaurus (big lizard)', 7.9],-->
+<!--         ['Microvenator (small hunter)', 1.2],-->
+<!--         ['Ornithomimus (bird mimic)', 4.6],-->
+<!--         ['Oviraptor (egg robber)', 1.5],-->
+<!--         ['Plateosaurus (flat lizard)', 7.9],-->
+<!--         ['Sauronithoides (narrow-clawed lizard)', 2.0],-->
+<!--         ['Seismosaurus (tremor lizard)', 45.7],-->
+<!--         ['Spinosaurus (spiny lizard)', 12.2],-->
+<!--         ['Supersaurus (super lizard)', 30.5],-->
+<!--         ['Tyrannosaurus (tyrant lizard)', 15.2],-->
+<!--         ['Ultrasaurus (ultra lizard)', 30.5],-->
+<!--         ['Velociraptor (swift robber)', 1.8]]);-->
+<!---->
+<!--       var options = {-->
+<!--          title: 'This Months Registrations',-->
+<!--          legend: { position: 'none' },-->
+<!--          colors: ['#e7711c'],-->
+<!--          histogram: { lastBucketPercentile: 5 },-->
+<!--          vAxis: { scaleType: 'mirrorLog' }-->
+<!--        };-->
+<!---->
+<!--       var chart = new google.visualization.Histogram(document.getElementById('chart_divs'));-->
+<!--       chart.draw(data, options);-->
+<!--     }-->
+<!--   </script>-->
+<!--</div>-->
+<!---->
+<!---->
+<!---->
+<!--   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>-->
+<!--   <script type="text/javascript">-->
+<!--     google.charts.load("current", {packages:["corechart"]});-->
+<!--     google.charts.setOnLoadCallback(drawChart);-->
+<!--     function drawChart() {-->
+<!--       var data = google.visualization.arrayToDataTable([-->
+<!--         ['Dinosaur', 'Length'],-->
+<!--         ['Acrocanthosaurus (top-spined lizard)', 12.2],-->
+<!--         ['Albertosaurus (Alberta lizard)', 9.1],-->
+<!--         ['Allosaurus (other lizard)', 12.2],-->
+<!--         ['Apatosaurus (deceptive lizard)', 22.9],-->
+<!--         ['Archaeopteryx (ancient wing)', 0.9],-->
+<!--         ['Argentinosaurus (Argentina lizard)', 36.6],-->
+<!--         ['Baryonyx (heavy claws)', 9.1],-->
+<!--         ['Brachiosaurus (arm lizard)', 30.5],-->
+<!--         ['Ceratosaurus (horned lizard)', 6.1],-->
+<!--         ['Coelophysis (hollow form)', 2.7],-->
+<!--         ['Compsognathus (elegant jaw)', 0.9],-->
+<!--         ['Deinonychus (terrible claw)', 2.7],-->
+<!--         ['Diplodocus (double beam)', 27.1],-->
+<!--         ['Dromicelomimus (emu mimic)', 3.4],-->
+<!--         ['Gallimimus (fowl mimic)', 5.5],-->
+<!--         ['Mamenchisaurus (Mamenchi lizard)', 21.0],-->
+<!--         ['Megalosaurus (big lizard)', 7.9],-->
+<!--         ['Microvenator (small hunter)', 1.2],-->
+<!--         ['Ornithomimus (bird mimic)', 4.6],-->
+<!--         ['Oviraptor (egg robber)', 1.5],-->
+<!--         ['Plateosaurus (flat lizard)', 7.9],-->
+<!--         ['Sauronithoides (narrow-clawed lizard)', 2.0],-->
+<!--         ['Seismosaurus (tremor lizard)', 45.7],-->
+<!--         ['Spinosaurus (spiny lizard)', 12.2],-->
+<!--         ['Supersaurus (super lizard)', 30.5],-->
+<!--         ['Tyrannosaurus (tyrant lizard)', 15.2],-->
+<!--         ['Ultrasaurus (ultra lizard)', 30.5],-->
+<!--         ['Velociraptor (swift robber)', 1.8]]);-->
+<!---->
+<!--       var options = {-->
+<!--          title: 'This Months Deposit',-->
+<!--          legend: { position: 'none' },-->
+<!--          colors: ['#e7711c'],-->
+<!--          histogram: { lastBucketPercentile: 5 },-->
+<!--          vAxis: { scaleType: 'mirrorLog' }-->
+<!--        };-->
+<!---->
+<!--       var chart = new google.visualization.Histogram(document.getElementById('chart_div'));-->
+<!--       chart.draw(data, options);-->
+<!--     }-->
+<!--   </script>-->
+<!--<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>-->
+<!--<script type="text/javascript">-->
+<!--  google.charts.load("current", {packages:["corechart"]});-->
+<!--  google.charts.setOnLoadCallback(drawChart);-->
+<!--  function drawChart() {-->
+<!--    var data = google.visualization.arrayToDataTable([-->
+<!--      ['Dinosaur', 'Length'],-->
+<!--      ['Acrocanthosaurus (top-spined lizard)', 12.2],-->
+<!--      ['Albertosaurus (Alberta lizard)', 9.1],-->
+<!--      ['Allosaurus (other lizard)', 12.2],-->
+<!--      ['Apatosaurus (deceptive lizard)', 22.9],-->
+<!--      ['Archaeopteryx (ancient wing)', 0.9],-->
+<!--      ['Argentinosaurus (Argentina lizard)', 36.6],-->
+<!--      ['Baryonyx (heavy claws)', 9.1],-->
+<!--      ['Brachiosaurus (arm lizard)', 30.5],-->
+<!--      ['Ceratosaurus (horned lizard)', 6.1],-->
+<!--      ['Coelophysis (hollow form)', 2.7],-->
+<!--      ['Compsognathus (elegant jaw)', 0.9],-->
+<!--      ['Deinonychus (terrible claw)', 2.7],-->
+<!--      ['Diplodocus (double beam)', 27.1],-->
+<!--      ['Dromicelomimus (emu mimic)', 3.4],-->
+<!--      ['Gallimimus (fowl mimic)', 5.5],-->
+<!--      ['Mamenchisaurus (Mamenchi lizard)', 21.0],-->
+<!--      ['Megalosaurus (big lizard)', 7.9],-->
+<!--      ['Microvenator (small hunter)', 1.2],-->
+<!--      ['Ornithomimus (bird mimic)', 4.6],-->
+<!--      ['Oviraptor (egg robber)', 1.5],-->
+<!--      ['Plateosaurus (flat lizard)', 7.9],-->
+<!--      ['Sauronithoides (narrow-clawed lizard)', 2.0],-->
+<!--      ['Seismosaurus (tremor lizard)', 45.7],-->
+<!--      ['Spinosaurus (spiny lizard)', 12.2],-->
+<!--      ['Supersaurus (super lizard)', 30.5],-->
+<!--      ['Tyrannosaurus (tyrant lizard)', 15.2],-->
+<!--      ['Ultrasaurus (ultra lizard)', 30.5],-->
+<!--      ['Velociraptor (swift robber)', 1.8]]);-->
+<!---->
+<!--    var options = {-->
+<!--       title: 'This Months Withdrawl',-->
+<!--       legend: { position: 'none' },-->
+<!--       colors: ['#e7711c'],-->
+<!--       histogram: { lastBucketPercentile: 5 },-->
+<!--       vAxis: { scaleType: 'mirrorLog' }-->
+<!--     };-->
+<!---->
+<!--    var chart = new google.visualization.Histogram(document.getElementById('chart_divss'));-->
+<!--    chart.draw(data, options);-->
+<!--  }-->
+<!--</script>-->
+
+
+
+
+
+</div>
+{% endblock %}

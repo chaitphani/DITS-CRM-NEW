@@ -1,0 +1,99 @@
+{% extends 'dashboard/temp/report_index.html' %}
+{% load i18n %}
+{% load static %}
+{% block report_detail %}
+<div class="container-fluid">
+
+
+<div class="d-flex mt-3" style="background-color: #f5f5f5;border-radius: 4px;padding: 8px 15px;height: 50px;">
+    <p class="h6 pt-2">First Time Deposit</h6>
+</div>
+<div class="card mt-3" style="background-color: white;padding: 20px;">
+  <div class="row">
+    <div class="col-lg-4 col-md-4">
+        <div class="form-group">
+<label>Time Period</label>
+      {% include 'dashboard/temp/customfilter.html' %}
+
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-3">
+        <div class="form-group">
+            <label>Select Country</label>
+        <select class="form-control"> Please Select</select>
+    </div>
+    </div>
+    <div class="col-lg-3 col-md-3">
+        <div class="form-group">
+            <label>Office</label>
+        <select class="form-control"> Please Select</select>
+    </div>
+    </div>
+    <div class="col-lg-2 col-md-2">
+        <div class="form-group pt-2">
+           <a class="btn btn-success btn-block text-white mt-4">Search&nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i>
+           </a>
+    </div>
+    </div>
+
+    </div>
+<hr>
+ 
+  <div class="row">
+    <div class="col-lg-12 col-md-12">
+      <a class="btn btn-default" style="background-color: #eee;border-color: #eee;"><i class="fa fa-download" aria-hidden="true"></i></a>
+    </div>
+  </div>
+    <table class="table table-striped mt-5 table-sm w-100">
+        <thead>
+          <tr class="text-center">
+            <th scope="col" class="h6">Client ID</th>
+            <th scope="col" class="h6">Name</th>
+            <th scope="col" class="h6">Country</th>
+            <th scope="col" class="h6">City</th>
+            <th scope="col" class="h6">State</th>
+            <th scope="col" class="h6">Currency</th>
+            <th scope="col" class="h6">Amount</th>
+            <th scope="col" class="h6">Fees</th>
+            <th scope="col" class="h6">Date</th>
+            <th scope="col" class="h6">Method</th>
+
+       
+
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="text-center">
+            <td>xxxxx</td>
+            <td>xxxxx</td>
+            <td>xxxxx</td>
+            <td>xxxxx</td>
+            <td>xxxxx</td>
+            <td>xxxxx</td>
+            <td>xxxxx</td>
+            <td>xxxxx</td>
+            <td>xxxxx</td>
+            <td>xxxxx</td>
+    
+          
+          </tr>
+    
+        </tbody>
+      </table>
+</div>
+</div>
+
+<script>
+  function myFunction() {
+  var x = document.getElementById("myDIV");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>
+
+{% endblock %}

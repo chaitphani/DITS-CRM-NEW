@@ -1,0 +1,112 @@
+{% extends 'dashboard/temp/maincontent.html' %}
+{% load static %}
+
+{% block client %}
+<div class="row">
+  <div class="card card-hd">
+      <a><i class="fa fa-user" aria-hidden="true" style="font-size: 25px;"></i>&nbsp;Pending Partner</a>
+  </div>
+</div> 
+<div class="content-body card dash-cnt"><!-- Description -->
+ <div class="container-fluid">
+   {%block table%}
+
+   <table  class="table table-bordered table-sm clienttable" id="pendingpartnertable">
+     <thead class="thead-dark">
+       <tr>
+         <!-- <th class=" text-center th-sm"> Select</th> -->
+         <th class=" text-center th-sm">Submit Date</th>
+         <th class=" text-center th-sm">Wallet</th>
+
+         <th class=" text-center th-sm">First Name</th>
+         <th class=" text-center th-sm">Last Name</th>
+         <th class=" text-center th-sm">Country</th>
+
+
+
+         <th class=" text-center th-sm">Action</th>
+
+
+
+
+
+
+       </tr>
+     </thead>
+     <tbody>
+
+         
+   <tr>
+     <!-- <td class="text-center">select</td> -->
+
+        <td class="text-center"> {{rg.fname}}</td>
+         <td class="text-center">{{rg.lname}}</td>
+         <td class="text-center">{{rg.uname}}</td>
+
+         <td class="text-center">{{rg.mob}}</td>
+
+         <td class="text-center">{{rg.city}}</td>
+
+         
+         
+
+         <td >
+           <button class="btn btn-primary"><i class="fas fa-list"></i> Review Application</button>
+            <button class="btn btn-success"><i class="fas fa-check"></i> Approve</button>
+            <button class="btn btn-danger"><i class="fas fa-times"></i> Reject</button></td>
+
+
+
+
+   </tr>
+        
+
+
+     </tbody>
+     <tfoot class="thead-dark">
+       <tr>
+         <th class=" text-center th-sm">  </th>
+          <th class=" text-center th-sm">  </th>
+          <th class=" text-center th-sm">  </th>
+          <th class="text-center"></th>
+         <th class=" text-center th-sm">  </th>
+        <th class="text-center th-sm">  </th>
+
+
+
+       </tr>
+
+
+
+
+
+
+
+     </tfoot>
+
+
+
+   </table>
+{%endblock%}
+
+</div>
+
+
+
+
+
+
+
+  </div>
+
+
+
+
+{%endblock%}
+{% block js%}
+<script>
+  $(document).ready(function() {
+    $('#pendingpartnertable').DataTable();
+  } );
+  </script>
+{%endblock%}

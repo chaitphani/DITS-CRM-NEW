@@ -1,0 +1,118 @@
+{% extends 'clientportal/client_index.html' %}
+{% load i18n %}
+{% load static %}
+{% block widgetheading %}
+{% endblock %}
+{% block all_page %}
+
+<style>
+	.card1{
+		background-color: #eee;
+		border-color: #ddd;
+	}
+	.card .fa{
+		right: 0.5rem;
+		position: absolute;
+		top: 0.5rem;
+	}
+
+</style>
+<div class="d-flex mt-3 align-items-center">
+	<i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;
+	<p class="f1 h5 text-uppercase" style="margin-bottom: 0;">{% trans "My Performance" %}</p>
+</div>
+<hr>
+
+	<div class="row">
+		<div class="col-md-3">
+			<div class="section card card1">
+				<div class="card-body">
+					<div class="d-flex">
+						<h4 class="card-title">$ {% if closing_p_l %}{{closing_p_l}}{% else %} 0.00 {% endif %}</h4>
+						<i class="fa fa-info-circle" aria-hidden="true" title="Profit or Loss from the Trades which were closed today.."></i>
+					</div>
+					<p class="card-text"> {% trans "Today's Closing P/L" %}</p>
+				</div>
+			</div>
+		</div>
+		<div class=" col-md-3">
+			<div class="section card card1">
+				<div class="card-body">
+					<div class="d-flex">
+						<h4 class="card-title">$ {% if open_p_l %}{{open_p_l}}{% else %} 0.00 {% endif %}</h4>
+						<i class="fa fa-info-circle" aria-hidden="true" title="Profit or Loss from the Trades which were currently running.."></i>
+					</div>
+						<p class="card-text"> {% trans "Open P/L " %} </p>
+				</div>
+			</div>
+		</div>
+		<div class=" col-md-3">
+			<div class="section card card1">
+				<div class="card-body">
+					<div class="d-flex">
+						<h4 class="card-title">$ {{free_margin}}</h4>
+						<i class="fa fa-info-circle" aria-hidden="true" title="Total free margin of all the MT4 accounts..!"></i>
+					</div>
+						<p class="card-text"> {% trans "Margin Free" %} </p>
+				</div>
+			</div>
+		</div>
+		<div class=" col-md-3">
+			<div class="section card card1">
+				<div class="card-body">
+					<div class="d-flex">
+						<h4 class="card-title">{% if profitability %}{{profitability}}{% else %} 0.0 {% endif %} %</h4>
+						<i class="fa fa-info-circle" aria-hidden="true"></i>
+					</div>
+						<p class="card-text">{% trans "Profitability " %} </p>
+				</div>
+			</div>
+		</div>
+	</div>
+{% if values_graph_data %}
+<div class="d-flex mt-4 align-items-center">
+	<i class="fa fa-bookmark-o fa-md"></i>&nbsp;&nbsp;
+	<p style="font-size: 1.25rem;margin-bottom: 0;"> {% trans "My Positions" %}  </p>
+</div>
+<hr>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<div class="mt-3">
+	<div class="card-body">
+		<p class="card-title text-muted text-center" style="font-size: 1.25rem;"> {% trans "Open Trade Distribution(%)" %} </p>
+		<div style="width: 100%;" class="text-center">
+			<canvas id="pie-chart"></canvas>
+			<script>
+				var config = {
+					type: 'pie',
+					data: {datasets: [{data: {{ values_graph_data|safe }} ,backgroundColor: ['#239443', '#30d960', '#2eb386', '#197d5b', '#38c7b6', '#36aab5', '#2195b5 ', '#3f7dba', '#5aba3f', '#437831', '#85b045', '#50731d', '#b0b842', '#9aa31d', '#868a4e', '#5e6137', '#c4aa33', '#b87a48', '#855a38', '#80491d', '#323975', '#1e2459', '#614794', '#42257a', '#682e85', '#4f2166', '#99158a'],label:['Trades']}],labels:{{key_data|safe}}},
+				options: {responsive: true}
+			};
+			
+			window.onload = function() {
+				var ctx = document.getElementById('pie-chart');
+				window.myPie = new Chart(ctx, config);
+			};
+			</script>
+		</div>
+	</div>
+			<!-- <div class="card-body">
+				<p class="card-title text-muted" style="font-size: 1.25rem; margin-left: 19%;">Trade Distribution</p>
+				<div style="width: 50%;" class="text-center">
+					<canvas id="bar-chart"></canvas>
+					<script>
+					var config = {
+						type: 'bar',
+						data: {datasets: [{data: {{ values_graph_data|safe }},backgroundColor: ['#112a8c ', '#2F7747 ', '#a87332', '#A4D357 ', '#57D3B9 ', '#83a832', '#A4D357 ', '#57D3B9 ', '#2F7747 ', '#32a88e', '#32a88e', '#32a88e', '#57D3B9', '#A4D357 ', '#57D3B9 ', '#2F7747 ', '#57D3B9', '#2F7747 ', '#57D3B9 ', '#2F7747 ', '#57D3B9', '#32a88e', '#A4D357 ', '#57D3B9 ', '#2F7747 ', '#A4D357', '#2F7747'],label:['Trades']}],},
+						options: {responsive: true}
+						};
+
+						window.onload = function() {
+						var ctx = document.getElementById('bar-chart');
+						window.myPie = new Chart(ctx, config);
+						};
+					</script>
+				</div>
+			</div> -->
+</div>
+{% endif %}
+{%endblock%}

@@ -1,0 +1,110 @@
+{% extends 'dashboard/temp/maincontent.html' %}
+{% load static %}
+{%block clientheading%}
+<a href="{%url 'homes'%}">Dashboard</a><br>
+<h3 class="content-header-title mb-0">Clients</h3>
+
+{%endblock%}
+{% block client %}
+<div class="content-body"><!-- Description -->
+ <div class="container-fluid">
+<div class="row">
+  <div class="col-lg-12 col-md-12">
+ 
+    {%block table%}
+
+<table id="table" class="table  table-bordered table-sm table-responsive" cellspacing="0" width="100%">
+  <thead class="alert-warning">
+    <tr>
+     
+
+
+
+
+      <th class=" text-center th-sm">ID Proof Front</th>
+      <th class="text-center th-sm">ID Proof Back</th>
+      <th class="text-center th-sm">Add Proof Front</th>
+      <th class="text-center th-sm">Add Proof Back</th>
+      <th class="text-center th-sm">Credit Card</th>
+      <th class="text-center th-sm">Other Documents</th>
+      <th class="text-center th-sm">Action</th>
+
+
+
+    </tr>
+  </thead>
+  <tbody>
+
+      {% for doc in d %}
+<tr>
+  
+
+      {% if doc.poifront %}
+
+      
+      <td class="text-center"><a href="{{doc.poifront.url}}"/>ID Front</a></td>
+      {% endif %}
+
+      {% if doc.poiback %}
+        <td class="text-center"><a href="{{doc.poiback.url}}">ID Back</a></td>
+      {% endif %}
+      {% if doc.poafront %}
+        <td class="text-center"><a href="{{doc.poafront.url}}">Address Front</a></td>
+      {% endif %}
+      {% if doc.poaback %}
+        <td class="text-center"><a href="{{doc.poaback.url}}">Address Bac</a></td>
+      {% endif %}
+      {% if doc.crs %}
+      <td class="text-center"><a href="{{doc.crs.url}}">Credit Card</a></td>
+    {% endif %}
+    {% if doc.odoc %}
+    <td class="text-center"><a href="{{doc.odoc.url}}">Other Documents</a></td>
+  {% endif %}
+      <td class="text-center"><a class="btn btn-success">Verify Documents</a></td>
+
+</tr>
+      {% endfor %}
+
+
+  </tbody>
+  <tfoot class="alert-warning">
+    <tr>
+     
+
+
+      <th class="text-center th-sm">  </th>
+
+      <th class="text-center th-sm">  </th>
+      <th class="text-center th-sm">  </th>
+      <th class="text-center th-sm">  </th>
+      <th class="text-center th-sm">  </th>
+      <th class="text-center th-sm">  </th>
+      <th class="text-center th-sm">  </th>
+
+
+
+    </tr>
+
+
+
+
+
+
+
+  </tfoot>
+
+
+
+</table>
+
+{%endblock%}
+  </div>
+
+</div>
+
+
+</div>
+
+
+</div>
+{%endblock%}

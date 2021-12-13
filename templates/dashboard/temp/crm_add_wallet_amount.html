@@ -1,0 +1,208 @@
+{% extends 'dashboard/temp/client_detail_index.html' %}
+{% load i18n %}
+{% load static %}
+{%block detail_content%}
+<style>
+    .btn-primary {
+        float: right;
+        width: 25%;
+        background-color: #102987;
+        margin-top: 10px !important;
+    }
+
+    /* .form-add-money {
+        margin-bottom: 20px;
+    } */
+
+    /* .main {
+        display: none;
+    }
+
+    .preload {
+        width: 100px;
+        height: 100px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+    } */
+</style>
+<!-- <div class="preload"><img src="http://i.imgur.com/KUJoe.gif"> -->
+
+<div class="container-fluid">
+    <div class="section-heading row mt-3">
+        <div class="col-lg-12 col-md-12 py-2 bg-primary">
+            <h5 class="f1 text-white pt-2 pl-4"><i class="fa fa-arrow-down txt-red" aria-hidden="true"></i>&nbsp;<i class="fa fa-arrow-up txt-red" aria-hidden="true"></i> &nbsp;{% trans "Deposit/Withdraw" %}</h5>
+        </div>
+    </div>
+    <div class="section add-amount-section mt-5">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <div class="container-fluid p-0">
+                <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{ message }}
+                </div>
+            </div>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <form method="POST" 
+            action="{% url 'add_money_to_wallet' %}{% if request.GET.u_id %}?u_id={{request.GET.u_id}}{% else %}u_id={% endif %}">
+            {% csrf_token %}
+            <div class="section form-add-money box-shadow w-75">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1" class="f1 text-white">{% trans "Type" %} </label>
+                            <select name="action_type" id="currency_type_id" onChange="myNewFunction(this);"
+                                class="form-control f1" required>
+                                <option value="" selected> {% trans "Select Type.." %}
+                                <option value="1">Deposit</option>
+                                <option value="2">Withdraw</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1" class="f1 text-white">{% trans "Comments" %}</label>
+                            <select name="comments" id="currency_type_id" class="form-control f1" required>
+                                <option value="">{% trans "Select Comments.. " %}</option>
+                                    {% for comment in comments %}
+                                        <option value="{{comment.id}}">{{ comment.name }}</option>
+                                    {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="" class="f1 text-white">{% trans "Amount " %} </label>
+                            <input type="number" name="amount" placeholder='{% trans "Enter the amount" %}'
+                                class="form-control f1" required>
+                                <input type="hidden" name='doc_status' value="{{doc}}" id='doc_status'>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1" class="f1 text-white">{% trans "Currency" %}</label>
+                            <select name="currency" id="currency_type_id" class="form-control" required>
+                                <option value=""> {% trans "Select Currency.. " %}
+                                    {% for curren in currency %}
+                                        <option value="{{curren.id}}">{{ curren.name }}</option>
+                                    {%endfor%}
+                            </select>
+                        </div>
+                    </div>
+                    <!-- <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="" class="f1 text-white">{% trans "Batch Number" %} </label>
+                            <input type="text" name="batch_number" placeholder={% trans "Enter The Batch Number" %}
+                                class="form-control f1" required>
+                        </div>
+                    </div> -->
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12">
+                        <button type="submit" class="btn btn-success text-uppercase btn-block mt-4" id="submit-alert">{% trans "Submit" %}</button>
+                    </div>
+                </div>
+            </div>
+            <p id="wallet-amount">
+                {% for x in user_wallet %}
+                <!-- {{x.amount}} -->
+                {% endfor %}
+            </p>
+        </form>
+    </div>
+</div>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+
+    var doc_status = '{{docs}}'
+    $('#submit-alert').on('click', function (e) {
+        if (doc_status.indexOf('False') > 0) {
+            // alert('docs not verified')
+            location.reload();
+        }else{
+            e.preventDefault();
+            var form = $(this).parents('form');
+            swal({
+                title: "Are You Sure..?",
+                icon: "warning",
+                type: "warning",
+                buttons: [
+                    'Cancel',
+                    'Confirm'
+                ],
+                closeOnConfirm: false,
+            })
+            .then(function (isConfirm) {
+                if (isConfirm) {
+                    swal({
+                        title: "Success...",
+                        icon: "success",
+                        // type: "warning",
+                        closeOnConfirm: false,
+                    })
+                    form.submit();
+                }
+                else {
+                    swal("Cancelled", " :)", "error");
+                }
+            });
+        }
+        // else{alert('Documnets were not verified yet.!')
+        // e.preventDefault();
+        // }
+    });
+</script>
+<script>
+    // let message = document.getElementById('message').innerText;
+    // // console.log('message', message);
+    // if (message) {
+    //     if (message === 'Withdraw amount can not be performed due to the insuffient balance') {
+    //         // window.location.reload()
+    //         swal({
+    //             title: "Operation failed",
+    //             text: message,
+    //             icon: "warning",
+    //             closeOnClickOutside: false,
+    //             closeOnEsc: false,
+    //         }).then(function () {
+    //             window.location  = "{{redirect_url}}";
+    //             //  = "{{redirect_url}}";
+    //         });
+    //     } else if (message === "Amount added to wallet." || message === "Withdraw amount deducted from wallet.") {
+            // window.location.reload()
+            // swal({
+            //     title: "Successful operation",
+            //     text: message,
+            //     icon: "success",
+            //     closeOnClickOutside: false,
+            //     closeOnEsc: false,
+            // }).then(function () {
+            //     window.location  = "{{redirect_url}}";
+            // });
+    //     }
+    // }
+</script>
+<script>
+    $(document).bind("contextmenu", function (e) {
+        e.preventDefault();
+    });
+
+    $(document).keydown(function (e) {
+        if (event.keyCode == 116) {
+            return false;
+        }
+        if (e.ctrlKey && e.shiftKey && (e.keyCode == 'R'.charCodeAt(0) || e.keyCode == 'r'.charCodeAt(0))) {
+            return false;
+        }
+        if (e.ctrlKey && (e.keyCode == 'R'.charCodeAt(0) || e.keyCode == 'r'.charCodeAt(0))) {
+            return false;
+        }
+    });
+
+</script>
+{%endblock%}

@@ -1,0 +1,602 @@
+{% load i18n %} {%load static%} {% load custom_tag %}
+
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description"
+        content="Stack admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
+    <meta name="keywords"
+        content="admin template, stack admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="author" content="PIXINVENT">
+    <title>DITS Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <script src="{%static 'ajax/libs/font-awesome/font-awesome.css'%}" crossorigin="anonymous"></script>
+
+    <link rel="apple-touch-icon" href="../../../app-assets/images/ico/apple-icon-120.png">
+
+    <!-- <link rel="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css"> -->
+    <script src="{%static 'bootstrap/dataTable/dataTables.bootstrap4.min.css'%}"></script>
+
+    <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="{%static 'ajax/libs/jquery/jquery-3.4.1.min.js'%}"></script> -->
+
+    <!-- <script src=" https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script> -->
+    <script src="{%static 'ajax/libs/jquery/jquery.dataTables.min.js'%}"></script>
+
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
+    <script src="{%static 'ajax/libs/jquery/jquery-3.2.1.min.js'%}"></script>
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{%static 'bootstrap/4.5.2/css/bootstrap.4.min.css'%}">
+
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
+    <script src="{%static 'bootstrap/4.5.2/js/bootstrap.4.min.js'%}"></script>
+
+    <style>
+        .bg-dark {
+            background-color: #040404 !important;
+        }
+
+        .nav-mail-icon {
+            height: 2vh;
+        }
+
+        .navbar-dark .navbar-nav .nav-link {
+            color: rgb(255 255 255);
+        }
+
+        .active {
+            background-color: #ED0010;
+        }
+
+        .fas {
+            color: #ED0010;
+        }
+
+        .txt-red {
+            color: #ED0010;
+        }
+
+        .bg-primary {
+            background-color: #122b88 !important;
+            border-color: #122b88 !important;
+            color: white;
+        }
+
+        .txt-primary {
+            color: #122b88;
+        }
+
+        .navbar-nav>li {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            background-color: #040404 !important
+        }
+
+        .dropdown-item:focus,
+        .dropdown-item:hover {
+            color: #ffffff;
+            text-decoration: none;
+            background-color: #ED0010;
+        }
+
+        .bg-lights {
+            background-color: #545b62;
+            color: white;
+        }
+
+        .activek {
+            background-color: #112a8c;
+        }
+
+        .bx-shadow {
+            box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
+        }
+
+        .section-search {
+            background-color: #545b62;
+            padding: 25px;
+            color: white;
+            display: block;
+        }
+
+        .btn-primaryk {
+            color: #fff;
+            background-color: #ed3833;
+            border-color: #ed3833;
+        }
+
+        .border-right {
+            border-right: 1px solid white
+        }
+
+        .sidenav {
+            height:100%;
+            width: 365px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #545b62;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        .sidenav a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #ed3833;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+        .sidenav .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        #main {
+            transition: margin-left .5s;
+            padding: 16px;
+        }
+
+        .badge-primary {
+            color: #fff;
+            background-color: #112a8c;
+        }
+
+        .sidnav-section {
+            background-color: white;
+            color: black;
+            min-height: 4vh;
+            border-radius: 5px;
+            padding-left: 5px;
+            padding-right: 10px;
+        }
+        .bg-gray{
+            background-color: #f3f3f4;
+        }
+
+        .sidnav-section {
+            color: black
+        }
+
+        .add-amount-section {
+            display: flex;
+            justify-content: center;
+        }
+
+        .form-add-money {
+            padding: 30px 30px;
+            background-color: #4c5259;
+        }
+
+        .notes {
+            background: white;
+            border-radius: 0 0.5rem 0.5rem 0.5rem;
+            counter-increment: gradient-counter;
+            list-style: none;
+            min-height: 3rem;
+            padding: 1rem 1rem 1rem 3rem;
+            position: relative;
+            box-shadow: 0.25rem 0.25rem 0.6rem rgba(0, 0, 0, 0.05), 0 0.5rem 1.125rem rgba(75, 0, 0, 0.05)
+        }
+
+        ol.gradient-list>li::before,
+        ol.gradient-list>li::after {
+            background: linear-gradient(135deg, #1772dc 0%, #10277c 100%);
+            border-radius: 1rem 1rem 0 1rem;
+            content: "";
+            height: 2rem;
+            left: -1rem;
+            overflow: hidden;
+            position: absolute;
+            top: -1rem;
+            width: 2rem;
+        }
+.panel-body{
+    border-radius: 5px;
+}
+        @media screen and (max-height: 450px) {
+            .sidenav {
+                padding-top: 15px;
+            }
+
+            .sidenav a {
+                font-size: 18px;
+            }
+         
+        }
+        @media (min-width: 576px){
+    .navbar-expand-sm .navbar-nav .nav-link {
+    padding-right:1px;
+    padding-left:1px;
+}
+        }
+        .add_style {
+            word-break: break-all;
+            white-space: normal;
+        }
+    </style>
+    <script type="text/javascript"> 
+        function display_c(){
+            var refresh=1000; // Refresh rate in milli seconds
+            mytime=setTimeout('display_ct()', refresh)
+        }
+        
+        function display_ct() {
+            var x = new Date()
+            var x1=x.getMonth() + 1+ "/" + x.getDate() + "/" + x.getFullYear(); 
+            x1 = x1 + " - " +  x.getHours( )+ ":" +  x.getMinutes() + ":" +  x.getSeconds();
+            document.getElementById('ct').innerHTML = x1;
+            display_c();
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <nav class="navbar bx-shadow navbar-expand-sm bg-dark navbar-dark fixed-top">
+            <!-- Brand -->
+            <a class="btn btn-primaryk text-center text-white" href="{% url 'client' %}">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp; {% trans "Back" %}
+            </a>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <span style="font-size:30px;cursor:pointer;color: white;" class="ml-2"
+                        onclick="openNav()">&#9776;&nbsp;
+                    </span>
+                </li>
+            </ul>
+            <!-- Links -->
+            <ul class="navbar-nav ml-auto">
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle f1 text-capitalize" href="#" id="navbardrop"
+                        data-toggle="dropdown">
+                        {% trans "Wallet" %}
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item f1 text-capitalize" href="{%url 'add_money_to_wallet' %}{% if request.GET.u_id %}?u_id={{request.GET.u_id}}{% else %}u_id={% endif %}">{% trans "Wallet Balance" %}</a>
+                        <a class="dropdown-item f1 text-capitalize" href="{%url 'ib_wallet_withdraw_money' %}{% if request.GET.u_id %}?u_id={{request.GET.u_id}}{% else %}u_id={% endif %}">{% trans "Transaction History" %}</a>
+                    </div>
+                </li>
+
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle f1 text-capitalize" href="#" id="navbardrop"
+                        data-toggle="dropdown">
+                        {% trans "Accounts" %}
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item f1 text-capitalize" href="{%url 'dashliveaccount' %}{% if request.GET.u_id %}?u_id={{request.GET.u_id}}{% else %}u_id={% endif %}">{% trans "Live accounts" %}</a>
+                        <a class="dropdown-item f1 text-capitalize" href="{%url 'dashdemoaccount' %}{% if request.GET.u_id %}?u_id={{request.GET.u_id}}{% else %}u_id={% endif %}">{% trans "Demo Accounts" %}</a>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link  f1 text-capitalize"
+                        href="{%url 'dashfinance' %}{% if request.GET.u_id %}?u_id={{request.GET.u_id}}{% else %}u_id={% endif %}">{% trans "Finance" %}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link  f1 text-capitalize"
+                        href="{% url 'documents' %}{% if request.GET.u_id %}?u_id={{request.GET.u_id}}{% else %}u_id={% endif %}">{% trans "Documents" %}</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link f1 text-capitalize"
+                        href="{% url 'addsalesnotes' %}{% if request.GET.u_id %}?u_id={{request.GET.u_id}}{% else %}u_id={% endif %}">{% trans "Notes" %}</a>
+                </li>
+
+            
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle f1 text-capitalize" href="#" id="navbardrop"
+                        data-toggle="dropdown">
+                        {% trans "Logs" %}
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item f1 text-capitalize" href="{%url 'activity_logs' %}{% if request.GET.u_id %}?u_id={{request.GET.u_id}}{% else %}u_id={% endif %}">{% trans "Activity Log" %}</a>
+                        <a class="dropdown-item f1 text-capitalize" href="{%url 'registration_logs' %}{% if request.GET.u_id %}?u_id={{request.GET.u_id}}{% else %}u_id={% endif %}">{% trans "Registration Log" %}</a>
+                    </div>
+                </li>
+
+
+
+                <li class="nav-item">
+                    <a class="nav-link f1  text-capitalize"
+                        href="{% url 'trans_history' %}?u_id={{ user.user.id }}" style="color:green;"> <b>{% trans "Transaction(Admin)" %}</b></a>
+                </li>
+                <li>
+                    <select name="" id="lang_select" class="form-control h-100">
+                        <option value="en">Language</option>
+                        <option value="zh">English/Chinese</option>
+                    </select>
+                </li>
+            </ul>
+        </nav>
+        <div class="container-fluid h-100 mt-5" style="background-color: #ffffff;">
+            <div id="mySidenav" class="sidenav bx-shadow mt-5 pl-2 pr-2">
+                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                <hr>
+                <div class="section sidnav-section">
+                    <p class="f1 pt-1">{% trans "Client ID" %} <span class="float-right">{{reg_data.client_id}}</span></p>
+                </div>
+                <div class="section sidnav-section mt-2">
+                    <p class="f1 pt-1"><i class="fa fa-user"></i>&nbsp; {% trans "Name" %}
+                        <span class="float-right">
+                            {{reg_data.fname|capfirst}}
+                            {{reg_data.lname|capfirst}}
+                        </span>
+                    </p>
+                </div>
+                <div class="section sidnav-section mt-2">
+                    <p class="f1 pt-1"><i class="fa fa-user"></i>&nbsp; {% trans "Username" %} <span
+                            class="float-right">{{reg_data.uname}}</span></p>
+                </div>
+                <div class="section sidnav-section mt-2">
+                    <p class="f1 pt-1"><i class="fa fa-envelope"></i>&nbsp; {% trans "Email" %} <span
+                            class=" float-right">{{reg_data.email}}</span></p>
+                </div>
+                <div class="section sidnav-section mt-2">
+                    <p class="f1 pt-1"><i class="fa fa-user-check"></i>&nbsp; {% trans "Documents Approve" %} <span
+                            class="float-right">{% if docs.approve %}Yes{% else %}No{% endif %}</span></p>
+                </div>
+                <div class="section sidnav-section mt-2">
+                    <p class="f1 pt-1"><i class="fa fa-calendar-alt"></i>&nbsp; {% trans "Registration Date" %}<span
+                            class=" float-right">{{reg_data.added_on|date:"d/m/Y" }}</span></p>
+                </div>
+                <div class="section sidnav-section mt-2">
+                    <p class="f1 pt-1"><i class="fa fa-globe-americas"></i>&nbsp; {% trans "Country" %} <span
+                            class=" float-right">{{reg_data.country}}</span></p>
+                </div>
+                <div class="section sidnav-section mt-2">
+                    <p class="f1 pt-1 add_style mb-3"><i class="fa fa-map-marker mr-2" aria-hidden="true"></i>
+                        &nbsp;{% trans "Address" %}
+                        <span class="float-right">{% if reg_data.address %}{{reg_data.address|truncatewords:3}}{% else %}Not Provided{% endif %}</span>
+                    </p>
+                </div>
+                <div class="section sidnav-section mt-2">
+                    <p class="f1 pt-1"><i class="fa fa-mobile-alt"></i>&nbsp; {% trans "Mobile" %} <span class="float-right">{{ reg_data.mob }}</span></p>
+                </div>
+                <div class="section sidnav-section mt-2">
+                    <p class="f1 pt-1"><i class="fa fa-calendar-alt"></i>&nbsp; {% trans "Birthday" %} <span class="float-right">{{ reg_data.dob }}</span>
+                    </p>
+                </div>
+                <div class="section sidnav-section mt-2">
+                    <p class="f1 pt-1"><i class="fa fa-list"></i>&nbsp; {% trans "Real Account" %}<span class="float-right">{{ reg_data.user.liveaccount_set.count }}</span>
+                    </p>
+                </div>
+                <div class="section sidnav-section mt-2">
+                    <p class="f1 pt-1"><i class="fa fa-list"></i>&nbsp; {% trans "Demo Account" %} <span class="float-right">{{ reg_data.user.demoaccount_set.count }}</span>
+                    </p>
+                </div>
+                <div class="section sidnav-section mt-2">
+                    <p class="f1 pt-1"><i class="fa fa-wallet"></i>&nbsp; {% trans "Wallet" %} <span class="float-right">$ 
+                        {% if wallet.amount %}{{ wallet.amount|floatformat:2 }}{% else %}0{% endif %}</span></p>
+                </div>
+                <div class="section sidnav-section mt-2">
+                    <p class="f1 pt-1"><i class="fa fa-wallet"></i>&nbsp; {% trans "IB Wallet" %} <span class="float-right">$
+                            {{ib_wallet|floatformat:2 }}</span>
+                    </p>
+                </div>
+            </div>
+            <div id="main">
+                <div class="row">
+                    <div class="col-lg-8 col-md-8">
+                        {% block detail_content %} {% endblock %}
+
+                    </div>
+                    <div class="col-lg-4 col-md-4">
+                        <div class="section sales-section  mt-3" style="background-color: lightgray;padding: 15px;">
+                            <div class="row pl-5">
+                                <p><i class="fa fa-user-secret" aria-hidden="true"></i>
+                                    Sales Details </p><hr>
+                            </div>
+                            <hr>
+                            
+                            <p class="mt-3">Sales Agents</p>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="input-group mb-3">
+                            
+                                        <select class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                            <option>DITS CRM</option>
+                                            <option>DITS CRM</option>
+                                        </select>
+                                        <div class="input-group-append">
+                                          <span class="input-group-text btn btn-info" id="basic-addon2" style="background-color: blue;border-color:blue;color:white">Update</span>
+                                        </div>
+                                      </div>
+                                </div>
+                            </div>
+                           
+
+                              <h6 class="panel-body bg-gray p-2"> Sales Notes <span class="float-right"><i class="fa fa-plus-circle" data-toggle="modal" data-target="#exampleModal"></i></span></h6>
+                              <ul class="list-unstyled panel-body bg-gray text-center">
+                                  <li>No notes added</li>
+                              </ul>
+
+                              <h6 class="panel-body bg-gray p-2"> Upcoming Follows Up <span class="float-right"><i class="fa fa-plus-circle" data-toggle="modal" data-target="#exampleModalk"></i></span></h6>
+
+                              <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-primary  w-100">
+                                  <input type="radio" name="options" id="option1" autocomplete="off" checked><i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;Pending&nbsp;<span class="circle" style="background-color: #ddd;color:black;border-radius: 50%;padding: 3px;">0</span>
+                                </label>
+                                <label class="btn btn-info w-100">
+                                  <input type="radio" name="options" id="option2" autocomplete="off"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;Completed&nbsp;<span class="circle" style="background-color: #ddd;color:black;border-radius: 50%;padding: 3px;">0</span>
+                                </label>
+                                <label class="btn btn-default w-100" style="border-color: #ddd;">
+                                  <input type="radio" name="options" id="option3" autocomplete="off"> All <span class="circle" style="background-color: #ddd;color:black;border-radius: 50%;padding: 3px;">0</span>
+                                </label>
+                            </div>
+
+                            <div class="panel-body bg-gray p-2 mt-3">
+                                <div class="row">
+                                <div class="col-lg-10 col-md-10">
+                                    April 13 2020 11:44 by gopal
+                                    7417
+                                    client request to call back in 2 days at...
+                                </div>
+                                <div class="col-lg-2 col-md-2">
+                                    <i class="fa fa-edit text-success"></i>
+
+                                </div>
+                            </div>
+                            </div>	
+          
+               
+                        </div>
+
+
+                        <!--Sales Note  Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Add Sales Note</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                
+                                    <div class="form-group">
+                                        <label for="exampleFormControlTextarea1">Notes</label>
+                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="8" placeholder="Enter Text..."></textarea>
+                                      </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary btn-sm">Save</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                         <!--Sales Note  Modal end here -->
+
+                         <!--upcoming Follows up  Modal  here -->
+
+                         <div class="modal fade" id="exampleModalk" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Client Follow Up</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                
+                                    <div class="form-group row">
+                                        <div class="col-lg-6">
+                                        <label for="exampleFormControlTextarea1">Type</label>
+                                        <select class="form-control">
+                                            <option>Call</option>
+                                            <option>Chat</option>
+                                            <option>Email</option>
+                                        </select>
+                                      </div>
+                                      <div class="col-lg-6">
+                                          <label>Datetime</label>
+                                          <input type="datetime-local" class="form-control"> 
+                                      </div>                                    
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <label>Message</label>
+                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="8" placeholder="Enter Message"></textarea>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary btn-sm">Save</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                         <!--upcoming Follows up  Modal end here -->
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "365px";
+            document.getElementById("main").style.marginLeft = "365px";
+            document.body.style.backgroundColor = "rgb(255 255 255)";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("main").style.marginLeft = "0";
+            document.body.style.backgroundColor = "white";
+        }
+    </script>
+    <script>
+        // console.log("----------", window.location.origin)  /* ipaddress */
+        // console.log("----------", window.location.pathname)  /* variable path */
+        // console.log("----------", window.location.href)   /* absolute url  */
+
+        $("#lang_select").change(function () {
+            /* for china 11 */
+            var url = window.location.origin;
+            var link_total = window.location.href;
+            var name_path = window.location.pathname
+            var string_to_add = '/zh'
+            if (window.location.href.indexOf("zh") > -1) { document.location = link_total.replace('/zh', '') }
+            else {
+                if (window.location.href.indexOf("/en") > -1) {
+                    document.location = url + name_path.replace('/en', '/zh') + '?u_id={{request.GET.u_id}}'
+                }
+                else {
+                    document.location = url + string_to_add + name_path + '?u_id={{request.GET.u_id}}'
+                }
+            }
+        });
+    </script>
+    {% block js%}{%endblock%} {% block demoaccountjs %} {%endblock%} {% block liveacjs %} {%endblock%}
+
+</body>
+
+</html>

@@ -1,0 +1,183 @@
+{% extends 'dashboard/temp/maincontent.html' %}
+{% load static %}
+{%block partnerheading%}
+<a href="{%url 'homes'%}">Dashboard</a>/
+<h3 class="content-header-title mb-0">Partners</h3>
+<nav class="navbar navbar-expand-sm clnav" style="background-color:#ffffff;border:1px solid #ddd">
+  <ul class="navbar-nav ul ul1">
+    <li class="nav-item">
+      <a class="nav-link al" href="#"><i class="fa fa-bars" aria-hidden="true"></i>All</a>
+    </li>&nbsp;&nbsp;
+    <li class="nav-item">
+      <a class="nav-link al" href="#"><i class="fa fa-clock-o" aria-hidden="true"></i>Pending</a>
+    </li>&nbsp;&nbsp;
+
+    <li class="nav-item li2" style="float:right">
+      <a class="nav-link al1" type="button" href="{%url 'ctclient'%}" class="btn btn-success"> <i class="fa fa-plus"></i>Create Partner</a>
+    </li>&nbsp;&nbsp;
+  </ul>
+
+
+</nav>
+{%endblock%}
+{% block client %}
+<div class="content-body"><!-- Description -->
+ <div class="container-fluid">
+<div class="row">
+  <div class="col-lg-9 col-md-9">
+    {%block table%}
+    <table id="table" class="display">
+  <thead>
+    <tr>
+     <th>ID</th>
+     <th>Client ID</th>
+     <th>Status</th>
+     <th>Code</th>
+     <th>Type</th>
+     <th>Created</th>
+     <th>Action</th>
+
+ </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td>251</td>
+    <td> Johnny Barvo</td>
+    <td>PENDING	</td>
+    <td>ATFX5NZO</td>
+    <td>mpp	</td>
+    <td>2019-04-24</td>
+    <td>Delete</td>
+</tr>
+<tr>
+    <td>251</td>
+    <td> Johnny Barvo</td>
+    <td>PENDING	</td>
+    <td>ATFX5NZO</td>
+    <td>mpp	</td>
+    <td>2019-04-24</td>
+    <td>Delete</td>
+</tr>
+<tr>
+    <td>251</td>
+    <td> Johnny Barvo</td>
+    <td>PENDING	</td>
+    <td>ATFX5NZO</td>
+    <td>mpp	</td>
+    <td>2019-04-24</td>
+    <td>Delete</td>
+</tr>
+<tr>
+    <td>251</td>
+    <td> Johnny Barvo</td>
+    <td>PENDING	</td>
+    <td>ATFX5NZO</td>
+    <td>mpp	</td>
+    <td>2019-04-24</td>
+    <td>Delete</td>
+</tr>
+<tr>
+    <td>251</td>
+    <td> Johnny Barvo</td>
+    <td>PENDING	</td>
+    <td>ATFX5NZO</td>
+    <td>mpp	</td>
+    <td>2019-04-24</td>
+    <td>Delete</td>
+</tr>
+
+  </tbody>
+</table>
+{%endblock%}
+  </div>
+  <div class="col-lg-3 col-md-3">
+<div class="container cnt2">
+<div class="row">
+<div class="col-lg-6 col-md-6 text-center">
+<a href="#">  <i class="fa fa-hourglass btn btn-primary tz" type="button" aria-hidden="true" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample"></i></a>
+</div>
+<div class="col-lg-6 col-md-6 text-center">
+<a href="#">  <i class="fa fa-newspaper-o btn btn-primary tz"  aria-hidden="true" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"></i></a>
+</div>
+</div>
+<br>
+<div class="collapse" id="collapseExample">
+    <div class="card card-body">
+<div class="dropdown">
+<button class="btn btn-secondary dropdown-toggle tz" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+Table Columns
+</button>
+<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+  <a class="dropdown-item" href="#">Action</a>
+  <a class="dropdown-item" href="#">Another action</a>
+  <a class="dropdown-item" href="#">Something else here</a>
+</div>
+</div>
+    </div>
+  </div>
+
+
+  <section>
+  <div class="row d-inline-flex srow">
+  <p>Table Column</p><i class="fa fa-angle-down i1"></i>
+  </div>
+  <hr class="hr1">
+  </section>
+  {%block tablecolumns%}
+
+ <div class="row">
+   <div class="col-lg-10"><p> ID</p></div>
+   <div class="col-lg-2"><input type="checkbox"   name="chk1"/></div>
+</div>
+ <div class="row">
+
+   <div class="col-lg-10"><p>Client ID</p></div>
+   <div class="col-lg-2"><input type="checkbox"   name="chk1"/></div>
+</div>
+<div class="row">
+ <div class="col-lg-10"><p>Status</p></div>
+ <div class="col-lg-2"><input type="checkbox"   name="chk1"/></div>
+</div>
+<div class="row">
+ <div class="col-lg-10"><p>Code</p></div>
+ <div class="col-lg-2"><input type="checkbox"   name="chk1"/></div>
+</div>
+<div class="row">
+ <div class="col-lg-10"><p>Type</p></div>
+ <div class="col-lg-2"><input type="checkbox"   name="chk1"/></div>
+</div>
+<div class="row">
+ <div class="col-lg-10"><p>Created</p></div>
+ <div class="col-lg-2"><input type="checkbox"   name="chk1"/></div>
+</div>
+{%endblock%}
+
+<hr>
+
+<div class="row">
+<div class="col-lg-3 col-md-3 rsk">
+  <button type="button" class="btn btn-danger">Reset</button>
+
+</div>&nbsp;&nbsp;&nbsp;
+<div class="col-lg-3 col-md-3">
+  <button type="button" class="btn btn-success">Apply</button>
+
+</div>
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+  </div>
+</div>
+</div>
+
+
+</div>
+{%endblock%}

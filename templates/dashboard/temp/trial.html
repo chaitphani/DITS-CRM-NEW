@@ -1,0 +1,63 @@
+<form id="confidential" method="POST" name="confidential">
+  <input type="text" id="app_id" name="app_id"/>
+  <input type="text"  id="app_secret" name="app_secret"/>
+  <button type="submit"> Submit </button>
+</form>
+
+
+<input type="text" name="token" id="token"/>
+
+<form id="pay_with_divepay" method="POST">
+  <input type="text" name="amount" value="10"/>
+    <input type="text" name="currency" value="USD"/>
+    <button type="submit" >Submit</button>
+    </form>
+
+
+    <script>
+      confidential = document.querySelector("#confidential");
+      confidential.addEventListener("submit", e => {
+        e.preventDefault();
+        const xhr = new XMLHttpRequest();
+        const fd = new FormData();
+        app_id = document.getElementById('app_id').value;
+        app_secret = document.getElementById('app_secret').value;
+        fd.append('app_id', app_id);
+        fd.append('app_secret', app_secret)
+        console.log(fd);
+        xhr.responseType = "json";
+        xhr.open("POST", "https://www.divepay.com/api/get_access_token");
+        xhr.setRequestHeader("Content-type", "application/x-form-urlencoded");
+
+        xhr.onload = () => {
+          console.log(xhr.response);
+          document.write(xhr.response);
+        }
+
+        xhr.send(fd);
+      })
+
+      form = document.querySelector("#pay_with_divepay");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        token = document.querySelector("#token").value;
+        const XHR = new XMLHttpRequest();
+        const FD = new FormData( form );
+        console.log(FD);
+
+        XHR.responseType = "json";
+        XHR.open("POST", "https://www.divepay.com/api/processing");
+        XHR.setRequestHeader("Content-type", "application/x-form-urlencoded");
+        XHR.setRequestHeader("Authorization", `Bearer ${token}`);
+
+        XHR.onload = () => {
+          console.log(XHR.response);
+        }
+
+        //XHR.addEventListener( "error", function( event ) {
+        //  alert( 'Oops! Something went wrong.' );
+        //});
+
+        XHR.send(FD);
+      })
+    </script>

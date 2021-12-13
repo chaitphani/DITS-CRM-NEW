@@ -1,0 +1,142 @@
+{% extends 'clientportal/client_index.html' %} {% load i18n %} {% load static %} {% block all_page %} {% if msg %} {{ msg }} {% endif %}
+<div class="container-fluid   pt-4 pl-5">
+    <div class="d-flex justify-content-center">
+    <div class="card  profilecard w-75">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <h5 class="text-center bg-secondarys text-white py-2 f1 text-uppercase"> {% trans "My Profile" %}</h5>
+            </div>
+        </div><br>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 text-center">
+                {% for rg in r %}
+                <h5 class="f1  font-weight-bold text-uppercase" style="color:black">{{rg.fname}}&nbsp;{{rg.lname}}</h5>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 text-center">
+                {% if request.user.is_authenticated %}
+                <h6 class="f1 txt-red font-weight-bold">{% trans "DITS ID" %} : {{ request.user.register.client_id }}
+                </h6>
+                {% endif %}
+
+            </div>
+        </div><br>
+        <ul class="list-group ml-5 mr-5">
+            {% for rg in r %}
+
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <b class="f1"> {% trans "Mobile No" %}</b>
+                <span class="f1">{{rg.mob}}</span>
+            </li>
+
+            <li class="list-group-item mt-2 d-flex justify-content-between align-items-center">
+                <b class="f1">{% trans "Email ID " %} </b>
+
+                <span class="f1">{{rg.email}}  </span>
+            </li>
+
+            <li class="list-group-item mt-2 d-flex justify-content-between align-items-center btn-pd">
+                <b class="f1"> {% trans "Additional Email ID" %}  </b>
+
+                <span class="f1">{{secondary_email_val}}&nbsp;
+                    <a class="btn btn-default btn-sm f1 text-white" href="{%url 'addemail' %}"> {% trans "Add" %} &nbsp;<i
+                            class="fa fa-plus"></i></a>
+
+                </span>
+            </li>
+
+            <li class="list-group-item mt-2 d-flex justify-content-between align-items-center">
+                <b class="f1"> {%trans "Date Of Birth" %}</b>
+                <span class="">{{dob_date}}-{{dob_month}}-{{dob_year}}</span>
+            </li>
+
+            <li class="list-group-item mt-2 d-flex justify-content-between align-items-center">
+                <b class="f1"> {% trans "Country"%} </b>
+                <span class="f1">{{rg.country}}</span>
+            </li>
+
+            <li class="list-group-item mt-2 d-flex justify-content-between align-items-center">
+                <b class="f1">{% trans "Address" %}</b>
+               
+                <span class="f1">{{rg.address}}</span>
+                {% if rg.address %}
+                <a class="btn btn-default btn-sm text-white" data-toggle="modal" data-target="#myModal"> {%trans "Update Address" %} &nbsp;<i class="fa fa-plus"></i></a>
+                {% else %}
+                <a class="btn btn-default btn-sm text-white" data-toggle="modal" data-target="#myModal">&nbsp; {%trans "Add Address" %}  <i class="fa fa-plus"></i></a>
+                {% endif %}
+            </li>
+
+            <li class="list-group-item mt-2 d-flex justify-content-between align-items-center">
+                <b class="f1">{% trans "Registration Date" %} </b>
+                <span class="">{{added_on_date_val}}-{{added_on_month_val}}-{{added_on_year_val}}</span>
+            </li>
+
+            <!-- <li class="list-group-item mb-3 d-flex mt-2 justify-content-between align-items-center btn-pd">
+                <b class="f1">Change Password</b>
+                <a class="btn btn-default btn-sm text-white">Change
+                    Password</a></li>
+            <br>  -->
+            <br> {%endfor%}
+        </ul>
+    </div>
+</div>
+    <div class="section mt-4">
+        <div class="d-flex justify-content-center">
+            <h4 class="text-capitalize">{% trans "Deposit Option" %} </h4>
+ 
+        </div>
+        <br>
+        <div class="d-flex justify-content-center">
+            <div>
+                <a href="{%url 'bitcoin_payment'%}"><img src="{%static 'image/icon/BTC.png'%}" style="width:3rem" />
+                </a>&nbsp;&nbsp;&nbsp;&nbsp;
+        
+                <a href="{%url 'usdt'%}"><img src="{%static 'image/icon/USDT.png'%}" style="width:3rem" /> </a>
+        
+            </div>
+        </div>
+    </div>
+
+  
+</div>
+
+
+
+
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title " style="color:#122A8C !important"> {% trans "Add Address" %} </h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form method="POST" action="{%url 'addaddress' %}">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="form-group col-lg-12 col-md-12" style="padding-left:3%">
+                            <label for="exampleFormControlTextarea4" style="color:#122A8C !important">{% trans "Address" %} </label>
+                            <textarea class="form-control text_address w-100" id="exampleFormControlTextarea4" name="address"></textarea>
+                        </div>
+                    </div>
+                    <input type="submit" class="btn btn-default btn-block" value="Save">
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Close" %} </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{%endblock%}

@@ -1,0 +1,184 @@
+{% extends 'dashboard/temp/maincontent.html' %} {% load i18n %} {% load static %} {% load custom_tag %} {% block client
+%} {% load dashboard_extras %}
+<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap-switch-button@1.1.0/css/bootstrap-switch-button.min.css"
+  rel="stylesheet">
+<script
+  src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap-switch-button@1.1.0/dist/bootstrap-switch-button.min.js"></script>
+<div class="row">
+  <div class="card card-hd">
+    <a><i class="fa fa-user-o" style="font-size:25px"></i>&nbsp; {% trans "Sales Assignment" %} </a>
+  </div>
+</div>
+<div class="card dash-cnt">
+  <div class="row">
+    <h6 class="pl-4">User Listing</h6>
+  </div>
+  <div class="container-fluid">
+    {%block table%}
+    <div class="card dash-cnt table-responsive">
+      <form method="POST">
+        {% csrf_token %}
+        <table class="table table-bordered table-sm" id="salestbl">
+          <thead class="thead-dark">
+            <tr>
+              <!-- <th class=" text-center th-sm"> Select</th> -->
+              <th class=" text-center th-sm">{% trans "Username" %} </th>
+              <th class=" text-center th-sm">{% trans "Name" %} </th>
+              <th class=" text-center th-sm">{% trans "Department" %} </th>
+              <th class="text-center th-sm">{% trans "Enabled" %} </th>
+              <th class=" text-center th-sm">{% trans "Default" %} </th>
+              <th class=" text-center th-sm">{% trans "Countries" %} </th>
+              <th class=" text-center th-sm">{% trans "Sales Queues" %} </th>
+              <th class=" text-center th-sm">{% trans "Promo Code" %} </th>
+              <!-- <th class="text-center th-sm">Deposit Action</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            {% for sales_assignment in salesassignments %}
+            <tr>
+              <!-- <td class="text-center">select</td> -->
+              <td class="text-center">{{ sales_assignment.agent.username}}</td>
+              <td class="text-center">{{ sales_assignment.agent.firstname }}</td>
+              <td class="text-center">{{ sales_assignment.agent.department }}</td>
+              <!-- <input type="hidden" value={{ sales_assignment.id }} name="id"/> -->
+              <td class="text-center">
+                <input type="checkbox" data-toggle="switchbutton" data-size="xs"
+                  name="enabled_state_{{sales_assignment.id}}" {% if sales_assignment.enabled_state %} checked {% endif
+                  %}>
+              </td>
+              <td class="text-center">
+                <input type="checkbox" data-toggle="switchbutton" data-size="xs"
+                  name="default_state_{{sales_assignment.id}}" {% if sales_assignment.default_state %} checked {% endif
+                  %}>
+              </td>
+              <td class="text-center">
+                <div class="btn-group btn-group-sm display_countries" id="dc_{{sales_assignment.id}}">
+                  {% if sales_assignment.country_list %}
+                  {% with sales_assignment.country_list|spread:"," as sacs %}
+                  {% for sac in sacs %}
+                  <input type="text" class="btn btn-primary m-1" name="countries_{{temp_id}}" value="{{sac}}" style="width:40px;" />
+                  {% endfor %}
+                  {% endwith %}
+                  {% endif %}
+                </div>
+                &nbsp;<i class="fa fa-pencil edit_countries" id="{{sales_assignment.id}}" aria-hidden="true"
+                  onclick="select_countries(this)" data-toggle="modal" data-target="#exampleModal"
+                  style="cursor:pointer;padding:5px;float:right;font-size:18px;"></i>
+              </td>
+              <td class="text-center">
+                <select class="form-control-sm w-100" name="sales_queue_{{sales_assignment.id}}">
+                  <option> None </option>
+                  {% for salesqueue in salesqueues %}
+                    <option value="{{ salesqueue.id }}" {% if salesqueue.id==sales_assignment.sales_queues.id %}selected{% endif %}>{{ salesqueue.name }}</option>
+                  {% endfor %}
+                </select>
+              </td>
+              <td class="text-center">
+                <input type="text" class="form-control-sm" name="promo_code_{{sales_assignment.id}}"
+                  value={{sales_assignment.promo_code}}>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <div class="row">
+          <div class="col-lg-12 col-md-12 text-center">
+            <button type="submit" class="btn btn-primary text-white"><i class="fa fa-check"
+                aria-hidden="true"></i>{% trans "Save" %}</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal fade" id="exampleModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+      aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">{% trans "Countries Assignment" %}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" name="selected_countries" id="selected_countries" />
+            <div class="row pl-2 pr-2">
+              <select id="country_down" class="form-control col-lg-12 col-md-12" data-max="" multiple="multiple">
+                {% for country in countries %}
+                <option value="{{ country.country_code }}">{{ country.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="get_countries">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      function select_countries(param) {
+        temp_id = param.id
+        const btn = document.getElementById("get_countries");
+        btn.addEventListener("click", () => {
+          const country_down = document.getElementById("country_down");
+          const selected_countries = [...country_down.selectedOptions].map(option => option.value);
+          if (selected_countries.length != 0) {
+            const dc_id = document.getElementById(`dc_${temp_id}`);
+            country_string = Array.from(selected_countries).join(',');
+            dc_id.innerHTML = "";
+            selected_countries.forEach(sc => {
+              dc = `<input type="text" class="btn btn-primary m-1" name="countries_${temp_id}" value="${sc}" style="width:40px;"/>`
+              dc_id.innerHTML += dc;
+            })
+          }
+          document.getElementById('clearAlleasySelect').click();
+          document.querySelector('.close').click();
+        })
+      }
+    </script>
+
+
+    <script>
+      $("#country_down").easySelect({
+        buttons: true,
+        search: true,
+
+        placeholderColor: 'black',
+        itemTitle: 'Color selected',
+        showEachItem: true,
+        width: '100%',
+
+        // dropdownMaxHeight: '450px',
+      })
+            // $("#demo2").easySelect({
+            //     buttons: true,
+            //     search: true,
+            //
+            //     placeholderColor: 'black',
+            //     itemTitle: 'Color selected',
+            //     showEachItem: true,
+            //     width: '100%',
+            //
+            //     // dropdownMaxHeight: '450px',
+            // })
+    </script>
+
+    {%endblock%} {%endblock%} {% block js%}
+    <script>
+      $(document).ready(function () {
+        $('#salestbl').DataTable();
+      });
+    </script>
+    {% endblock %}
+    <!--
+        document.addEventListener("DOMContentLoaded", () => {
+            const edit_countries = document.querySelectorAll(".edit_countries");
+            edit_countries.forEach(ec => {
+              const sa_id = ec.id;
+              ec.addEventListener("click", (e) => {
+                let eid = e.target.id;
+                select_countries(eid);
+              })
+            })
+          }) -->

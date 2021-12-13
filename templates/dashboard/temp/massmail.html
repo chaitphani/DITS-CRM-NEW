@@ -1,0 +1,44 @@
+{% extends 'dashboard/temp/layout1.html' %}
+{% load static %}
+
+{%block clientheading%}
+<a href="{%url 'homes'%}">Dashboard</a><br>
+<h3 class="content-header-title mb-0"> SEND MESSAGE TO ALL MEMBERS</h3>
+
+{%endblock%}
+{% block addsecurity %}
+<div id="content" class="cn2 ">
+    
+
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+            <div class="col-lg-8 col-md-8 bg-mail"><b>MESSAGE To Send</b></div></div><br>
+<div class="row">
+    <div class="col-lg-2 col-md-2"><label class="lbl-mail"><b>Subject</b></label></div>
+    <div class="col-lg-6 col-md-6"><input type="text" class="form-control bg-mailinput"></div>
+</div><br>
+<div class="row">
+    <div class="col-lg-2 col-md-2"><label class="lbl-mail"><b >Message</b></label></div> 
+    <div class="col-lg-6 col-md-6">
+        <textarea class="form-control bg-mailinput" rows="26" name="meassage"></textarea>
+    </div>
+</div>
+<div class="form-group"><label class="control-label col-lg-2">&nbsp;</label>
+    <div class="col-lg-8 mail-radio"><input type="radio" id="rtypea" name="rtype" value="-1" checked=""><label for="rtypea"> - Send message for all members</label><br>
+    <input type="radio" id="rtypeb" name="rtype" value="1" checked=""><label for="rtypeb"> - Send message only for ACTIVE members</label><br>
+    <input type="radio" id="rtypec" name="rtype" value="0"><label for="rtypec"> - Send message only for SUSPENDED members</label>
+  <br>
+  <input type="submit" class="btn btn-primary pull-right mailbtn" value="SEND NOW"> 
+</div>
+
+    </div>
+
+        </div>
+      </div>
+ 
+  </div>
+
+</div>
+
+{%endblock%}

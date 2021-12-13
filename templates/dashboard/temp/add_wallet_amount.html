@@ -1,0 +1,195 @@
+{% extends 'dashboard/temp/clientview.html' %} {% load i18n %} {% load static %} {%block liveaccount%}
+<div class="container-fluid" style="margin-top:1%;width:50%">
+    <h4 class="text-info">{% trans "Deposit/Withdraw " %} </h4>
+    <hr> {% if message1 %}
+    <span id="message" style="display: none;">{{message1}}</span> {% endif %} {% if message2 %}
+    <span id="message" style="display: none;">{{message2}}</span> {% endif %} {% if message3 %}
+    <span id="message" style="display: none;">{{message3}}</span> {% endif %}
+
+    <form method="POST" action="{% url 'add_money_to_wallet' %}{% if request.GET.u_id %}?u_id={{request.GET.u_id}}{% else %}u_id={% endif %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="exampleInputEmail1">{% trans "Type" %} </label>
+            <select name="type" id="currency_type_id" onChange="myNewFunction(this);" class="form-control" required>
+        <option value="" selected>  {% trans "Select Type.." %}
+        <option>
+          <option value="1">存款 </option>
+             <option value="2"> 取款 </option>
+      </select>
+        </div>
+
+        <div class="form-group">
+            <label for="exampleInputEmail1">{% trans "Comments" %} </label>
+            <select name="comments" id="currency_type_id" class="form-control" required>
+        <option value=""> {% trans "Select Comments.. " %}
+        <option>
+          {% for c in comments %}
+        <option value="{{c.id}}">{{ c.name }}</option>
+        {% endfor %}
+      </select>
+        </div>
+
+        <div class="form-group">
+
+            <label for="">{% trans "Amount" %} </label>
+            <input type="number" name="amount" placeholder={% trans "Enter the amount" %} class="form-control" step="0.01"><br>
+
+            <label for="exampleInputEmail1">{% trans "Currency" %} </label>
+            <select name="type" id="currency_type_id" class="form-control" required>
+        <option value=""> {% trans "Select Currency.. " %}
+        <option>
+          {% for x in currency %}
+        <option value="{{x.id}}">{{ x.name }}</option>
+        {%endfor%}
+      </select>
+        </div>
+
+
+        <div class="form-group">
+            <label for="">{% trans "Batch Number" %} </label>
+            <input type="text" name="batch" placeholder={% trans "Enter The Batch Number" %} class="form-control" required>
+        </div>
+        <p id="doc-value">
+            {% for x in user_document %}
+            <!-- {{x.approve}} -->
+            {% endfor %}
+        </p>
+        <p id="wallet-amount">
+            {% for x in user_wallet %}
+            <!-- {{x.amount}} -->
+            {% endfor %}
+        </p>
+
+        <button type="submit" class="btn btn-primary btn-block" id="submit-alert" style="margin-bottom: 1%;">{% trans "Submit" %} </button>
+
+    </form>
+</div>
+
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    var doc = document.getElementById('doc-value').innerText;
+    console.log('doc', doc);
+
+    function myNewFunction(sel) {
+        var doc = document.getElementById('doc-value').innerText;
+        console.log('doc', doc);
+        let amount = document.getElementById('wallet-amount').innerText;
+        console.log('amount', amount);
+        var type = sel.options[sel.selectedIndex].value;
+        if (type == '2') {
+            if (doc.trim() == 'False') {
+                title = 'Client document not approved.'
+                message = 'May be client has not upload the documents or you forget to approve it.\nPlease approve the doument or ask client to upload the documents.'
+                swal({
+                    title: title,
+                    text: message,
+                    icon: "warning",
+                    closeOnClickOutside: false,
+                    closeOnEsc: false,
+                }).then(function() {
+                    location.reload();
+                });
+                return false;
+            } else {
+                if (amount.trim() == '0.0') {
+                    title = 'Withdrawl not allowed.';
+                    message = 'The user wallet has "0.0" amount which can not be gone negative.';
+                    swal({
+                        title: title,
+                        text: message,
+                        icon: "warning",
+                        closeOnClickOutside: false,
+                        closeOnEsc: false,
+                    }).then(function() {
+                        location.reload();
+                    });
+                    return false;
+                }
+
+            }
+
+        } else {
+            console.log('line 85');
+            return true;
+        }
+    }
+
+    $('#submit-alert').on('click', function(e) {
+        e.preventDefault();
+        var form = $(this).parents('form');
+        swal({
+                title: "确认",
+                icon: "warning",
+                type: "warning",
+                buttons: [
+                    '不，取消',
+                    '是， 确认'
+                ],
+                closeOnConfirm: false,
+            })
+            .then(function(isConfirm) {
+                if (isConfirm) {
+                    form.submit();
+                } else {
+                    swal("Cancelled", " :)", "error");
+
+                }
+            });
+
+    });
+</script>
+<script>
+    let message = document.getElementById('message').innerText;
+    console.log('message', message);
+    if (message) {
+        if (message === 'Withdraw amount can not be performed due to the insuffient balance') {
+            swal({
+                title: "操作失败",
+                text: message,
+                icon: "warning",
+                closeOnClickOutside: false,
+                closeOnEsc: false,
+            }).then(function() {
+                window.location = "{{redirect_url}}";
+            });
+
+        } else if (message === "Amount added to wallet." || message === "Withdraw amount deducted from wallet.") {
+
+            swal({
+                title: "操作成功",
+                text: message,
+                icon: "success",
+                closeOnClickOutside: false,
+                closeOnEsc: false,
+            }).then(function() {
+                window.location = "{{redirect_url}}";
+            });
+        }
+
+    }
+</script>
+<!-- <script>
+  setTimeout(function () {
+    document.getElementById('message').style.display = 'none';
+  }, 6000); //5secs
+</script> -->
+<!-- swal({
+      title: "Action Successful",
+      text: message,
+      icon: "success",
+      closeOnClickOutside: false,
+      closeOnEsc: false,
+    }).then(function () {
+      window.location = "{{redirect_url}}";
+    }); -->
+<!-- // swal({
+    //     title: "Are you sure?",
+    //     text: "You will not be able to recover this imaginary file!",
+    //     type: "warning",
+    //     showCancelButton: true,
+    //     confirmButtonColor: "#DD6B55",
+    //     confirmButtonText: "Yes, delete it!",
+    //     closeOnConfirm: false
+    // }) -->
+{%endblock%}

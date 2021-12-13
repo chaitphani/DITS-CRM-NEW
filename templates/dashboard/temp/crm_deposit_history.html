@@ -1,0 +1,162 @@
+{% extends 'dashboard/temp/crm_index.html' %} {% load i18n %} {% load custom_tag %} {% load static %} {%block content%}
+<style>
+    .active{
+        background-color: white;
+        color: black;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row py-2" style="background-color:#132b88;">
+        <div class="col-lg-12 col-md-12">
+            <h5 class="text-uppercase f1  text-white pt-2">{% trans "Finance" %}</h5>
+        </div>
+    </div>
+</div>
+<div class="container-fluid card mt-5 mb-5" style="padding: 10px;">
+    <div class="row">
+        <label class="pl-3">Deposits</label>
+    </div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active"  data-toggle="tab" href="#deposit-pending-tab" role="tab" aria-controls="home" aria-selected="true"><i class="fa fa-bell"></i>&nbsp;Pending Deposit <span class="bg-success rounded-circle" style="padding:3px;">0</span></a>
+    </li>
+   
+    <li class="nav-item">
+      <a class="nav-link"  data-toggle="tab" href="#deposit_history-tab" role="tab" aria-controls="deposit_history-tab" aria-selected="false"><i class="fa fa-calendar"></i>&nbsp;Deposits History</a>
+    </li>
+    </ul>
+
+
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="deposit-pending-tab" role="tabpanel" aria-labelledby="home-tab">
+        <div class="row mt-5">
+            <div class="col-lg-12 col-md-12 table-responsive w-100">
+                <table class="table table-bordered table-sm" id="pendingtbl">
+                    <thead class="thead-light">
+                      <tr class="text-center">
+                        <th scope="col">Tr.ID</th>
+                        <th scope="col">Client ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Country</th>
+                        <th scope="col">MT4 Acc</th>
+                        <th scope="col">Tr.IP</th>
+                        <th scope="col">Tr.Country</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Comment</th>
+                        <th scope="col">Batch</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Curr</th>
+                        <th>Or.Amt</th>
+                        <th>Action</th>
+
+
+
+
+
+
+
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="text-center">
+                        <td>xxxx</td>
+                        <td>xxxx</td>
+                        <td>xxxx</td>
+                        <td>xxxx</td>
+                        <td>xxxx</td>
+                        <td>xxxx</td>
+                        <td>xxxx</td>
+                        <td>xxxx</td>
+                        <td>xxxx</td>
+                        <td>xxxx</td>
+                        <td>xxxx</td>
+                        <td>xxxx</td>
+                        <td>xxxx</td>
+                        <td>
+                            <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-success">Approve</button>&nbsp;&nbsp;
+                                <button type="button" class="btn btn-danger">Cancel</button>
+                               
+                              </div>
+                        </td>
+                     
+                    </tbody>
+                  </table>
+                 
+            </div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                $('#pendingtbl').DataTable();
+            });
+        </script>
+    </div>
+    <div class="tab-pane fade" id="deposit_history-tab" role="tabpanel" aria-labelledby="deposit_history-tab">
+        <div class="row mt-5 mb-3">
+            <div class="col-lg-6 col-md-6">
+                {% include 'dashboard/temp/customfilter.html' %}
+    
+            </div>
+            <div class="col-lg-6 col-md-6 d-flex justify-content-end">
+            <button class="exportFile btn btn-success" id="excel" value="excel">{% trans "Export as Excel" %}</button>&nbsp;&nbsp;
+            <button class="exportFile btn btn-danger" id="csv" value="csv">{% trans "Export as CSV" %}</button>&nbsp;&nbsp;
+            <button class="exportFile btn btn-primary" id="pdf" value="pdf">{% trans "Export as PDF" %}</button>&nbsp;&nbsp;
+            </div>
+    
+        </div>
+
+        <div class="row ">
+            <div class="col-lg-12 col-md-12 table-responsive">
+            <table class="table table-bordered table-sm w-100 " id="table_id">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="text-center border-right th-sm f1">{% trans "Date" %}</th>
+                        <th class="text-center border-right th-sm f1">{% trans "Trans ID" %}</th>
+                        <th class="text-center th-sm border-right f1">{% trans "Client ID" %}</th>
+                        <th class="text-center border-right th-sm f1">{% trans "Name" %}</th>
+                        <th class="text-center border-right th-sm f1">{% trans "Comment" %}</th>
+                        <th class="text-center border-right th-sm f1">{% trans "Batch No" %}</th>
+                        <th class="text-center border-right th-sm f1">{% trans "Amount" %}</th>
+                        <th class="text-center border-right th-sm f1">{% trans "Currency" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in deposit_history %}
+                    {% for key, value in i.items %}
+                    <tr class="text-center">
+                        {% for k, v in value.items %}
+                        <td>{% if k == "balance" %}{{ v|floatformat:2 }}{% else %}{{v}}{% endif %} </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %} {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+        <script>
+            const exportFile = document.querySelectorAll(".exportFile");
+            exportFile.forEach((e) => {
+                e.addEventListener("click", () => {
+                    const url = new URL(window.location.href);
+                    console.log(url);
+                    const query_string = url.search;
+                    let new_url = `${url.origin}${url.pathname}/${e.value}${query_string}`;
+                    console.log(new_url);
+                    window.location.href = new_url;
+                });
+            });
+        </script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#table_id').DataTable();
+            });
+        </script>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+

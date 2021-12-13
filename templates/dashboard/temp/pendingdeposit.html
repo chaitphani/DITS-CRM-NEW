@@ -1,0 +1,140 @@
+{% extends 'dashboard/temp/dash-index.html' %}
+{% load static %}
+{%block clientheading%}
+<a href="{%url 'homes'%}">Dashboard</a><br>
+<h3 class="content-header-title mb-0">Pending Deposit</h3>
+
+{%endblock%}
+{% block client %}
+<div class="row">
+  <div class="card card-hd">
+      <a><i class="fa fa-arrow-up" aria-hidden="true" style="font-size: 25px;"></i>&nbsp;Deposit</a>
+  </div>
+</div> 
+<div class="content-body card dash-cnt"><!-- Description -->
+ <div class="container-fluid">
+   {%block table%}
+
+   <table  class="table  table-bordered table-sm clienttable" width="100%" id="pendingdeposittable">
+     <thead class="thead-dark">
+       <tr>
+         <!-- <th class=" text-center th-sm"> Select</th> -->
+         <th class=" text-center th-sm">Tr.ID</th>
+         <th class=" text-center th-sm">Client ID</th>
+
+         <th class=" text-center th-sm">Name</th>
+         <th class=" text-center th-sm">Country</th>
+
+         <th class=" text-center th-sm">W.ID</th>
+         <th class=" text-center th-sm">Tr.IP</th>
+
+         <th class=" text-center th-sm">Tr.Country</th>
+         <th class=" text-center th-sm">Date</th>
+         <th class=" text-center th-sm">Comment</th>
+         <th class=" text-center th-sm">Batch#</th>
+         <th class=" text-center th-sm">Amount</th>
+         <th class=" text-center th-sm">Curr</th>
+         <th class=" text-center th-sm">Or.Amount</th>
+         <th class=" text-center th-sm">Action</th>
+
+
+
+
+
+
+       </tr>
+     </thead>
+     <tbody>
+
+
+  {% for i in pending_deposits %}
+  <tr>
+    <td>{{ i.walletfinance.t_id }}</td>
+    <td>{{ i.walletfinance.client_id }}</td>
+    <td>{{ i.walletfinance.name }}</td>
+    <td>{{ i.walletfinance.country }}</td>
+    <td>{{ i.walletfinance.user.userwallet_set.first.w_id }}</td>
+    <td>{{ i.walletfinance.t_ip }}</td>
+    <td>{{ i.walletfinance.t_country }}</td>
+    <td>{{ i.added_on }}</td>
+    <td>{{ i.comment }}</td>
+    <td>{{ i.batch }}</td>
+    <td>{{ i.walletfinance.amount }}</td>
+    <td>{{ i.walletfinance.currency }}</td>
+    <td>{{ i.walletfinance.amount }}</td>
+    <td>
+      <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+        <div class="btn-group" role="group" aria-label="First group">
+          <a href="{% url 'PaymentApproveDepositAPIView' i.id 2 %}">
+            <button type="button" class="btn btn-info">Approve</button>&nbsp;&nbsp;
+          </a>
+          <a href="{% url 'PaymentApproveDepositAPIView' i.id 1 %}">
+            <button type="button" class="btn btn-danger">Cancel</button>
+          </a>
+        </div>
+        </div>
+    </td>
+  </tr>
+  {% endfor %}
+
+
+
+
+
+     </tbody>
+     <tfoot class="thead-dark">
+       <tr>
+         <th class=" text-center th-sm">  </th>
+          <th class=" text-center th-sm">  </th>
+          <th class=" text-center th-sm">  </th>
+          <th class="text-center"></th>
+         <th class=" text-center th-sm">  </th>
+        <th class="text-center th-sm">  </th>
+        <th class="text-center"></th>
+        <th class=" text-center th-sm">  </th>
+       <th class="text-center th-sm">  </th>
+       <th class="text-center"></th>
+       <th class=" text-center th-sm">  </th>
+      <th class="text-center th-sm">  </th>
+      <th class="text-center th-sm">  </th>
+      <th class="text-center"></th>
+     
+
+
+
+       </tr>
+
+
+
+
+
+
+
+     </tfoot>
+
+
+
+   </table>
+{%endblock%}
+
+</div>
+
+
+
+
+
+
+
+  </div>
+
+
+
+
+{%endblock%}
+{% block js%}
+<script>
+  $(document).ready(function() {
+    $('#pendingdeposittable').DataTable();
+  } );
+  </script>
+{%endblock%}

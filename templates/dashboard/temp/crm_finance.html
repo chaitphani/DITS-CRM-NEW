@@ -1,0 +1,65 @@
+{% extends 'dashboard/temp/client_detail_index.html' %}
+{% load i18n %}
+{% load static %}
+{% block detail_content %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.css">
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.js"></script>
+
+<div class="mt-5">
+    <div style="float:right;margin-bottom:15px;">
+        <button class="exportFile btn btn-success" id="excel" value="excel"
+            style="border-radius:5px; padding:7px 20px;">{% trans "Export as Excel" %}</button>
+        <button class="exportFile btn btn-danger" id="csv" value="csv"
+            style="border-radius:5px; padding:7px 20px;">{% trans "Export as CSV" %}</button>
+        <button class="exportFile btn btn-primary" id="pdf" value="pdf"
+            style="border-radius:5px; padding:7px 20px;">{% trans "Export as PDF" %}</button>
+    </div>
+    <table class="table table-bordered table-sm" id="table_id">
+        <thead class="thead-dark">
+            <tr>
+                <th class=" text-center border-right th-sm f1">{% trans "Details" %}</th>
+                <th class="text-center border-right th-sm f1">{% trans "Amount" %}</th>
+                <th class=" text-center border-right th-sm f1">{% trans "Currency" %}</th>
+                <th class=" text-center border-right th-sm f1">{% trans "Status" %}</th>
+                <th class=" text-center th-sm border-right f1">{% trans "Time Stamp" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for list in response_list %}
+            <tr>
+                {% if list.comments %}
+                <td class="text-center f1">{{list.transfer_type}} {{list.comments}}</td>
+                {% else %}
+                <td class="text-center f1">{{list.transfer_type}} {{list.transfer_to}}</td>
+                {% endif %}
+                <td class="text-center f1">{{list.amount}}</td>
+                <td class="text-center f1">USD</td>
+                <td class="text-center f1">{{list.get_status_display}}</td>
+                <td class="text-center f1">
+                    {{list.added_on_year_val}}-{{list.added_on_month_val}}-{{list.added_on_date_val}}
+                    {{list.added_on|date:"G:i:s"}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    const exportFile = document.querySelectorAll(".exportFile");
+    exportFile.forEach((e) => {
+        e.addEventListener("click", () => {
+            const url = new URL(window.location.href);
+            console.log(url);
+            const query_string = url.search;
+            let new_url = `${url.origin}${url.pathname}/${e.value}${query_string}`;
+            console.log(new_url);
+            window.location.href = new_url;
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#table_id').DataTable();
+    });
+</script>
+{% endblock %}

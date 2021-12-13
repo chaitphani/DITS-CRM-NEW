@@ -1,0 +1,58 @@
+{% extends 'clientportal/index.html' %}
+{% load i18n %}
+
+{%load static%}
+
+{%block widgetheading%}
+<h3 class=" mb-0 mainhd">{% trans "Open Demo Account" %} </h3>
+
+
+{%endblock%}
+{% block support %}
+<div class="container dac">
+  <form method="POST" action="{%url 'demoaccount'%}">
+    {%csrf_token%}
+    <div class="form-row">
+      <div class="col">
+        <div class="md-form">
+          <label  class="labels"><h4 class="text-left  h4"> {% trans "Account Type" %} </h4></label>
+    <select name="accounttype" class="form-control" required>
+              <option value=""> {% trans "Please Select" %} <option>
+                    {% for a in ac %}
+              <option value="{{a.name}}">{{ a.name }}</option>
+                    {%endfor%}
+          </select><br>
+          <label  class="labels"><h4 class="text-left  h4">{% trans "Currency" %} </h4></label>
+
+          <select name="ctype" class="form-control" required>
+                    <option value=""> {% trans "Please Select" %} <option>
+                          {% for c in ca %}
+                    <option value="{{c.name}}">{{ c.name }}</option>
+                          {%endfor%}
+                </select>
+  </div>
+    </div>
+</div><br>
+<input type="submit" class="btn btn-primary" value="Open Demo Account" data-toggle="modal" data-target="#exampleModal">
+<div class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            {% trans "Account open successfully" %}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary"> {% trans "Save changes" %} </button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"> {% trans "Close" %} </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</div>
+{%endblock%}

@@ -1,0 +1,172 @@
+{% extends 'dashboard/temp/maincontent.html' %}
+{% load static %}
+{%block internaltransferhd%}
+<a href="{%url 'homes'%}">Dashboard</a>/
+<h3 class="content-header-title mb-0">Internal Transfer</h3>
+{%endblock%}
+{% block client %}
+<div class="content-body"><!-- Description -->
+ <div class="container-fluid">
+<div class="row">
+  <div class="col-lg-9 col-md-9">
+    {%block table%}
+    <table id="table" class="display">
+  <thead>
+    <tr>
+     <th>ID</th>
+     <th>Client</th>
+     <th>Source</th>
+     <th>Target</th>
+     <th>Amount</th>
+     <th>Status</th>
+     <th>Created</th>
+
+
+ </tr>
+  </thead>
+  <tbody>
+    <tr>
+   <td>144</td>
+   <td> Ivan Despic</td>
+   <td>590901069</td>
+   <td>USD1001597</td>
+   <td>USD $428.24</td>
+   <td>Complete</td>
+   <td>2018-06-26</td>
+
+</tr>
+<tr>
+ <td>144</td>
+ <td> Ivan Despic</td>
+ <td>590901069</td>
+ <td>USD1001597</td>
+ <td>USD $428.24</td>
+ <td>Complete</td>
+ <td>2018-06-26</td>
+
+</tr>
+<tr>
+ <td>144</td>
+ <td> Ivan Despic</td>
+ <td>590901069</td>
+ <td>USD1001597</td>
+ <td>USD $428.24</td>
+ <td>Complete</td>
+ <td>2018-06-26</td>
+
+</tr>
+<tr>
+ <td>144</td>
+ <td> Ivan Despic</td>
+ <td>590901069</td>
+ <td>USD1001597</td>
+ <td>USD $428.24</td>
+ <td>Complete</td>
+ <td>2018-06-26</td>
+
+</tr>
+<tr>
+ <td>144</td>
+ <td> Ivan Despic</td>
+ <td>590901069</td>
+ <td>USD1001597</td>
+ <td>USD $428.24</td>
+ <td>Complete</td>
+ <td>2018-06-26</td>
+
+</tr>
+
+  </tbody>
+</table>
+{%endblock%}
+  </div>
+  <div class="col-lg-3 col-md-3">
+<div class="container cnt2">
+<div class="row">
+<div class="col-lg-6 col-md-6 text-center">
+<a href="#">  <i class="fa fa-hourglass btn btn-primary tz" type="button" aria-hidden="true" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample"></i></a>
+</div>
+<div class="col-lg-6 col-md-6 text-center">
+<a href="#">  <i class="fa fa-newspaper-o btn btn-primary tz"  aria-hidden="true" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"></i></a>
+</div>
+</div>
+<br>
+<div class="collapse" id="collapseExample">
+    <div class="card card-body">
+<div class="dropdown">
+<button class="btn btn-secondary dropdown-toggle tz" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+Table Columns
+</button>
+<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+  <a class="dropdown-item" href="#">Action</a>
+  <a class="dropdown-item" href="#">Another action</a>
+  <a class="dropdown-item" href="#">Something else here</a>
+</div>
+</div>
+    </div>
+  </div>
+
+
+  <section>
+  <div class="row d-inline-flex srow">
+  <p>Table Column</p><i class="fa fa-angle-down i1"></i>
+  </div>
+  <hr class="hr1">
+  </section>
+  {%block tablecolumns%}
+  <div class="row">
+     <div class="col-lg-10"><p>Client</p></div>
+     <div class="col-lg-2"><input type="checkbox"   name="chk1"/></div>
+  </div>
+   <div class="row">
+
+     <div class="col-lg-10"><p>Source</p></div>
+     <div class="col-lg-2"><input type="checkbox"   name="chk1"/></div>
+  </div>
+  <div class="row">
+   <div class="col-lg-10"><p>Target</p></div>
+   <div class="col-lg-2"><input type="checkbox"   name="chk1"/></div>
+  </div>
+  <div class="row">
+   <div class="col-lg-10"><p>Amount</p></div>
+   <div class="col-lg-2"><input type="checkbox"   name="chk1"/></div>
+  </div>
+  <div class="row">
+   <div class="col-lg-10"><p>Status</p></div>
+   <div class="col-lg-2"><input type="checkbox"   name="chk1"/></div>
+  </div>
+  <div class="row">
+   <div class="col-lg-10"><p>Created</p></div>
+   <div class="col-lg-2"><input type="checkbox"   name="chk1"/></div>
+  </div>
+{%endblock%}
+
+<hr>
+
+<div class="row">
+<div class="col-lg-3 col-md-3 rsk">
+  <button type="button" class="btn btn-danger">Reset</button>
+
+</div>&nbsp;&nbsp;&nbsp;
+<div class="col-lg-3 col-md-3">
+  <button type="button" class="btn btn-success">Apply</button>
+
+</div>
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+  </div>
+</div>
+</div>
+
+
+</div>
+{%endblock%}

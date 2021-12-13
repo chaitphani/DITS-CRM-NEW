@@ -1,0 +1,742 @@
+{% extends 'dashboard/temp/maincontent.html' %} {% load i18n %} {% load static %} {%block partnerheading%}
+<style>
+    .pl-35 {
+        padding-left: 40px;
+    }
+
+    .switch {
+        position: relative;
+        display: block;
+        vertical-align: top;
+        width: 100px;
+        height: 30px;
+        padding: 3px;
+        margin: 0 10px 10px 0;
+        background: linear-gradient(to bottom, #eeeeee, #FFFFFF 25px);
+        background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF 25px);
+        border-radius: 18px;
+        box-shadow: inset 0 -1px white, inset 0 1px 1px rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+    }
+
+    .switch-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+    }
+
+    .switch-label {
+        position: relative;
+        display: block;
+        height: inherit;
+        font-size: 10px;
+        text-transform: uppercase;
+        background: #eceeef;
+        border-radius: inherit;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
+    }
+
+    .switch-label:before,
+    .switch-label:after {
+        position: absolute;
+        top: 50%;
+        margin-top: -.5em;
+        line-height: 1;
+        -webkit-transition: inherit;
+        -moz-transition: inherit;
+        -o-transition: inherit;
+        transition: inherit;
+    }
+
+    .switch-label:before {
+        content: attr(data-off);
+        right: 11px;
+        color: #aaaaaa;
+        text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+    }
+
+    .switch-label:after {
+        content: attr(data-on);
+        left: 11px;
+        color: #FFFFFF;
+        text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+    }
+
+    .switch-input:checked~.switch-label {
+        background: #E1B42B;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .switch-input:checked~.switch-label:before {
+        opacity: 0;
+    }
+
+    .switch-input:checked~.switch-label:after {
+        opacity: 1;
+    }
+
+    .switch-handle {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 28px;
+        height: 28px;
+        background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);
+        background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);
+        border-radius: 100%;
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .switch-handle:before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -6px 0 0 -6px;
+        width: 12px;
+        height: 12px;
+        background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
+        background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
+        border-radius: 6px;
+        box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+    }
+
+    .switch-input:checked~.switch-handle {
+        left: 74px;
+        box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+    /* Transition
+        ========================== */
+
+    .switch-label,
+    .switch-handle {
+        transition: All 0.3s ease;
+        -webkit-transition: All 0.3s ease;
+        -moz-transition: All 0.3s ease;
+        -o-transition: All 0.3s ease;
+    }
+</style>
+
+
+{%endblock%} {% block client %}
+<div class="row">
+    <div class="card card-hd">
+        <a><i class="fa fa-user" aria-hidden="true" style="font-size: 25px;"></i>&nbsp;{% trans "Clients" %} </a>
+    </div>
+</div>
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="margin-top:2%">
+    <!-- Brand/logo -->
+    <!-- <a class="navbar-brand" href="#">Logo</a> -->
+
+    <!-- Links -->
+    <ul class="navbar-nav" style="margin-left:20%">
+        <!-- <li class="nav-item">
+        <a class="nav-link" href="{%url 'clientnotes'%}" class="active"><i class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;Notes</a>
+      </li> -->
+        <li class="nav-item link-bg">
+            <a class="nav-link" href="{%url 'add_money_to_wallet'%}{% if request.GET.u_id %}?u_id={{request.GET.u_id}}{% else %}u_id={% endif %}"><i class="fa fa-wallet"></i>&nbsp;{% trans "Wallet Balance" %} </a>
+        </li>
+        <li class="nav-item pl-35 link-bg">
+            <a class="nav-link" href="{%url 'ib_wallet_withdraw_money'%}{% if request.GET.u_id %}?u_id={{request.GET.u_id}}{% else %}u_id={% endif %}"><i class="fa fa-wallet"></i>&nbsp; {% trans "IB Wallet" %} </a>
+        </li>
+
+
+        <li class="nav-item pl-35">
+            <a class="nav-link" href="{%url 'dashliveaccount'%}{% if request.GET.u_id %}?u_id={{request.GET.u_id}}{% else %}u_id={% endif %}"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;{% trans "Live Accounts" %} </a>
+        </li>
+
+        <li class="nav-item pl-35 link-bg">
+            <a class="nav-link" href="{%url 'dashdemoaccount'%}{% if request.GET.u_id %}?u_id={{request.GET.u_id}}{% else %}u_id={% endif %}"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;{% trans "Demo Accounts" %} </a>
+        </li>
+        <li class="nav-item pl-35 link-bg">
+            <a class="nav-link" href="{%url 'dashfinance'%}{% if request.GET.u_id %}?u_id={{request.GET.u_id}}{% else %}u_id={% endif %}"><i class="fa fa-usd" aria-hidden="true"></i>&nbsp;{% trans "Finance" %} </a>
+            <!-- </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fa fa-cog" aria-hidden="true"></i>Logs </a>
+      </li> -->
+            <li class="nav-item pl-35 link-bg">
+                <a class="nav-link" href="{%url 'documents'%}{% if request.GET.u_id %}?u_id={{request.GET.u_id}}{% else %}u_id={% endif %}"><i class="fa fa-folder" aria-hidden="true"></i>&nbsp;{% trans "Documents" %} </a>
+            </li>
+
+            <li class="nav-item pl-35 link-bg">
+                <a class="nav-link" href="{%url 'trans_history'%}{% if request.GET.u_id %}?u_id={{request.GET.u_id}}{% else %}u_id={% endif %}"><i class="fa fa-wallet" aria-hidden="true"></i>&nbsp; {% trans "Transaction(Admin)" %} </a>
+            </li>
+
+            <li class="nav-item pl-35 link-bg">
+                <a class="nav-link" href="{%url 'addsalesnotes'%}{% if request.GET.u_id %}?u_id={{request.GET.u_id}}{% else %}u_id={% endif %}"><i class="fa fa-sticky-note" aria-hidden="true"></i>
+                  &nbsp; {% trans "留言" %} </a>
+
+            </li>
+
+            <!-- <li class="nav-item">
+        <a class="nav-link" href="#"   data-toggle="modal" data-target="#cleditmdl"><i class="fa fa-pencil" aria-hidden="true"></i>Edit Clients</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"    data-toggle="modal" data-target="#editcompliancemdl"><i class="fa fa-pencil" aria-hidden="true"></i>Edit Compliance Status</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"  data-toggle="modal" data-target="#changelogmdl"><i class="fa fa-pencil" aria-hidden="true"></i>Change Log</a>
+      </li> -->
+
+    </ul>
+</nav>
+
+<div class="container-fluied" style="margin-top:2%">
+    <div class="row">
+        <div class="col-lg-3 col-md-3">
+            {% include 'dashboard/temp/profilecard.html' %}
+        </div>
+
+        <div class="col-lg-9 col-md-9 card">
+            {%block notes%}{%endblock%} {%block liveaccount%}{%endblock%} {%block demoaccount%}{%endblock%} {%block finance%}{%endblock%} {%block documents%}{%endblock%}
+
+        </div>
+        <!-- <div class="col-lg-3 col-md-3">
+      <div clss="row">
+     <b>  Sales Agents</b></div>
+     <div class="row">
+      <div class="input-group">
+      <select class="form-control">
+        <option>abc</option>
+        <option>xyz</option>
+      </select>
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="button">UPDATE</button>
+
+        </div>
+      </div>
+     </div>
+     <div class="row">
+      <ul class="list-group" style="width:100%;margin-top:4%">
+        <li class="list-group-item d-flex justify-content-between align-items-center listbg" style="width:100%;background-color:#e5eaf2">
+           Reg. Version
+           <i class="fas fa-plus-circle" data-toggle="modal" data-target="#myModal"></i>
+          <!-- <span class="badge badge-primary badge-pill">1994-09-09</span> -->
+        <!-- </li> -->
+        <br>
+    </div>
+</div>
+
+<!--
+
+{% for s in salesnote %}
+        <li class="list-group-item d-flex justify-content-between align-items-center" style="width:100%;background-color:#e5eaf2;height:10px">{{s.name}}</li>
+        {%endfor%}
+        <br> <li class="list-group-item d-flex justify-content-between align-items-center listbg" style="width:100%;background-color:#e5eaf2">
+        Upcoming Follow Ups
+          <i class="fas fa-plus-circle" data-toggle="modal" data-target="#myModals"></i>
+      <span class="badge badge-primary badge-pill">1994-09-09</span>
+       </li>
+      <br>
+
+
+</ul>
+<div class="row">
+<div class="col-lg-6 col-md-6">
+<a href="#" class="btn btn-warning " style="width:100%"><i class="far fa-clock"></i> Pending</a> </div>
+<div class="col-lg-6 col-md-6">
+<a href="#" class="btn btn-success" style="width:100%"><span class="badge badge-primary badge-pill">0</span <i class="fas fa-check"></i> Complete</a> </div></div><br>
+<div class="col-lg-12">
+<a href="#" class="btn btn-success" style="width:100%"> All &nbsp;<span class="badge badge-primary badge-pill"> 0</span></a></div>
+ <br>
+<li class="list-group-item d-flex justify-content-between align-items-center" style="width:100%;background-color:#e5eaf2;height:10px">No notes added.</li>
+
+
+   </div>
+ </div> -->
+<!-- The Modal -->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Add Sales Notes</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form method="POST" action="{%url 'addsalesnotes'%}">
+
+                    {%csrf_token%}
+                    <div class="form-group">
+                        <label><b>Notes</b></label>
+                        <textarea class="form-control" rows="15" name="name"></textarea>
+                        <input type="submit" class="btn btn-success" value="SAVE">
+                </form>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer clmdlft">
+
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModals">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title"><b>Client Follow up</b></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>Type</b></label>
+                            <select class="form-control">
+                  <option>Call</option>
+                  <option>Chat</option>
+                </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>DateTime</b></label>
+                            <select class="form-control" type="DateTime">
+                <option>a</option>
+              </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1"><b>Message</b></label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="15" placeholder="Enter message...."></textarea>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer clmdlft">
+                <input type="submit" class="btn btn-success" value="SAVE">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- edit clients modal here  -->
+<div class="modal fade" id="cleditmdl">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title"><b>Edit Client ID {{r.client_id}}</b></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>First Name</b></label>
+                            <input type="text" class="form-control" name="fname" value="{{r.fname}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>Last Name</b></label>
+                            <input type="text" class="form-control" name="lname" value="{{r.lname}}"></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>Phone</b></label>
+                            <input type="text" class="form-control" name="phone" value="{{r.mob}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>Email</b></label>
+                            <input type="text" class="form-control" name="email" value="{{r.email}}"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-md-3">
+                        <b>Approved</b>
+                        <label class="toggle-switchy" for="example" data-size="sm">
+                    <input checked type="checkbox" id="example">
+                    <span class="toggle">
+                      <span class="switch"></span>
+                    </span>
+                  </label>
+                    </div>
+                    <div class="col-lg-3 col-md-3">
+                        <b>Enable</b>
+                        <label class="toggle-switchy" for="example" data-size="sm">
+                    <input checked type="checkbox" id="example">
+                    <span class="toggle">
+                      <span class="switch"></span>
+                    </span>
+                  </label>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>Country</b></label>
+                            <select class="form-control">
+                   <option>India</option>
+                 </select></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>Language</b></label>
+                            <select class="form-control">
+                        <option>English</option>
+                      </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>Address</b></label>
+                            <input type="text" class="form-control" name="address" value="{{r.address}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>City</b></label>
+                            <input type="text" class="form-control" name="city" value="{{r.city}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>Zip/Postal code</b></label>
+                            <input type="text" class="form-control" name="zipcode" value="{{r.pincode}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>Client Partner ID</b></label>
+                            <input type="text" class="form-control" name="client_id">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>Client Campaign ID</b></label>
+                            <input type="text" class="form-control" name="client_campaign_id">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>State</b></label>
+                            <input type="text" class="form-control" name="state" value="{{r.state}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>Max Real Accounts</b></label>
+                            <input type="number" class="form-control" name="max_real_account">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>Max Demo Account</b></label>
+                            <input type="number" class="form-control" name="max_demo_account">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>POA Date</b></label>
+                            <input type="date" class="form-control" name="poa_date">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>POA Expiry</b></label>
+                            <input type="date" class="form-control" name="poa_expiry">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>Date Of Birth</b></label>
+                            <input type="date" class="form-control" name="date_of_birth" value="{{r.dob}}">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <!-- Modal footer -->
+            <div class="modal-footer clmdlft">
+                <input type="submit" class="btn btn-success" value="SAVE">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- end   models end here -->
+
+<!-- edit compliance status model here -->
+<div class="modal fade" id="editcompliancemdl">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Compliance Status for Client ID</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <b>Compliance Ready</b>
+                <label class="switch">
+            <input class="switch-input" type="checkbox" />
+            <span class="switch-label" data-on="On" data-off="Off"></span>
+            <span class="switch-handle"></span> </label>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer clmdlft">
+                <input type="submit" class="btn btn-success" value="SAVE">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- end compliance model -->
+
+<!-- changelog modal start here  -->
+<!-- The Modal -->
+<div class="modal fade" id="changelogmdl">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Change Log for Client ID 7429 </h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="form-group col-lg-6 col-md-6">
+                    <label for="exampleFormControlTextarea1"><b>DateTime</b></label>
+                    <select class="form-control" type="DateTime">
+            <option>a</option>
+          </select>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- changelog modal end here -->
+
+</div>
+<!----modal for wallet balance-->
+<div class="modal fade" id="cleditmdl">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title"><b>Wallet Balance</b></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>First Name</b></label>
+                            <input type="text" class="form-control" name="fname" value="{{r.fname}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>Last Name</b></label>
+                            <input type="text" class="form-control" name="lname" value="{{r.lname}}"></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>Phone</b></label>
+                            <input type="text" class="form-control" name="phone" value="{{r.mob}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>Email</b></label>
+                            <input type="text" class="form-control" name="email" value="{{r.email}}"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-md-3">
+                        <b>Approved</b>
+                        <label class="toggle-switchy" for="example" data-size="sm">
+                  <input checked type="checkbox" id="example">
+                  <span class="toggle">
+                    <span class="switch"></span>
+                  </span>
+                </label>
+                    </div>
+                    <div class="col-lg-3 col-md-3">
+                        <b>Enable</b>
+                        <label class="toggle-switchy" for="example" data-size="sm">
+                  <input checked type="checkbox" id="example">
+                  <span class="toggle">
+                    <span class="switch"></span>
+                  </span>
+                </label>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>Country</b></label>
+                            <select class="form-control">
+                 <option>India</option>
+               </select></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>Language</b></label>
+                            <select class="form-control">
+                      <option>English</option>
+                    </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>Address</b></label>
+                            <input type="text" class="form-control" name="address" value="{{r.address}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>City</b></label>
+                            <input type="text" class="form-control" name="city" value="{{r.city}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>Zip/Postal code</b></label>
+                            <input type="text" class="form-control" name="zipcode" value="{{r.pincode}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>Client Partner ID</b></label>
+                            <input type="text" class="form-control" name="client_id">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>Client Campaign ID</b></label>
+                            <input type="text" class="form-control" name="client_campaign_id">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>State</b></label>
+                            <input type="text" class="form-control" name="state" value="{{r.state}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>Max Real Accounts</b></label>
+                            <input type="number" class="form-control" name="max_real_account">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>Max Demo Account</b></label>
+                            <input type="number" class="form-control" name="max_demo_account">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>POA Date</b></label>
+                            <input type="date" class="form-control" name="poa_date">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>POA Expiry</b></label>
+                            <input type="date" class="form-control" name="poa_expiry">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1"><b>Date Of Birth</b></label>
+                            <input type="date" class="form-control" name="date_of_birth" value="{{r.dob}}">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <!-- Modal footer -->
+            <div class="modal-footer clmdlft">
+                <input type="submit" class="btn btn-success" value="SAVE">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{%endblock%}

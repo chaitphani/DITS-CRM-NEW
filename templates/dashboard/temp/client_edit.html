@@ -1,0 +1,133 @@
+{% extends 'dashboard/temp/crm_index.html' %}
+{% load i18n %}
+{% load static %}
+{% block content %}
+<style>
+    .btn-primary,
+    .btn-secondary {
+        float: right;
+    }
+
+    .swal2-toast {
+        display: block !important;
+        margin-bottom: 10px;
+    }
+
+    .messages li {
+        background-color: rgb(208, 230, 129);
+        color: red;
+        text-align: center;
+    }
+
+    #id_acc_type {
+        display: block;
+        width: 100%;
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: .25rem;
+        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+</style>
+<div class="container mt-5">
+    {% if messages %}
+    <ul class="messages list-unstyled">
+        {% for message in messages %}
+        <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}&nbsp;Important: {% endif %} {{ message }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <form method="POST">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-lg-4 col-md-4 mt-3">
+                <label for="">{% trans "First Name" %}</label>
+                {{form.fname}}
+            </div>
+            <div class="col-lg-4 col-md-4 mt-3">
+                <label for="">{% trans "Last Name" %}</label>
+                {{form.lname}}
+            </div>
+            <div class="col-lg-4 col-md-4 mt-3">
+                <label for="">{% trans "Account Type" %}</label>
+                {{form.acc_type}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 mt-3">
+                <label for="">{% trans "User Name" %}</label>
+                {{form.uname}}
+            </div>
+            <div class="col-lg-3 col-md-6 mt-3">
+                <label for="">{% trans "Live Account Limit" %}</label>
+                <!-- {{form.acc_limit}} -->
+                <input type="text" name="acc_limit" value="{{reg_data.acc_limit}}" class="form-control" required id="id_acc_limit" 
+                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" maxlength="2">
+            </div>
+            <div class="col-lg-3 col-md-6 mt-3">
+                <label for="">{% trans "Demo Account Limit" %}</label>
+                <!-- {{form.demo_acc_limit}} -->
+                <input type="text" name="demo_acc_limit" value="{{reg_data.demo_acc_limit}}" class="form-control" required id="id_demo_acc_limit" 
+                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" maxlength="2">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 mt-3">
+                <label for="">{% trans "Email" %}</label>
+                {{form.email}}
+
+            </div>
+            <div class="col-lg-6 col-md-6 mt-3">
+                <label for="">{% trans "Mobile number" %}</label>
+                <!-- {{form.mob}} -->
+                <input type="text" name="mob" value="{{reg_data.mob}}" class="form-control" maxlength="13" required id="id_mob" 
+                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mt-3">
+                <label for="">{% trans "Date of Birth" %}</label>
+                {{form.dob}}
+            </div>
+            <div class="col-lg-4 col-md-6 mt-3">
+                <label for="">{% trans "Address" %}</label>
+                {{form.address}}
+            </div>
+            <div class="col-lg-4 col-md-6 mt-3">
+                <label for="">{% trans "Country" %}</label>
+                {{form.country}}
+            </div>
+        </div>
+        <br>
+
+        <button class="btn btn-secondary btn-sm  ml-2" onclick="window.history.back()">{% trans "Cancel" %}</button>
+        <input type="submit" class="btn btn-primary btn-sm" value="Update">
+    </form>
+</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js"></script>
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
+<script>
+    $('form').on('submit', function (e) {
+        // e.preventDefault();
+        Swal.fire({
+            toast: true,
+            text: 'Details saved, Updating the data..!',
+            imageUrl: "https://i.pinimg.com/originals/07/24/88/0724884440e8ddd0896ff557b75a222a.gif",
+            imageWidth: 300,
+            imageHeight: 250,
+            width: '350px',
+            showConfirmButton: false,
+            timer: 6000,
+            timerProgressBar: true,
+            closeOnEsc: false,
+        })
+    });
+</script>
+{% endblock %}

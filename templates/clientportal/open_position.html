@@ -1,0 +1,66 @@
+{% extends 'clientportal/client_index.html' %} 
+{% load i18n %} 
+{% load static %} 
+{% block widgetheading %}
+<h3 class=" mb-0 mainhd">MT4 ACCOUNT: {{request.GET.account}}
+    <span class="ac_no"></span> 
+    {% if request.GET.type != "1" %}
+        <button type="button" name="button" class="btn btn-success">LIVE</button>
+    {% endif %}
+</h3>
+
+{% endblock %} 
+{% block all_page %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-2"><button type="button" name="button" class="btn btn-default btn-overview">
+            <i class="fas fa-desktop"></i>&nbsp;&nbsp;Overview</button>
+        </div>
+        <div class="col-lg-2 btm-btn">
+            <a href="#"><i class="fas fa-calculator"></i>&nbsp;&nbsp;Finance</a>
+        </div>
+        <div class="col-lg-3 btm-btn">
+            <a href="#"><i class="fas fa-chart-line"></i>&nbsp;&nbspOpen Positions</a>&nbsp;&nbsp<span class="dot">0</span>
+        </div>
+        <div class="col-lg-3 btm-btn">
+            <a href="#"><i class="fas fa-chart-line"></i>&nbsp; Closed Positions</a>&nbsp;&nbsp<span class="dot">0</span>
+        </div>
+        <div class="col-lg-2 btm-btn">
+            <a href="{% url 'settings' %}{% if request.GET.account %}?account={{ request.GET.account }}{% endif %}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}">
+                <i class="fas fa-cog"></i>&nbsp; Settings
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row table-responsive">
+        <table class="table table-bordered">
+            <thead>
+              <tr class="text-center">
+                <th>Ticket</th>
+                <th>Symbol</th>
+                <th>Action</th>
+                <th>Open Time </th>
+                <th>Open Price</th>
+                <th>Profit </th>
+                <th>Swaps</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="text-center">
+                <td>xxxx</td>
+                <td>xxxx</td>
+                <td>xxxx</td>
+                <td>xxxx</td>
+                <td>xxxx</td>
+                <td>xxxx</td>
+                <td>xxxx</td>
+              </tr>
+            
+            </tbody>
+          </table>
+    </div>
+</div>
+{%endblock%}

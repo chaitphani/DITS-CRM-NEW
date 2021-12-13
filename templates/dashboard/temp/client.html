@@ -1,0 +1,282 @@
+{% extends 'dashboard/temp/crm_index.html' %} {% load i18n %} {% load custom_tag %} {% load static %} {%block content%}
+
+<div class="row">
+    <div class="card card-hd">
+        <a><i class="fa fa-user" style="font-size:25px"></i>&nbsp; {% trans "Clients" %} </a>
+    </div>
+</div>
+<div class="card dash-cnt">
+    <div class="container-fluid">
+
+
+        <div class="row mainsearchcnt">
+            <div class="col-lg-4 col-md-4 border-right">
+
+                <!-- Form for the search by client id -->
+
+                <form method="GET" action="{%url 'search_by_id'%}">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1"> {% trans "Search by Client ID" %} </label>
+                        <div class="input-group">
+                            <input class="form-control" name="by_id" type="text" placeholder={% trans "Search by Client ID" %}>
+                            <span class="input-group-append">
+                                <button class="btn btn btn-primary" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Form for the search by MT4 Account -->
+
+                <form action="{%url 'search_by_mt4'%}" method="GET">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1"> {% trans "Search by MT4 Account" %} </label>
+                        <div class="input-group">
+                            <input class="form-control" name="mt4" type="text" placeholder={% trans "Search by MT4 Account" %}>
+                            <span class="input-group-append">
+                                <button class="btn btn btn-primary" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+            <div class="col-lg-8 col-md-8 searccnt">
+                <div class="row">
+                    <div class="col-lg-6 col-md-12">
+
+                        <!-- Form for the search by name -->
+                        <form method="GET" action="{% url 'search_by_name' %}">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">{% trans "Search By Name" %} </label>
+                                <div class="form-group has-search">
+
+                                    <input type="text" name="name" class="form-control" placeholder={% trans "Search By Name" %}>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- Form for the search by email -->
+                        <form method="GET" action="{% url 'search_by_email' %}">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">{% trans "Search By Email" %} </label>
+                                <div class="form-group has-search">
+
+                                    <input type="text" name="email" class="form-control" placeholder={% trans "Search By Email" %}>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- <div class="row">
+          <div class="col-lg-12 col-md-12">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Country</label>
+              <select name="country" class="form-control" required>
+                <option disabled selected>Select country</option>
+                {% for c in cn %}
+                <option value="{{ c.id }}">{{ c.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </div> -->
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+
+                        <!-- <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle btn-block" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false" style="border:1px solid #ddd;padding-left:10px;padding-right:10px;">
+          <i class="fa fa-calendar" aria-hidden="true"></i> Registered within time period
+        </button>
+        <div class="dropdown-menu dropdown-menu-lg-right" style="min-width: 12rem;border:2px solid rgba(0,0,0,.15)">
+          <button class="dropdown-item bg-info text-center " href="#">Today</button>
+          <button class="dropdown-item text-center" href="#">Yesterday</button>
+          <button class="dropdown-item text-center" href="#">Last 7 Days</button>
+          <button class="dropdown-item text-center " href="#">Last 30 Days</button>
+          <button class="dropdown-item text-center" href="#">This Month</button>
+          <button class="dropdown-item text-center" href="#">Last Month</button>
+          <button class="dropdown-item text-center" href="#" type="calender">Custom Range</button>
+          <button class="dropdown-item bg-info text-center" href="#">Apply</button>
+          <button class="dropdown-item bg-light text-center" href="#" style="border:1px solid #ddd">Cancel</button>
+        </div>
+
+      </div> -->
+
+
+
+
+                    </div>
+                    <!--  <div class="col-lg-2 col-md-2">
+          <a class="btn btn-primary" ">Search&nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+    </div> -->
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+        {%block table%}
+        <div class="card dash-cnt">
+            <table class="table table-bordered table-sm" id="example">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class=" text-center th-sm">{% trans "Client ID " %} </th>
+                        <th class=" text-center th-sm">{% trans "Username " %} </th>
+
+                        <th class=" text-center th-sm">{% trans "First Name " %} </th>
+
+                        <th class=" text-center th-sm">{% trans "Last Name " %} </th>
+                        <th class="text-center th-sm">{% trans "Email ID " %} </th>
+
+                        <th class=" text-center th-sm">{% trans "Mobile No" %} </th>
+
+
+                        <th class="text-center th-sm">{% trans "Country" %} </th>
+                        <th class=" text-center th-sm">{% trans "Registration Date" %} </th>
+
+
+
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for rg in r %}
+                    <tr>
+
+                        <td class="text-center"><a href="{% url 'clientprofile' rg.id %}?u_id={{ rg.user.id }}">{{rg.client_id}} </a></td>
+
+                        <!--            <td class="text-center">{{rg.added_on}}</td>-->
+                        <!--            <td>{{rg.added_on_year_val}}年{{rg.added_on_month_val}}月{{rg.added_on_date_val}}日</td>-->
+
+                        <td class="text-center">{{rg.uname}}</td>
+                        <td class="text-center">{{rg.fname}}</td>
+
+
+                        <td class="text-center">{{rg.lname}}</td>
+                        <td class="text-center">{{rg.email}}</td>
+                        <td class="text-center">{{rg.mob}}</td>
+
+                        <!--            <td class="text-center">{{rg.city}}</td>-->
+                        <td class="text-center">{{rg.country}}</td>
+                        <td>{{ rg.added_on }}</td>
+
+                        <!--
+            <td class="">
+
+              <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group" role="group" aria-label="First group">
+                  {% with rg.user.id|get_user_deposit_auto as value %}
+                  {% if value != 1 %}
+                  <a href="{% url 'UsersDepositApproveAPIView' rg.user.id 1 %}" class="btn btn-primary">Deposit Auto</a>
+                  {% else %}
+                  <a href="{% url 'UsersDepositApproveAPIView' rg.user.id 2 %}" class="btn btn-primary">Deposit
+                    Manual</a>
+                  {% endif %}
+                  {% endwith %}
+                </div>
+              </div>
+            </td> -->
+                    </tr>
+                    {% endfor %}
+
+
+                </tbody>
+                <tfoot class="thead-dark">
+                    <tr>
+                        <th class=" text-center th-sm"> </th>
+                        <th class=" text-center th-sm"> </th>
+
+
+
+                        <th class=" text-center th-sm"> </th>
+
+                        <th class=" text-center th-sm"> </th>
+
+                        <th class="text-center"></th>
+                        <th class=" text-center th-sm"> </th>
+
+                        <th class="text-center th-sm"> </th>
+                        <th class="text-center th-sm"> </th>
+
+
+                    </tr>
+
+
+
+
+
+
+
+                </tfoot>
+
+
+
+            </table>
+        </div>
+        {%endblock%}
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Deposit Auto </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <b>Are you sure want to change payment method </b> <br>
+                        <div class="row"> <a class="btn btn-info" style="margin-left: 10px;"> Auto</a>&nbsp;&nbsp;
+                            <a class="btn btn-success"> Manual </a></div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        {%endblock%} {% block js%}
+
+
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#example').DataTable({
+                    "language": {
+                        "lengthMenu": "预览   _MENU_  次 ",
+                        "search": "搜索",
+                        "zeroRecords": "暂无数据显示",
+                        "info": "预览页 _PAGE_  _PAGES_",
+                        "infoEmpty": "暂无数据显示",
+                        // "previous": "Previous page",
+                        "infoFiltered": "(从....过滤 _MAX_ 总记录)",
+                        "paginate": {
+                            "previous": "前",
+                            "next": "后",
+
+                        },
+
+                    }
+
+                });
+
+            });
+        </script>
+
+        {% endblock %}

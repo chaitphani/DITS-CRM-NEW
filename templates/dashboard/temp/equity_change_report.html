@@ -1,0 +1,160 @@
+{% extends 'dashboard/temp/crm_index.html' %}
+{% load i18n %}
+{% load static %}
+{% block content %}
+{% load humanize %}
+
+<div class="container-fluid">
+	<div class="d-flex mt-3" style="background-color: #f5f5f5;border-radius: 4px;padding: 8px 15px;height: 50px;">
+		<p class="h6 pt-2">Equity Change Report</h6>
+	</div>
+	<div class="card mt-3" style="background-color: rgb(250, 250, 250);padding: 20px;">
+		<form action="" method="POST" class="mb-2">
+			{% csrf_token %}
+			<div class="row mb-4">
+				<div class="col-md-3 align-self-center">
+					<label for="" style="font-weight: bold;">Date Filter</label>
+					<select name="date_range" class="form-control">
+						<option value="0">--Select--</option>
+						<option value="1">Today</option>
+						<option value="2">Yesterday</option>
+						<option value="3">Last 7 Days</option>
+						<option value="4">Last Month</option>
+					</select>
+				</div>
+				<div class="col-md-3 align-self-end">
+					<input type="submit" value="Submit" class="btn btn-success mt-1">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-3  align-self-end">
+					<label for="" style="font-weight: bold;">Date Range Filter</label><br>
+					<label for="">From Date</label>
+					<input type="date" name="start_date" class="form-control" value="{{start_date}}" id="">
+				</div>
+				<div class="col-md-3 align-self-end">
+					<label for="">To Date</label>
+					<input type="date" name="end_date" class="form-control" value="{{end_date}}" id="">
+				</div>
+				<div class="col-md-3 align-self-end ">
+					<input type="submit" value="Submit" class="btn btn-success mt-1">
+					<a class="btn btn-info text-white total float-right mb-2" id="button">
+						<i class="fa fa-calculator text-white" aria-hidden="true"></i>&nbsp;Get Totals</a>
+				</div>
+			</div>
+		</form>
+		<!-- <div class="row mt-1">
+			<div class="col-lg-12 col-md-12">
+			</div>
+		</div> -->
+		<div class="d-flex justify-content-center">
+			<table class="table table-striped mt-5 table-sm w-50" id="item" style="display: none;">
+				<thead>
+					<tr>
+						<th scope="col">Currency</th>
+						<th scope="col">Total</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>USD</td>
+						<td>{{sum_diff|floatformat:2|intcomma}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- <div class="row">
+			<div class="col-lg-12 col-md-12">
+				 <a class="btn btn-default" style="background-color: #eee;border-color: #eee;"><i class="fa fa-download"
+						aria-hidden="true"></i></a>
+			</div>
+		</div> -->
+		<table class="table table-striped mt-5 table-sm aria-hidden" id="table_id">
+			<thead>
+				<tr>
+					<!-- <th scope="col">Time</th> -->
+					<th scope="col">MT4</th>
+					<th scope="col">Name</th>
+					<th scope="col">Group</th>
+					<th scope="col">Currency</th>
+					<th scope="col">Start Equity</th>
+					<th scope="col">End Equity</th>
+					<th scope="col">Dep/With</th>
+					<th scope="col">Equity Diff</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for b, c, d, e, f, g, h, i in data_obj %}
+					<tr>
+						<!-- <td>{{a|date:'Y-m-d'}}</td> -->
+						<td>{{b}}</td>
+						<td>{{c}}</td>
+						<td>{{d}}</td>
+						<td>{{e}}</td>
+						<td>{{f|floatformat:2}}</td>
+						<td>{{g|floatformat:2}}</td>
+						<td>{{h|floatformat:2}}</td>
+						<td>{{i|floatformat:2}}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<script>
+	$("#button").click(function () {
+		$("#item").toggle();
+	});
+</script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8"
+	src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" charset="utf8"
+	src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" charset="utf8"
+	src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script type="text/javascript" charset="utf8"
+	src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script type="text/javascript" charset="utf8"
+	src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+<script type="text/javascript" charset="utf8"
+	src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
+
+<script>
+	$(document).ready(function () {
+		$('#table_id').DataTable({
+			"pageLength": 15,
+			dom: 'Bfrtip',
+			select: true,
+			colReorder: true,
+			buttons: [
+				{
+					extend: 'collection',
+					text: '<i class="fa fa-download"></i>',
+					titleAttr: 'Export',
+					buttons: [
+						{
+							extend: 'excelHtml5',
+							text: 'Copy <i class="fas file-excel-o"></i>',
+							titleAttr: 'Excel'
+						},
+						{
+							extend: 'csvHtml5',
+							text: 'CSV <i class="fas fa-file-csv"></i>',
+							titleAttr: 'CSV'
+						},
+						{
+							extend: 'pdfHtml5',
+							text: 'PDF <i class="fas fa-file-pdf"></i>',
+							titleAttr: 'PDF'
+						}
+					]
+				}
+			]
+		});
+	});
+</script>
+{% endblock %}

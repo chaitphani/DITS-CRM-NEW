@@ -1,0 +1,68 @@
+{% extends 'clientportal/client_index.html' %} {% load i18n %} {% load static %} {% block all_page %} {% if msg %} {{ msg }} {% endif %}
+
+<div class="container-fluid  pt-4 pl-5">
+
+    <div class="row pl-5">
+        <h4 class="text-uppercase" >MY PERFORMANCE</h4>
+        <hr>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3 col-md-3">
+            <div class="section card p-3 p-card" style="border: 1px solid #ddd;">
+                <div class="d-flex justify-content-between">
+                    <div><i class="fa fa-usd" aria-hidden="true"></i> &nbsp;<span>xxxxxx</span></div>
+                    <div class=""><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                    
+                </div>
+                <div class="d-flex">
+                    <small>Today's closed p/l</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-3">
+            <div class="section card p-3 p-card" style="border: 1px solid #ddd;">
+                <div class="d-flex justify-content-between">
+                    <div><i class="fa fa-usd" aria-hidden="true"></i> &nbsp;<span>0</span></div>
+                    <div class=""><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                    
+                </div>
+                <div class="d-flex">
+                    <small>Open p/l</small>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-3 col-md-3">
+            <div class="section card p-3 p-card" style="border: 1px solid #ddd;">
+                <div class="d-flex justify-content-between">
+                    <div><i class="fa fa-usd" aria-hidden="true"></i> &nbsp;<span>0</span></div>
+                    <div class=""><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                    
+                </div>
+                <div class="d-flex">
+                    <small>Free Margin</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-3">
+            <div class="section card p-3 p-card" style="border: 1px solid #ddd;">
+                <div class="d-flex justify-content-between">
+                    <div><i class="fa fa-usd" aria-hidden="true"></i> &nbsp;<span>xxxxxx</span></div>
+                    <div class=""><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+                    
+                </div>
+                <div class="d-flex">
+                    <small>Profitability</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>    
+
+
+{%endblock%}

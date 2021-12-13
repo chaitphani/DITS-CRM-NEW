@@ -1,0 +1,96 @@
+{% extends 'dashboard/temp/client_detail_index.html' %} {% load i18n %} {% load static %} {%block detail_content%}
+<div class="section-heading row mt-3">
+    <div class="col-lg-12 col-md-12 py-2 bg-primary">
+        <h5 class="f1 text-white pt-2 pl-4"><i class="fa fa-list txt-red" aria-hidden="true"></i> &nbsp;Client Demo
+            Account
+        </h5>
+    </div>
+</div>
+<div class="container-fluid doccnt" style="margin-top: 1%;">
+    <table class="table table-bordered table-sm" style="border-collapse:collapse;">
+        <thead class="thead-dark">
+            <tr class="text-center">
+                <th>POI(FRONT)</th>
+                <th>POI(BACK)</th>
+                <th>POA(FRONT)</th>
+                <th>POA(BACK)</th>
+                <th>CREDIT CARD</th>
+                <th>OTHER</th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            <td>
+                <a href="{% if docs.poifront %}{{ docs.poifront.url }} {% endif %}" target="_blank"> Identity Front</a>
+                {% if docs.poifront %} *
+                {% else %} <p>File not uploaded</p>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% if docs.poiback %}{{ docs.poiback.url }} {% endif %}" target="_blank"> IdentityBack</a>
+                {% if docs.poiback %} *
+                {% else %} <p>File not uploaded</p>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% if docs.poafront %} {{ docs.poafront.url }} {% endif %}" target="_blank"> AddressFront</a>
+                {% if docs.poafront %} *
+                {% else %} <p>File not uploaded</p>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% if docs.poaback %} {{ docs.poaback.url }} {% endif %}" target="_blank">Address
+                    Back </a>
+                {% if docs.poaback %} *
+                {% else %} <p>File not uploaded</p>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% if docs.crs %} {{ docs.crs.url }} {% endif %}" target="_blank">Credit Card 
+                </a>
+                {% if docs.crs %} *
+                {% else %} <p>File not uploaded</p>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% if docs.odoc %} {{ docs.odoc.url }} {% endif %}" target="_blank"> Other Docs
+                </a>
+                {% if docs.odoc %} *
+                {% else %} <p>File not uploaded</p>
+                {% endif %}
+            </td>
+        </tbody>
+    </table>
+    <br>
+    <div style="float: right;">
+        {% if docs %}
+        <a class="btn btn-success">VERIFY</a>
+        <a  class="btn btn-danger">UN VERIFY</a> {% else %}
+        <span class="badge badge-warning badge-pill"> Not Uploaded yet</span>
+        {% endif %}
+    </div>
+</div>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+ <script>
+        $('.btn-success').on('click', function (e) {
+        swal({
+            title: "Documents are Approved..!",
+            icon: "success",
+            buttons: 'OKay',
+            closeOnConfirm: true,
+        }).then(function(){ 
+               location.href="{% url 'verify_document' %}?u_id="+"{{u_id}}"
+            })
+    });
+
+    $('.btn-danger').on('click', function (e) {
+        swal({
+            title: "Documents are Not Approved..!",
+            icon: "warning",
+            buttons: 'Okay',
+            closeOnConfirm: true,
+        }).then(function(){ 
+               location.href="{% url 'unverify_documents' %}?u_id="+"{{u_id}}"
+            })
+    });
+</script>
+{% endblock %}

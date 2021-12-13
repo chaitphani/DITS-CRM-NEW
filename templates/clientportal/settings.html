@@ -1,0 +1,71 @@
+{% extends 'clientportal/client_index.html' %} {% load i18n %} {%load static%} {% block all_page %}
+
+<div class="container mt-5">
+
+	<div class="card settingcardbody w-50">
+		<div class="card-header settingcard" style="background-color: rgb(34 34 34);color: white;">
+			<h4>Security</h4>
+		</div>
+		<div class="card-body">
+			<div class="container settingcnt">
+				<p class="settingp">
+					<span><i class="fa fa-hand-o-right txt-red" aria-hidden="true"></i>&nbsp;8 to 15 characters in
+						length</span><br>
+					<span><i class="fa fa-hand-o-right txt-red" aria-hidden="true"></i>&nbsp;At least 1 uppercase
+						letter</span><br>
+					<span><i class="fa fa-hand-o-right txt-red" aria-hidden="true"></i>&nbsp;At least 1 lowercase
+						letter</span><br>
+					<span><i class="fa fa-hand-o-right txt-red" aria-hidden="true"></i>&nbsp;At least 1
+						number</span><br>
+					<span><i class="fa fa-hand-o-right txt-red" aria-hidden="true"></i>&nbsp;Optional special characters
+						accepted</span><br>
+			</div>
+
+			<div class="col-lg-12 col-md-12 text-center">
+				<a href="#" class="btn bg-primary btn-block text-white resetntn" data-toggle="modal"
+					data-target="#myModal"><i class="fa fa-lock" aria-hidden="true"></i>
+					Reset Password </a>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="myModal">
+		<div class="modal-dialog  modal-dialog-centered">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">Confirmation Required </h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal-body">
+					<b>Reset Password For MT4 Account : {% if request.GET.account %}{{ request.GET.account }}{% endif %}</b>
+				</div>
+
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal"> Close </button>
+					<a href="{% url 'AccountPwdResetView' %}{% if request.GET.account %}?account={{ request.GET.account }}{% endif %}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}"
+						class="btn btn-danger"> RESET PASSWORD </a>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	$('.btn-danger').on('click', function (e) {
+		// e.preventDefault();
+		// var form = $(this).parents('form');
+		swal({
+			title: "Password Change Successfully Please Check email..!",
+			icon: "success",
+			button: "Okay",
+			closeOnConfirm: true,
+		})
+	})
+</script>
+
+{% endblock %}

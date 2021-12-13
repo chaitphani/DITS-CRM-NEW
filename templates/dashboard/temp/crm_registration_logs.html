@@ -1,0 +1,297 @@
+{% extends 'dashboard/temp/client_detail_index.html' %}
+{% load i18n %}
+{% load static %}
+{%block detail_content%}
+
+
+<div class="container-fluid mt-3">
+    <div class="accordion" id="accordionExample">
+        <div class="card" style="border-color: darkblue;">
+            <div class="card-header" id="headingOne" style="background-color: darkblue;border-color: darkblue;">
+                <h5 class="mb-0">
+                    <button class="btn btn-link text-white" type="button" data-toggle="collapse"
+                        data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Registration Info
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <b>Date</b>
+                        </div>
+                        <div class="col-lg-8 col-md-8">
+                            <p id="ct"></p>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <b>First Name</b>
+                        </div>
+                        <div class="col-lg-8 col-md-8">
+                            <p>{{user.fname}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <b>Last Name</b>
+                        </div>
+                        <div class="col-lg-8 col-md-8">
+                            <p>{{user.lname}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <b>Country</b>
+                        </div>
+                        <div class="col-lg-8 col-md-8">
+                            <p>{{user.country}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <b>Mobile</b>
+                        </div>
+                        <div class="col-lg-8 col-md-8">
+                            <p>{{user.mob}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <b>Email</b>
+                        </div>
+                        <div class="col-lg-8 col-md-8">
+                            <p>{{user.email}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <b>Communication Language</b>
+                        </div>
+                        <div class="col-lg-8 col-md-8">
+                            <p id="lang">{% if user.language %}{{user.language}}{% else %}None{% endif %}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <b>Date of Birth</b>
+                        </div>
+                        <div class="col-lg-8 col-md-8">
+                            <p>{{user.dob|date:'d-m-Y'}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <b>IP</b>
+                        </div>
+                        <div class="col-lg-8 col-md-8">
+                            <p>{% if user.ip_address %} {{user.ip_address}} {% else %} None {% endif %}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <b>Refrer</b>
+                        </div>
+                        <div class="col-lg-8 col-md-8">
+                            <p>0</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <b>Regdate</b>
+                        </div>
+                        <div class="col-lg-8 col-md-8">
+                            <p>{{user.added_on|date:'d-m-Y H:i:s'}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <b>Activation Date</b>
+                        </div>
+                        <div class="col-lg-8 col-md-8">
+                            <p>{{user.added_on|date:'d-m-Y H:i:s'}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <b>Client Type</b>
+                        </div>
+                        <div class="col-lg-8 col-md-8">
+                            <p>Individual Account</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="card mt-3" style="border-color: green;">
+            <div class="card-header" id="headingTwo" style="background-color: green;border-color: green;">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed text-white" type="button" data-toggle="collapse"
+                        data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Personal Profile
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <b>Title</b>
+                        </div>
+                        <div class="col-lg-8 col-md-8">
+                            <p>Mr.</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <b>Gender</b>
+                        </div>
+                        <div class="col-lg-8 col-md-8">
+                            <p>Male</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <b>Address</b>
+                        </div>
+                        <div class="col-lg-8 col-md-8">
+                            <p style="text-transform: capitalize;">{{user.address}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <b>City</b>
+                        </div>
+                        <div class="col-lg-8 col-md-8">
+                            <p style="text-transform: capitalize;">{{user.city}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <b>Zip</b>
+                        </div>
+                        <div class="col-lg-8 col-md-8">
+                            <p>{{user.pincode}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <b>Nationality</b>
+                        </div>
+                        <div class="col-lg-8 col-md-8">
+                            <p style="text-transform: capitalize;">{{user.country}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mt-3">
+            <div class="card-header" id="headingThree" style="background-color: #343a40;">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed text-white" type="button" data-toggle="collapse"
+                        data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Trading Profile
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                <div class="card-body">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4">
+                                <b>Net Worth</b>
+                            </div>
+                            <div class="col-lg-8 col-md-8">
+                                <p>{% if survey.net_worth %}{{survey.get_net_worth_display}}{% else %} Not Applica
+                                    {% endif %}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4">
+                                <b>Annual Income</b>
+                            </div>
+                            <div class="col-lg-8 col-md-8">
+                                <p>{% if survey.annual_income %}{{survey.get_annual_income_display}}{% else %} Not
+                                    Applica {% endif %}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4">
+                                <b>Anticipated Deposit</b>
+                            </div>
+                            <div class="col-lg-8 col-md-8">
+                                <p>{% if survey.anticipated_deposit %}{{survey.get_anticipated_deposit_display}}{% else %}
+                                    Not Applica {% endif %}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4">
+                                <b>Income Source</b>
+                            </div>
+                            <div class="col-lg-8 col-md-8">
+                                <p>{% if survey.wealth_source %}{{survey.get_wealth_source_display}}{% else %} Not
+                                    Applica {% endif %}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4">
+                                <b>Education</b>
+                            </div>
+                            <div class="col-lg-8 col-md-8">
+                                <p>{% if survey.education %}{{survey.get_education_display}}{% else %} Not Applica
+                                    {% endif %}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4">
+                                <b>Employment Status</b>
+                            </div>
+                            <div class="col-lg-8 col-md-8">
+                                <p>{% if survey.employement_status %}{{survey.get_employement_status_display}}{% else %}
+                                    Not Applica {% endif %}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4">
+                                <b>Industry</b>
+                            </div>
+                            <div class="col-lg-8 col-md-8">
+                                <p>{% if survey.industry %}{{survey.get_industry_display}}{% else %} Not Applica
+                                    {% endif %}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4">
+                                <b>US Tax</b>
+                            </div>
+                            <div class="col-lg-8 col-md-8">
+                                <p>{% if survey.us_tax_payer %}{{survey.get_us_tax_payer_display}}{% else %} Not Applica
+                                    {% endif %}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4">
+                                <b>Trading Experience
+                                </b>
+                            </div>
+                            <div class="col-lg-8 col-md-8">
+                                <p>{% if survey.trading_experience %}{{survey.get_trading_experience_display}}{% else %}
+                                    Not Applica {% endif %}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var today = new Date();
+    var today_1 = today.getMonth() + 1 + "-" + 0 + today.getDate() + "-" + today.getFullYear() + ' ' + today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds()
+    document.getElementById("ct").innerHTML = today_1;
+</script>
+{% endblock %}

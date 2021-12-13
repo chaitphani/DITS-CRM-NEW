@@ -1,0 +1,134 @@
+{% extends 'dashboard/temp/crm_index.html' %} {% load i18n %} {% load static %} {% block content %}
+<style>
+    th,
+    td {
+        text-align: center;
+    }
+</style>
+
+<div class="section-heading row mt-3">
+    <div class="col-lg-12 col-md-12 py-2 bg-primary">
+        <h5 class="f1 text-white pt-2 pl-4"><i class="fas fa-user" aria-hidden="true"></i>&nbsp;{% trans "Client Details" %}</h5>
+    </div>
+</div>
+<br>
+
+<div class="section-filter ">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><small>Search Clients</small> </a>
+        </li>
+   
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show " id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="row">
+                <div class="col-lg-2 col-md-2">
+                    <div class="input-group mb-3">
+                        <label>Search by client ID</label>
+                        <input type="text" class="form-control" placeholder="search by client id">
+                        <div class="input-group-append btn-info">
+                          <span class="input-group-text" id="basic-addon2"><i class="fa fa-search"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-10 col-md-10">
+                </div>
+            </div>
+        </div>
+       
+      </div>
+    </ul>
+
+</div>
+
+<div class="section-client-detail-table mt-4">
+    <form method="POST">
+        {% csrf_token %}
+        <table class="table table-bordered table-sm table-responsive" id="table_id">
+            <thead>
+                <tr>
+                    <th>{% trans "Client ID" %}</th>
+                    <th>{% trans "Username" %}</th>
+                    <th>{% trans "First Name" %}</th>
+                    <th>{% trans "Last Name" %}</th>
+                    <th>{% trans "Email ID" %}</th>
+                    <th>{% trans "Mobile No" %}</th>
+                    <th>{% trans "Country" %}</th>
+                    <th>{% trans "Registration Date" %}</th>
+                    <th>{% trans "Accessed Account type" %}</th>
+                    <th>{% trans "EDIT" %}</th>
+                    <th>{% trans "Delete" %}</th>
+                </tr>
+            </thead>
+            {% for reg in reg_users %}
+            <tr>
+                <td>
+                    <a href="{% url 'trans_history' %}?u_id={{ reg.user.id }}">{{reg.client_id}}</a>
+                </td>
+                <td>{{reg.uname}}</td>
+                <td>{{reg.fname}}</td>
+                <td>{{reg.lname}}</td>
+                <td>{{reg.email}}</td>
+                <td>{{reg.mob}}</td>
+                <td>{{reg.country}}</td>
+                <td>{{reg.added_on|date:"Y-m-d" }}</td>
+                {% if reg.acc_type.all %}
+                <td>
+                    {% for acc in reg.acc_type.all %}
+                    <li style="list-style-type: none;">{{acc}},</li>
+                    {% endfor %}
+                </td>
+                {% else %}
+                <td>Standard</td>
+                {% endif %}
+                <input type="hidden" id="ids" class="can_id" name="client_list" value="">
+                <td><a type='button' class='btn btn-info btn-sm' href="{% url 'client_update' reg.user.id %}">{% trans "Update" %}</a>
+                </td>
+                <td><a type='button' class='btn btn-danger btn-sm'
+                        href="{% url 'client_delete' reg.user.id %}">{% trans "Delete" %}</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</div>
+<script>
+    function checkAll(ele) {
+        var checkboxes = document.getElementsByClassName('can_id');
+        console.log(checkboxes)
+        var tots = []
+        if (ele.checked) {
+            for (var i = 0; i < checkboxes.length; i++) {
+                tots.push(checkboxes[i])
+                $('#ids').val(tots)
+            }
+        }
+    }
+</script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    $('.btn-danger').on('click', function (e) {
+        // e.preventDefault();
+        var action = confirm("are you sure to delete...?")
+        if (action == false) {
+            e.preventDefault();
+        } else {
+            location.reload();
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#table_id').dataTable({
+            language: {
+                search: "{% trans 'Search' %}",
+                Show: "{% trans 'Show' %}",
+                entries:"{% trans 'entries' %}", 
+            }
+        });
+    });
+</script>
+{% endblock %}

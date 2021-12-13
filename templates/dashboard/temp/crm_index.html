@@ -1,0 +1,281 @@
+{% load i18n %} {%load static%} {% load custom_tag %}
+
+<!-- - var navbarShadow = true-->
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+
+<!-- Mirrored from pixinvent.com/stack-responsive-bootstrap-4-admin-template/html/ltr/vertical-menu-template/layout-2-columns.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 21 Feb 2019 08:16:01 GMT -->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description"
+        content="Stack admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
+    <meta name="keywords"
+        content="admin template, stack admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="author" content="PIXINVENT">
+    <title>Dits-CRM Dashboard</title>
+    <link rel="icon" href="{%static 'image/logo.png'%}">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> -->
+    <script src="{%static 'ajax/libs/font-awesome/font-awesome.css'%}" crossorigin="anonymous"></script>
+    <script src="{%static 'ajax/libs/font-awesome/e17ceb6b9c.js'%}" crossorigin="anonymous"></script>
+
+    <link rel="apple-touch-icon" href="../../../app-assets/images/ico/apple-icon-120.png">
+
+    <!-- <link rel="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css"> -->
+    <script src="{%static 'bootstrap/dataTable/dataTables.bootstrap4.min.css'%}"></script>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="{%static 'ajax/libs/jquery/jquery-3.4.1.min.js'%}"></script>
+
+    <!-- <script src=" https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script> -->
+    <script src="{%static 'ajax/libs/jquery/jquery.dataTables.min.js'%}"></script>
+
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
+    <script src="{%static 'ajax/libs/jquery/jquery-3.2.1.min.js'%}"></script>
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{%static 'bootstrap/4.5.2/css/bootstrap.4.min.css'%}">
+
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
+    <script src="{%static 'bootstrap/4.5.2/js/bootstrap.4.min.js'%}"></script>
+
+    <style>
+        .bg-dark {
+            background-color: #040404 !important;
+        }
+
+        * {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        .nav-mail-icon {
+            height: 2vh;
+        }
+
+        .navbar-dark .navbar-nav .nav-link {
+            color: rgb(255 255 255);
+        }
+
+        .active {
+            background-color: #ED0010;
+        }
+
+        .fas {
+            color: #ED0010;
+        }
+
+        .txt-red {
+            color: #ED0010;
+        }
+
+        .bg-primary {
+            background-color: #122b88 !important;
+            border-color: #122b88 !important;
+            color: white;
+        }
+
+        .txt-primary {
+            color: #122b88;
+        }
+
+        .navbar-nav>li {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            background-color: #040404 !important
+        }
+
+        .dropdown-item:focus,
+        .dropdown-item:hover {
+            color: #ffffff;
+            text-decoration: none;
+            background-color: #ED0010;
+        }
+
+        .bg-lights {
+            background-color: #545b62;
+            color: white;
+        }
+
+        element.style {
+            background-color: #112a8c;
+        }
+
+        .bx-shadow {
+            box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
+        }
+
+        .section-search {
+            background-color: #545b62;
+            padding: 25px;
+            color: white;
+            display: block;
+        }
+
+        .btn-primaryk {
+            color: #fff;
+            background-color: #ed3833;
+            border-color: #ed3833;
+        }
+
+        .border-right {
+            border-right: 1px solid white
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <nav class="navbar  navbar-expand-sm bg-dark navbar-dark fixed-top">
+            <!-- Brand -->
+            <a class="navbar-brand text-center">
+                <!-- <img src="{%static 'image/logo.png'%}" class="d-md-block d-sm-block"> -->
+                <h4 class="text-white">DITS</h4>
+            </a>
+            <!-- Links -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link active f1 text-uppercase" href="{%url 'crm_home'%}"><small>Home</small></a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle f1 text-uppercase" href="#" id="navbardrop"
+                        data-toggle="dropdown">
+                      <small> {% trans "Clients" %}</small> 
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item f1 text-uppercase" href="{%url 'client'%}"><small>{% trans "Client details" %}</small></a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle f1 text-uppercase" href="#" id="navbardrop"
+                        data-toggle="dropdown">
+                       <small>{% trans "Finance" %}</small> 
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item f1 text-uppercase" href="{%url 'deposithistory'%}"><small>{% trans "Deposit" %}</small></a>
+                        <a class="dropdown-item f1 text-uppercase" href="{%url 'withdrawhistory'%}"><small>{% trans "Withdraw" %}</small> </a>
+                        <a class="dropdown-item f1 text-uppercase" href="{%url 'transactionhistory'%}"><small>{% trans "Transaction History" %}</small></a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle f1 text-uppercase" href="#" id="navbardrop"
+                        data-toggle="dropdown">
+                       <small> {% trans "Sales" %}</small>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item f1 text-uppercase" href="{%url 'sales_assignment'%}"><small>{% trans "Sales Assignment" %}</small></a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle f1 text-uppercase" href="#" id="navbardrop" data-toggle="dropdown">
+                      <small> Pending</small> 
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item f1 text-uppercase" href="{%url 'pendingclients'%}"><small>Client</small> </a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link f1 text-uppercase" href="{%url 'agents'%}"><small>{% trans "Agents" %}</small></a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle f1 text-uppercase" href="#" id="navbardrop"
+                        data-toggle="dropdown">
+                       <small>{% trans "Reports" %}</small> 
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item f1 text-capitalize" href="{% url 'equity_change_report' %}"><small>{% trans "Equity Change Report" %}</small></a>
+                        <a class="dropdown-item f1 text-capitalize" href="{%url 'accounts_approved_report' %}"><small>{% trans "Accounts Approved" %}</small></a>
+                        <a class="dropdown-item f1 text-capitalize" href="{%url 'first_time_deposit_report' %}"><small>{% trans "First Time Deposit" %}</small></a>
+                        <a class="dropdown-item f1 text-capitalize" href="{%url 'lead_conversion_report' %}"><small>{% trans "Lead Conversion Report" %}</small></a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle f1 text-uppercase" href="#" id="navbardrop"
+                        data-toggle="dropdown">
+                        <small>{% trans "Settings" %}</small>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item f1 text-uppercase" href="{%url 'addactype'%}"><small>{% trans "Add Account TYPE" %}</small></a>
+                        <a class="dropdown-item f1 text-uppercase" href="{%url 'addcurrency'%}"><small>{% trans "Add CURRENCY" %}</small></a>
+                        <a class="dropdown-item f1 text-uppercase" href="{%url 'adddepartment'%}"><small>{% trans "Add department" %}</small></a>
+                        <a class="dropdown-item f1 text-uppercase" href="{%url 'addoffice'%}"><small>{% trans "Add office" %}</small></a>
+                        <a class="dropdown-item f1 text-uppercase" href="{%url 'addbrand'%}"><small>{% trans "Add brand" %}</small></a>
+                        <a class="dropdown-item f1 text-uppercase" href="{%url 'addleadsregions'%}"><small>{% trans "Add leads regions" %}</small></a>
+                        <a class="dropdown-item f1 text-uppercase" href="{%url 'access_level'%}"><small>{% trans "Add access level" %}</small></a>
+                        <a class="dropdown-item f1 text-uppercase" href="{%url 'leads_access_level'%}"><small>{% trans "leads access level" %}</small></a>
+
+                    </div>
+
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item mr-5">
+                    <a class="nav-link f1 text-white" href="#" data-toggle="collapse"><img
+                            src="{%static 'image/icon/mailicon.png'%}"
+                            class="nav-mail-icon" />&nbsp;&nbsp;<small>info@divsolution.com</small> 
+                    </a>
+                </li>
+                <li>
+                    <select name="" id="lang_select" class="form-control">
+                        <option value="en"><small>Language</small></option>
+                        <option value="zh"><smallEnglish/{% trans "Chinese" %}</small> </option>
+                    </select>
+                </li>
+                <li class="nav-item bg-primary logoutbtn">
+                    <a class="nav-link" href="{%url 'logout'%}">
+                        <img src="{%static 'image/icon/logout.png'%}" class="d-md-block d-sm-block" style="height: 4vh;" />
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="container-fluid mt-5 pt-5 h-100">
+            {% block content %} {% endblock %}
+        </div>
+    </div>
+    <script>
+        $("#lang_select").change(function () {
+            /* for china 11 */
+            var url = window.location.origin;
+            var link_total = window.location.href;
+            var name_path = window.location.pathname
+            var string_to_add = '/zh'
+            if (window.location.href.indexOf("zh") > -1) { document.location = link_total.replace('/zh', '') }
+            else {
+                if (window.location.href.indexOf("/en") > -1) {
+                    document.location = url + name_path.replace("/en", "/zh")
+                }
+                else {
+                    document.location = url + string_to_add + name_path
+                }
+            }
+        });
+    </script>
+    {% block js%}{%endblock%} {% block demoaccountjs %} {%endblock%} {% block liveacjs %} {%endblock%}
+
+</body>
+
+
+</html>

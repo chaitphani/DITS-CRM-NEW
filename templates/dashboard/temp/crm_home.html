@@ -1,0 +1,190 @@
+{% extends 'dashboard/temp/crm_index.html' %} {% load i18n %} {% load static %} {%block content%}
+<style>
+    .bg-gray {
+    background-color: #f3f3f4;
+}.panel-body {
+    border-radius: 5px;
+}
+</style>
+<div class="section-heading row mt-3">
+    <div class="col-lg-12 col-md-12 py-2 bg-primary">
+        <h5 class="f1 text-white pt-2 pl-4"><i class="fas fa-home" aria-hidden="true"></i>&nbsp; {% trans "Home" %}</h5>
+    </div>
+</div>
+
+<div class="section-content mt-4">
+    <div class="row">
+        <div class="col-lg-3 col-md-3">
+            <div class="section bx-shadow card">
+                <div class="card-body bg-lights shadow-lg">
+                    <span class="span-card f1"><b>{{ total_clients }}</b></span>
+                    <span class="pull-right" style="float:right"><i class="fas fa-user" aria-hidden="true"></i></span>
+                    <h5 class="f1 mt-2">{% trans "Total Clients" %}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3">
+            <div class="section bx-shadow card">
+                <div class="card-body bg-lights shadow-lg">
+                    <span class="span-card f1"><b>{{ today_register }}</b></span>
+                    <span class="pull-right" style="float:right;color:red"><i class="fa fa-line-chart"></i></span>
+                    <h5 class="f1 mt-2">{% trans "Today Registrations" %}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3">
+            <div class="section bx-shadow card">
+                <div class="card-body bg-lights shadow-lg">
+                    <span class="span-card f1 text-success"><b>{{this_month_deposit}}</b></span>
+                    <span class="pull-right" style="float:right"><i class="fas fa-arrow-up"></i></span>
+                    <h5 class="f1 mt-2">{% trans "This Month Deposits" %}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3">
+            <div class="section bx-shadow card">
+                <div class="card-body bg-lights shadow-lg">
+                    <span class="span-card f1 text-warning"><b>{{ this_month_withdraw }}</b></span>
+                    <span class="pull-right" style="float:right"><i class="fas fa-arrow-down"></i></span>
+                    <h5 class="f1 mt-2">{% trans "This Month Withdrawals" %}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row  mt-5">
+    <div class="col-lg-8 col-md-8">
+        <iframe src="https://hme158.com/api/v1/auth/amount_dashboard?d1=30&d2=30&d3=30" height="1550" style="margin:0 auto;width:100%;"></iframe>
+
+    </div>
+    <div class="col-lg-4 col-md-4">
+        <div class="section sales-section" style="background-color:white;padding: 15px;">
+          <div class="row pl-5">
+              <p><i class="fa fa-user-secret" aria-hidden="true"></i>
+                  Sales Details </p><hr>
+          </div>
+          <hr>
+          
+          <p class="mt-3">Sales Agents</p>
+          <div class="input-group mb-3">
+          
+              <select class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                  <option>DITS CRM</option>
+                  <option>DITS CRM</option>
+              </select>
+              <div class="input-group-append">
+                <span class="input-group-text btn btn-info" id="basic-addon2" style="background-color: blue;border-color:blue;color:white">Update</span>
+              </div>
+            </div>
+    
+            <h6 class="panel-body bg-gray p-2"> Sales Notes <span class="float-right"><i class="fa fa-plus-circle" data-toggle="modal" data-target="#exampleModal"></i></span></h6>
+            <ul class="list-unstyled panel-body bg-gray text-center">
+                <li>No notes added</li>
+            </ul>
+    
+            <h6 class="panel-body bg-gray p-2"> Upcoming Follows Up <span class="float-right"><i class="fa fa-plus-circle" data-toggle="modal" data-target="#exampleModalk"></i></span></h6>
+    
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+              <label class="btn btn-primary active">
+                <input type="radio" name="options" id="option1" autocomplete="off" checked><i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;Pending&nbsp;<span class="circle" style="background-color: #ddd;color:black;border-radius: 50%;padding: 3px;">0</span>
+              </label>
+              <label class="btn btn-info">
+                <input type="radio" name="options" id="option2" autocomplete="off"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;Completed&nbsp;<span class="circle" style="background-color: #ddd;color:black;border-radius: 50%;padding: 3px;">0</span>
+              </label>
+              <label class="btn btn-default" style="border-color: #ddd;">
+                <input type="radio" name="options" id="option3" autocomplete="off"> All <span class="circle" style="background-color: #ddd;color:black;border-radius: 50%;padding: 3px;">0</span>
+              </label>
+          </div>
+    
+          <div class="panel-body bg-gray p-2 mt-3">
+            <div class="row">
+            <div class="col-lg-10 col-md-10">
+                April 13 2020 11:44 by gopal
+                7417
+                client request to call back in 2 days at...
+            </div>
+            <div class="col-lg-2 col-md-2">
+                <i class="fa fa-edit text-success"></i>
+
+            </div>
+        </div>
+        </div>	
+      </div>
+    
+    
+      <!--Sales Note  Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Add Sales Note</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+              </div>
+              <div class="modal-body">
+              
+                  <div class="form-group">
+                      <label for="exampleFormControlTextarea1">Notes</label>
+                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="8" placeholder="Enter Text..."></textarea>
+                    </div>
+    
+              </div>
+              <div class="modal-footer">
+              <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary btn-sm">Save</button>
+              </div>
+          </div>
+          </div>
+      </div>
+       <!--Sales Note  Modal end here -->
+    
+       <!--upcoming Follows up  Modal  here -->
+    
+       <div class="modal fade" id="exampleModalk" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Client Follow Up</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+              </div>
+              <div class="modal-body">
+              
+                  <div class="form-group row">
+                      <div class="col-lg-6">
+                      <label for="exampleFormControlTextarea1">Type</label>
+                      <select class="form-control">
+                          <option>Call</option>
+                          <option>Chat</option>
+                          <option>Email</option>
+                      </select>
+                    </div>
+                    <div class="col-lg-6">
+                        <label>Datetime</label>
+                        <input type="datetime-local" class="form-control"> 
+                    </div>                                    
+                  </div>
+                  <div class="form-group row">
+                      <div class="col-sm-12">
+                          <label>Message</label>
+                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="8" placeholder="Enter Message"></textarea>
+    
+                      </div>
+                  </div>
+    
+              </div>
+              <div class="modal-footer">
+              <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary btn-sm">Save</button>
+              </div>
+          </div>
+          </div>
+      </div>
+       <!--upcoming Follows up  Modal end here -->
+    
+      </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,296 @@
+{% load i18n %} {%load static%} {% load custom_tag %}
+
+<!-- - var navbarShadow = true-->
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+
+<!-- Mirrored from pixinvent.com/stack-responsive-bootstrap-4-admin-template/html/ltr/vertical-menu-template/layout-2-columns.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 21 Feb 2019 08:16:01 GMT -->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="Stack admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
+    <meta name="keywords" content="admin template, stack admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="author" content="PIXINVENT">
+    <title></title>
+    <link rel="apple-touch-icon" href="../../../app-assets/images/ico/apple-icon-120.png">
+    <link rel="shortcut icon" type="image/x-icon" href="https://pixinvent.com/stack-responsive-bootstrap-4-admin-template/app-assets/images/ico/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i%7COpen+Sans:300,300i,400,400i,600,600i,700,700i" rel="stylesheet">
+    <!-- BEGIN VENDOR CSS-->
+    <link rel="stylesheet" type="text/css" href="{%static 'ibportal/app-assets/css/vendors.min.css'%}">
+    <link rel="stylesheet" type="text/css" href="{%static 'ibportal/app-assets/vendors/css/ui/prism.min.css'%}">
+    <link rel="stylesheet" type="text/css" href="{%static 'clientportal/style.css'%}">
+    <link rel="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src=" https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <!-- END VENDOR CSS-->
+    <!-- BEGIN STACK CSS-->
+    <link rel="stylesheet" type="text/css" href="{%static 'ibportal/app-assets/css/app.min.css'%}">
+    <!-- END STACK CSS-->
+    <!-- BEGIN Page Level CSS-->
+    <link rel="stylesheet" type="text/css" href="{%static 'ibportal/app-assets/css/core/menu/menu-types/vertical-menu.min.css'%}">
+    <link rel="stylesheet" type="text/css" href="{%static 'ibportal/app-assets/css/core/colors/palette-gradient.min.css'%}">
+    <link rel="stylesheet" type="text/css" href="{%static 'ibfolder/style.css'%}?{% now " jS F Y H:i " %}">
+
+    <!-- END Page Level CSS-->
+    <!-- BEGIN Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="{%static 'clientportal/style2.css'%}">
+
+</head>
+
+<body class="vertical-layout vertical-menu 2-columns   menu-expanded fixed-navbar" data-open="click" data-menu="vertical-menu" data-col="2-columns">
+
+    <!-- fixed-top-->
+    <nav class="header-navbar navbar-expand-md navbar navbar-with-menu fixed-top navbar-semi-light bg-gradient-x-grey-blue header" style="height:99px">
+        <div class="navbar-wrapper">
+            <div class="navbar-header n1">
+                <ul class="nav navbar-nav flex-row">
+                    <li class="nav-item mobile-menu d-md-none"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu font-large-1"></i></a></li>
+                    <li class="nav-item"> <img src="{%static 'images/xinlogos1.png'%}" class="xin-logo"></li>
+
+                    <li class="nav-item d-md-none"><a class="nav-link open-navbar-container" data-toggle="collapse" data-target="#navbar-mobile"><i class="fa fa-ellipsis-v"></i></a></li>
+                </ul>
+            </div>
+            <div class="navbar-container content">
+                <div class="collapse navbar-collapse" id="navbar-mobile">
+                    <ul class="nav navbar-nav ">
+                        <li class="nav-item d-none d-md-block"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu hidden-lg hidden-md"></i></a></li>
+
+
+                    </ul>
+
+                    <div class="detail mr-auto hidden-xs">
+                        {% if request.user.is_authenticated %}
+
+                        <div class="flex"><b class="b1">{%trans 'Hello'%} {{request.user}}</b></div>
+                        {%endif%}
+                        <div class="flex"><i class="fas fa-wallet walleti"></i> <b class="b2">{% trans "Wallet Balance" %}
+                                &nbsp;&nbsp; $ {{ request.user.userwallet_set.first.amount|floatformat:2}} USD</b></div>
+                        <!-- <div class="flex"><i class="fas fa-wallet walleti"></i> <b class="b2">Pending Commissions&nbsp;&nbsp; $612.38</b></div> -->
+
+                    </div>
+                    <div class="lang-drop-down">
+                        <select name="language" id="lang">
+                            {% for lang in LANGUAGES %}
+                            <option value="{{ lang.0 }}" id="{{ lang.0 }}"
+                                style="background-image:url({% static '{{ lang.2 }}' %});">
+                                {{ lang.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <!-- &nbsp;&nbsp; -->
+
+                    <span style="margin-right:10%;margin-top:-3%"> <i class="fas fa-envelope"
+                            style="color:#57cfe3"></i>&nbsp; <b class="text-white">support@hnxinluan.cn</b></span>
+                    <a href="{%url 'logout'%}" style="color:white"> {% trans "Logout" %} </a>
+
+
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div id="cover-spin">
+    </div>
+
+    <!-- ////////////////////////////////////////////////////////////////////////////-->
+
+
+    <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
+        <div class="main-menu-content">
+            <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+                {% if request.user.is_authenticated %}
+
+                <li class="bk nav-item" style="padding-top:11px;padding-left:33px"><a href="#"><span class="menu-title"
+                            data-i18n="" style="color:gold"><b>{% trans "CLIENT ID" %}
+                                &nbsp;:&nbsp;{{ request.user.register.client_id }}</b></span></a></li>
+                {%endif%}
+
+
+                <li class=" nav-item">
+                    <a href="{%url 'profile'%}"><i class="fa fa-book"></i><span class="menu-title"
+                            data-i18n="">{% trans "My Profile" %} </span></a>
+
+                    <ul class="menu-content">
+                        <li><a class="menu-item" href="{%url 'profile'%}"><i class="fa fa-angle-double-right"></i>
+                                {% trans "Profile" %} </a></li>
+                        <li><a class="menu-item" href="{%url 'myaccount'%}"><i
+                                    class="fa fa-angle-double-right"></i>{% trans "My Account" %} </a></li>
+
+                        <!-- <li><a class="menu-item" href="{%url 'changepassword'%}"><i class="fas fa-key"></i>Change Password</a></li> -->
+
+                    </ul>
+                </li>
+                <li class=" nav-item"><a href="{%url 'liveaccount'%}"><i class="fa fa-id-card-alt"></i><span
+                            class="menu-title" data-i18n="">
+                            {% trans "Open Live Account" %} </span></a>
+                    <li class=" nav-item"><a href="{%url 'demoaccount'%}"><i class="fas fa-file"></i><span
+                            class="menu-title" data-i18n="">{% trans "Open Demo Account" %} </span></a>
+                        <!-- <li class=" nav-item"><a href="{%url 'usermailverify'%}"><i class="fas fa-file"></i><span class="menu-title" data-i18n="">User Mail Verification</span></a> -->
+
+
+                    </li>
+
+
+                    <li class=" nav-item"><a href="#"><i class="fas fa-wallet"></i><span class="menu-title"
+                            data-i18n="">{% trans "My Payments" %} </span></a>
+                        <ul class="menu-content">
+                            <li><a class="menu-item" href="{%url 'cldeposit'%}"><i
+                                    class="fa fa-angle-double-right"></i>{% trans "Deposit" %} </a></li>
+                            <li><a class="menu-item" href="{%url 'clwithdraw'%}"><i
+                                    class="fa fa-angle-double-right"></i>{% trans "Withdraw" %} </a></li>
+                            <li><a class="menu-item" href="{%url 'manage_funds'%}"><i
+                                    class="fa fa-angle-double-right"></i>{% trans "Transfer" %} </a></li>
+                            <li><a class="menu-item" href="{%url 'wallet_finance'%}"><i
+                                    class="fa fa-angle-double-right"></i>{% trans "Wallet FINANCE" %} </a></li>
+
+
+
+
+                        </ul>
+                    </li>
+
+
+
+                    <li class=" nav-item"><a href="{%url 'upload_document'%}"><i class="fa fa-folder"></i><span
+                            class="menu-title" data-i18n=""> {% trans "Documents" %} </span></a></li>
+                    <!-- <li class=" nav-item"><a href="{%url 'support'%}"><i class="fas fa-phone-volume"></i><span class="menu-title" data-i18n="">Support </span></a></li> -->
+
+                    <li class=" nav-item"><a href="{%url 'dplateform'%}"><i class="fas fa-download"></i><span
+                            class="menu-title" data-i18n="">{% trans "Download Platform" %} </span></a></li>
+                    <li class=" nav-item"><a href="https://hnxinluan.cn/" target="_blank"><i class="fa fa-globe"
+                            aria-hidden="true"></i><span class="menu-title" data-i18n="">www.hnxinluan.cn</span></a>
+                    </li>
+                    <hr class="hrlink">
+                    <li class=" nav-item">
+                        <a href="#">
+                            <h4> {% trans "Real MT4 Accounts" %} </h4>
+                            <div class="row lkrow" id="real_mt4">
+                                <!-- <div class="col-lg-6"><p>#100050<p></div>
+                <div class="col-lg-6"><p class="plink">0.0 USD<p></div>
+                <div class="col-lg-6"><p>#100050<p></div>
+                <div class="col-lg-6"><p class="plink">0.0 USD<p></div> -->
+                            </div>
+                    </li>
+                    <li class=" nav-item">
+                        <a href="#">
+                            <h4>{% trans "Demo MT4 Accounts" %} </h4>
+                            <div class="row lkrow" id="demo_mt4">
+                                <!-- <div class="col-lg-6"><p>#100050<p></div>
+                <div class="col-lg-6"><p class="plink">0.0 USD<p></div>
+                <div class="col-lg-6"><p>#100050<p></div>
+                <div class="col-lg-6"><p class="plink">0.0 USD<p></div> -->
+                            </div>
+                    </li>
+                    <hr class="hrlink">
+            </ul>
+        </div>
+    </div>
+
+    <div class="app-content content">
+        <div class="content-wrapper">
+            <div class="content-header row">
+                <div class="content-header-left col-md-12 col-lg-12">
+                    {%block widgetheading%} {%endblock%}
+
+
+
+
+                </div>
+
+            </div>
+            <hr class="hr1"> {%block widget%}{%endblock%} {%block support%}{%endblock%} {% block myaccount %}{%endblock%}
+
+
+
+
+
+
+        </div>
+    </div>
+
+
+
+    <footer class="footer footer-static footer-dark navbar-border">
+        <p class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span class="float-md-left d-block d-md-inline-block">Copyright &copy; 2020 <a
+                    class="text-bold-800 grey darken-2" href="#" target="_blank">HNXINLUAN </a>, All rights reserved.
+            </span></p>
+    </footer>
+
+
+    <script src="{%static 'ibportal/app-assets/vendors/js/vendors.min.js'%}"></script>
+    <script src="{%static 'ibportal/app-assets/vendors/js/ui/prism.min.js'%}"></script>
+    <script src="{%static 'ibportal/app-assets/js/core/app-menu.min.js'%}"></script>
+    <script src="{%static 'ibportal/app-assets/js/core/app.min.js'%}"></script>
+    <script src="{%static 'ibportal/app-assets/js/scripts/customizer.min.js'%}"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+
+
+    <script>
+        const dropDown = document.querySelector("#lang");
+        dropDown.addEventListener('change', () => {
+            let url = `https://hnxinluan.cn/clientportal/set_language/${dropDown.value}`
+            console.log(dropDown.value);
+            var xhttp = new XMLHttpRequest();
+            xhttp.responseType = "json";
+            xhttp.open("GET", url, true);
+            xhttp.onload = () => {
+                let res = xhttp.response;
+                let l = res["selectedLang"];
+                console.log(l);
+                const sel = document.getElementById(l);
+                console.log(sel);
+            }
+            xhttp.send();
+            // window.location.reload()
+            // href = window.location.origin + window.location.pathname+'?lang='+ l;
+            console.log(window.location.href);
+        })
+    </script>
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        // $(document).ready( function () {
+        //   $('#table').DataTable();
+        // });
+
+        function user_account() {
+            $.ajax({
+                url: `{% url 'GetAccountDetailAPIView' %}`,
+                type: 'GET',
+                beforeSend: function(response) {
+                    $('#cover-spin').show(0);
+                },
+                complete: function(response) {
+                    $('#cover-spin').hide(0);
+                },
+                success: function(response) {
+                    var live = $('#real_mt4')
+                    var demo = $('#demo_mt4')
+                    live.empty()
+                    demo.empty()
+                    for (var i = 0; i < response.data.length; i++) {
+                        if (response.data[i].server_type == 0) {
+                            live_code = `<div class="col-lg-6"><p>#${response.data[i].login}<p></div>
+            <div class="col-lg-6"><p class="plink">${parseFloat(response.data[i].balance)} ${response.data[i].cu_type}<p></div>`
+                            live.append(live_code)
+                        } else if (response.data[i].server_type == 1) {
+                            demo_code = `<div class="col-lg-6"><p>#${response.data[i].login}<p></div>
+            <div class="col-lg-6"><p class="plink">${parseFloat(response.data[i].balance)} ${response.data[i].cu_type}<p></div>`
+                            demo.append(demo_code)
+                        }
+                    }
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            user_account();
+        });
+    </script>
+
+    {% block myaccountjs %}{% endblock myaccountjs %} {% block walletfinancejs %}{% endblock walletfinancejs %} {% block myaccountdtjs %}{% endblock myaccountdtjs %} {% block accountoverviewjs %}{% endblock accountoverviewjs %}
+
+</body>
+
+</html>

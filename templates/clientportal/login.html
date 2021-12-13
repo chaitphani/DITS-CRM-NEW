@@ -1,0 +1,58 @@
+{% extends 'loginindex.html' %}
+{% load static %}
+{% block signup %}
+
+<div class="container cn1">
+  <!-- Material form register -->
+  <div class="card cd1">
+<div class="card-header card1">
+  <h5 class="white-text text-center h5">
+    <strong>Login</strong>&nbsp;&nbsp;<i class="fa fa-lock"></i>
+</h5>
+</div>
+     
+
+      <!--Card content-->
+      <div class="card-body px-lg-5">
+
+        <hr>
+        <form class="form-signin" action="{%url 'client_login'%}" method="POST">
+            {%csrf_token%}
+             
+             
+             
+              {%if error%}
+          <h4 style="color:red">    {{error}}</h4>
+              {%endif%}
+              <div class="form-group logintxt">
+                <label for="username" >Username</label>
+              <input type="text" name="uname" class="form-control1 " placeholder="User Name" required="" >
+            </div>
+              <div class="form-group logintxt">
+                <label for="password">Password</label>
+              <input type="password" name="pwd" class="form-control1" placeholder="Password" required="">
+            </div>
+
+              <input class="btn-rounded  waves-effect z-depth-0" type="submit" value="submit" style="width:50%;margin-left:26%"><i class="fa fa-sign-in-alt"></i>
+              <!-- <a href="#" id="forgot_pswd">Forgot password?</a> -->
+              <hr>
+              <!-- <p>Don't have an account!</p>  -->
+              <a class="btn btn-primary" type="button" id="btn-signup" href="{%url 'signup'%}" style="width:50%;margin-left:26%" ><i class="fa fa-user-plus"></i> Sign up New Account</a>
+              </form>
+
+             
+      </div>
+
+  </div>
+  <!-- Material form register -->
+  <div>
+    {% for  message in messages %}
+    <h1 class="h3">{{message}}</h1>
+    {%endfor%}
+  </div>
+</div>
+<!--container end.//-->
+
+
+
+{%endblock%}

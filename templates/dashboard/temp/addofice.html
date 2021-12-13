@@ -1,0 +1,173 @@
+{% extends 'dashboard/temp/crm_index.html' %} {% load i18n %} {% load custom_tag %} {% load static %} {%block content%}
+
+<div class="section-heading row mt-3 ">
+    <div class="col-lg-12 col-md-12 py-2 bg-primary">
+        <h5 class="f1 text-white pt-2 pl-4"><i class="fas fa-building"></i>{% trans "Add Office"%}
+        </h5>
+    </div>
+</div>
+
+<div id="content" class="mt-5">
+
+    <div class="container-fluid w-50" style="border: 1px solid  #4c5259;">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 py-2  text-center" style="background-color: #4c5259;">
+                <h5 class="f1 text-white pt-2">{% trans "Add Office" %}
+                </h5>
+            </div>
+        </div>
+        <div class="row-fluid" style="padding: 10px;">
+            <div class="span6">
+                <div class="widget-box">
+                    <div class="widget-content">
+                        <form action="{%url 'addoffice'%}" method="POST" class="form-horizontal">
+                            {% csrf_token %}
+                            <div class="control-group mt-3">
+                                <div class="controls">
+                                    <input type="text" class="span11 f1 form-control" name="name" placeholder='{% trans "Name" %}' />
+                                </div>
+                            </div>
+                            <div><br>
+                                <button type="submit" class="btn f1 btn-primaryk mb-3 btn-block b1">{% trans "Save" %}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><br>
+    <table class="table table-bordered w-50 table-sm table-stripe" style="margin-left: 25%;" id="officetable">
+        <thead style="background-color: #4c5259;">
+            <tr>
+                <th class="text-center text-white f1">{% trans "NAME" %} </th>
+
+
+                <th class="text-center text-white f1">{% trans "Action" %} </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for o in office %}
+            <tr>
+                <td class="text-center f1">{{ o.name|title }}</td>
+                <input type="hidden" name="{{ o.id }}" value="">
+                <td class="r1" style="text-align:center">
+                    <i class="fa fa-edit edit" data-toggle="modal" data-target="#myModal_{{o.id}}"></i>
+                    <i class="fa fa-trash del" data-toggle="modal" data-target="#myModals_{{o.id}}"></i>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <!-- <tfoot class="text-center" style="background-color: #4c5259;">
+            <th class="text-white f1">{% trans "Name" %}</th>
+            <th class="f1 text-white">{% trans "Action " %}</th>
+        </tfoot> -->
+    </table>
+    {% for o in office %}
+    <div class="modal fade" id="myModal_{{o.id}}">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <div class="col-lg-12 col-md-12 text-center">
+                        <h4 class="f1" style="color:#122b88">{% trans "Edit Office" %} </h4>
+                    </div>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 text-center">
+
+                            <form method="POST" action="{% url 'update_office' o.id %}">
+                                {%csrf_token%}
+                                <div class="form-group">
+                                    <!-- <label>{% trans "Edit Office Name" %} </label> -->
+                                    <input type="text" class="form-control" name="name" aria-describedby="emailHelp" value={{o.name}}>
+
+                                </div>
+
+                                <button type="submit" class="btn btn-primaryk btn-block">{% trans "Submit" %} </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Close" %} </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {%endfor%} {% for o in office %}
+    <div class="modal fade" id="myModals_{{o.id}}">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="f1" style="color:#122b88">{% trans "Delete Office" %} </h4>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body" style="padding-left:10%">
+                    <div class="row">
+                        <form method="POST" action="{% url 'delete_office' o.id %}">
+                            {%csrf_token%}
+                            <div class="form-group">
+                                <b class="f1">{% trans "Are you sure want to delete data" %} </b> <br><br>
+
+                                <a class="btn btn-primaryk" type="button" href="{% url 'delete_office' o.id %}">
+                                    {% trans "Delete Office" %} </a>
+
+                            </div>
+                    </div>
+                    </form>
+
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Close" %} </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {%endfor%}
+
+</div>
+
+
+{%endblock%} {% block js%}
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#officetable').DataTable({
+            "language": {
+                "lengthMenu": "预览   _MENU_  次 ",
+                "search": "搜索",
+                "zeroRecords": "暂无数据显示",
+                "info": "预览页 _PAGE_  _PAGES_",
+                "infoEmpty": "暂无数据显示",
+                // "previous": "Previous page",
+                "infoFiltered": "(从....过滤 _MAX_ 总记录)",
+                "paginate": {
+                    "previous": "前",
+                    "next": "后",
+
+                },
+
+            }
+
+        });
+
+    });
+</script>
+
+
+{% endblock %}

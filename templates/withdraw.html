@@ -1,0 +1,21 @@
+{% extends 'dasxin-index.html' %}{% load i18n %} {%load static%} {% block page %}
+<div class="container-fluid">
+    <div class="section-heading row pl-5">
+        <h4 class="text-white fm py-2">{% trans "Withdraw" %}</h4>
+    </div>
+</div>
+<div class="container-fluid responsive-img pt-5 pb-3 payment-option-bg">
+    <div class="container" style="display: flex;justify-content:center;">
+        <h5 class="text-center fm p-5"> {% trans "Please contact your Accounts Manager or Send an email to" %} <span class="txt-red">info@divsolution.com</span></h5>
+    </div>
+    <div class="container-fluid pt-5 mt-5">
+        <div class="flex-row text-center">
+            <a href="{%url 'login_client'%}"> <img src="{%static 'image/BTC.png'%}" style="width:150px" /></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="{%url 'login_client'%}"> <img src="{%static 'image/USDT.png'%}" style="width:150px;" /></a>
+        </div>
+    </div>
+</div>
+
+
+
+{%endblock%}

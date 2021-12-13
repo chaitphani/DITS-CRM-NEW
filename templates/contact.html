@@ -1,0 +1,132 @@
+{% extends 'dasxin-index.html' %}
+{%load static%}
+{% block page %}
+
+<div class="container-fluid">
+    <div class="section-heading row pl-5">
+        <h4 class="text-white fm py-2">Contact</h4>
+    </div>
+</div>
+<div class="container-fluid responsive-img  pt-4 pb-5 contact-bg ">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-8">
+                <section class="bx-shadow mb-5" style="padding: 20px;background-color: #191919;">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="h5 fm text-white">Contact Us</div>
+                        </div>
+                    </div>
+                    <br>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label class="control-labe text-white fm" for="fname">Full Name</label>
+                                    <input type="text" class="form-control fm1" id="fname" placeholder="Full Name"
+                                        name="full_name" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label class="control-labe text-white fm" for="fname">Email</label>
+                                    <input type="email" class="form-control fm1" id="fname" placeholder="Email"
+                                        name="email" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label class="control-labe text-white fm" for="fname">Telephone</label>
+                                    <input type="text" class="form-control fm1" id="fname" placeholder="Telephone"
+                                        name="phone" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label class="control-labe text-white fm" for="fname">Are you a current
+                                        customer?</label>
+                                    <select class="form-control" required>
+                                        <option class="fm1">Yes</option>
+                                        <option class="fm1">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group">
+                                    <label class="control-labe text-white fm" for="fname">Question for Comments
+                                        :</label>
+                                    <textarea cols="12" rows="6" class="form-control" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 text-center">
+                                <input type="submit" class="btn btn-primaryk text-white fm" value="SEND"
+                                  onclick="myFunc()" style="background-color: #ED0010;border-color: #ED0010;"/>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <section class="bx-shadow" style="padding: 20px;background-color: #191919;height:92%">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <img src="{%static 'image/icon/mailicon.png'%}" style="height:2vh">
+                        </div>
+                        <div class="col-lg-10 col-md-10">
+                            <h6 class="fm text-white">Email US :</h6><br>
+                            <p class="fm text-white">For General Enquiry
+                                <br>
+                                <span class="text-info">info@divsolution.com</span>
+                            </p>
+                            <br>
+                            <p class="fm text-white">For Account Enquiry
+                                <br>
+                                <span class="text-info">support@divsolution.com</span>
+                            </p>
+                            <br>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <i class="fa fa-comment text-white" aria-hidden="true"></i>
+                        </div>
+                        <div class="col-lg-10 col-md-10">
+                            <h6 class="fm text-white">Message US :</h6>
+                            <i class="fa fa-weixin text-success" aria-hidden="true" onclick="myFunction()"
+                                style="font-size:40px"></i>
+                            <!-- <img src="{%static 'image/imgk.png'%}" class="w-50" id="qrcode" style="display: none;" /> -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <script>
+        function myFunction() {
+            var x = document.getElementById("qrcode");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+</div>
+<script src="bower_components/sweetalert2/dist/sweetalert2.min.js"></script>
+<link rel="stylesheet" href="bower_components/sweetalert2/dist/sweetalert2.min.css">
+
+<script>
+    function myFunc() {
+        alert("Details Submitted....!");
+    }
+</script>
+
+
+{% endblock %}

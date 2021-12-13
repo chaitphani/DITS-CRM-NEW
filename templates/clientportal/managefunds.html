@@ -1,0 +1,159 @@
+{% extends 'clientportal/client_index.html' %}
+{% load i18n %}
+{%load static%}
+{% block all_page %}
+<style>
+    #img_data {
+        margin-top: 10%;
+    }
+</style>
+<div class="row ">
+    <div class="col-md-12 col-lg-12 text-center">
+        <img src="https://i.pinimg.com/originals/07/24/88/0724884440e8ddd0896ff557b75a222a.gif" id="img_data"
+            width="300px" height='250px' style="display: none;">
+            <h6 class="text-info" id="content_data" style="display: none;"> {% trans "Wait for few seconds...!"%} </h6>
+    </div>
+</div>
+<div class="container mt-5" id='total_div' style="border:1px solid #191919">
+    <div class="row py-2" style="background-color:#191919;">
+        <div class="col-lg-12 col-md-12">
+            <h5 class="text-uppercase f1 text-center text-white pt-2">{% trans "Manage Funds"%} </h5>
+        </div>
+    </div>
+    <form id="transfer_form">
+        {% csrf_token %}
+        <div class="row pt-5" style="display: flex;justify-content: center;">
+            <div class="col-lg-4 col-md-4">
+                <div class="form-group">
+                    <label for="formGroupExampleInput" class="f1">{% trans "Transfer From "%} </label>
+                    <select class="form-control" onchange="check()" id="transfer_from" name="transfer_from" required='required'>
+                        <option value="" selected disabled>{% trans "Select transfer from "%} </option>
+                        <option value="wal_0">{% trans "DITS Wallet "%} </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-1 col-md-1">
+                <i class="fas fa-exchange-alt reverse"></i>
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <div class="form-group">
+                    <label for="formGroupExampleInput" class="f1">{% trans "Transfer To"%} </label>
+                    <select class="form-control" id="transfer_from_to" name="transfer_from_to" required='required'>
+                        <option value='' selected disabled>{% trans "Select transfer to "%} </option>
+                        <option value="wal_0">{% trans "DITS Wallet"%} </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <script>
+            console.log(document.getElementById('val'))
+        </script>
+        <div class="row pt-3" style="display: flex;justify-content: center;">
+            <div class="form-group col-md-4 col-lg-4">
+                <label for="formGroupExampleInput" class="text-center f1" style="text-align: center;">
+                    {% trans "Please Enter Amount "%}
+                </label>
+                <input type="number" class="form-control" name="amount" required step="0.01">
+            </div>
+        </div>
+        <div class="row pt-2 mb-5" style="display: flex;justify-content: center;">
+            <div class="form-group col-md-4 col-lg-4">
+                <input type="submit" class="btn btn-default btn-block" id="hide_btn" value= "{%trans "TRANSFER FUNDS"%}" style="background-color: #efca07;border-color:#efca07;color:black">
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajax({
+            url: `{% url 'GetAccountDetailAPIView' %}`,
+            type: 'GET',
+            beforeSend: function (response) {
+                $('#img_data').show();
+                $('#content_data').show();
+                $('#total_div').hide();
+            },
+            complete: function (response) {
+                $('#img_data').hide();
+                $('#content_data').hide();
+                $('#total_div').show();
+            },
+            success: function (response) {
+                // $('#img_data').hide();
+                for (var i = 0; i < response.data.length; i++) {
+                    if (response.data[i].server_type == 0) {
+                        $('#transfer_from').append(`<option id="liv_${response.data[i].s_no}" value="${response.data[i].login}">MT4 AC - ${response.data[i].login} (${parseFloat(response.data[i].balance)} ${response.data[i].cu_type}) </option>`)
+                        $('#transfer_from_to').append(`<option id="liv_${response.data[i].s_no}" value="${response.data[i].login}">MT4 AC - ${response.data[i].login} (${parseFloat(response.data[i].balance)} ${response.data[i].cu_type}) </option>`)
+                    }
+                }
+            }
+        });
+    });
+    $('#transfer_form').on('submit', function (e) {
+        $('#hide_btn').hide();
+        e.preventDefault();
+        var form_data = $(this).serialize();
+        swal({
+            title: "Are you sure...!",
+            icon: "warning",
+            buttons: [
+                'Cancel',
+                'Confirm'
+            ],
+            dangerMode: true,
+        }).then(function (isConfirm) {
+            if (isConfirm) {
+                $.ajax({
+                    url: `{% url 'TransferAmountAPIView' %}`,
+                    type: 'POST',
+                    beforeSend: function () {
+                        $('#cover-spin').show();
+                    },
+                    complete: function () {
+                        $('#cover-spin').hide();
+                        // console.log('complete status------', form_data)
+                    },
+                    data: form_data,
+                    success: function (response) {
+                        if (response.data.payment_status == 0) {
+                            swal('Successful transfer', '', 'success')
+                                .then((sweet_alert) => {
+                                    if (sweet_alert) {
+                                        location.reload();
+                                    } else {
+                                        location.reload();
+                                    }
+                                });
+                        } else if (response.data.payment_status == 1) {
+                            swal('Transfer failed', 'Try again.', 'warning')
+                                .then((sweet_alert) => {
+                                    if (sweet_alert) {
+                                        location.reload();
+                                    } else {
+                                        location.reload();
+                                    }
+                                });
+                        } else if (response.data.payment_status == 2) {
+                            swal('Insufficient balance', 'in the wallet.', 'warning')
+                                .then((sweet_alert) => {
+                                    if (sweet_alert) {
+                                        location.reload();
+                                    } else {
+                                        location.reload();
+                                    }
+                                });
+                        }
+                    }
+                });
+            } else {
+                swal("Cancelled", " :)", "error");
+            }
+        });
+    });
+
+    // $('#hide_btn').click(function() {
+        
+    // });
+</script>
+
+{%endblock%}

@@ -1,0 +1,21 @@
+{% extends 'clientportal/client_index.html' %} {% load i18n %} {%load static%} {% block all_page %}
+
+<div class="container card" style="border:1px solid #ddd;padding:20px; border-radius:20px;width:60%;margin-top:12%">
+
+    <h4 class="text-dark"><b>{%trans "Congratulations, MT4 Live Account Opened Successfully"%}</b></h4><br>
+    <p class="text-dark">{%trans "You will receive an email containing your account credentials shortly"%} </p><br>
+    <p class="text-black">{%trans "For any assistance you may require, please contact us at info@divsolution.com"%} </p>
+    <br>
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- <a class="btn btn-success ml-auto text-white" href="{%url 'profile'%}"></a> -->
+            <a class="btn btn-success ml-auto text-white" href="{%url 'profile'%}"> {% trans "Home"%}</a>
+
+        </div>
+    </div>
+
+
+
+</div>
+
+{%endblock%}

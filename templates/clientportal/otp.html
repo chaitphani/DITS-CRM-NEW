@@ -1,0 +1,199 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR97VqNzZARoJCFV07G6cX2mxq4WyVBSZ3E644ZGzQ_XYE8m7Bv">
+    <title>OTP</title>
+</head>
+<style>
+    body {
+        font-family: sans-serif;
+
+    }
+    
+    .login_section {
+        margin: 50px 0;
+        float: left;
+        width: 100%;
+        margin-top:5%;
+    }
+    
+    .login-box {
+        width: 440px;
+        margin: 150px auto;
+        background:transparent;
+        overflow: hidden;
+        border: 1px solid #eaeaea;
+        border-radius: 8px;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+    }
+    
+    .text-center {
+        text-align: center;
+        padding: 25px;
+    }
+    
+    .email-login,
+    .email-signup {
+        position: relative;
+        float: left;
+        width: 100%;
+        height: auto;
+        margin-top: 20px;
+        text-align: center;
+        padding: 0px 40px 30px;
+    }
+    
+    .custom_md_3 {
+        margin-bottom: 0;
+    }
+    
+    .icon-addon {
+        color: #f06318;
+        font-size: 14px;
+    }
+    
+    .icon-addon {
+        position: relative;
+        color: #555;
+        display: block;
+    }
+    
+    .u-form-group_recet a {
+        background-color: #e65100;
+        outline: none;
+        color: #fff;
+        font-size: 16px;
+        font-weight: normal;
+        padding: 8px 20px;
+        border-radius: 3px;
+        float: left;
+        margin: 30px 2px 0;
+        border: 1px solid #e65100;
+    }
+    
+    .u-form-group_recet input {
+        background: #025f54;
+        border: 1px solid #025f54;
+        border: none;
+        outline: none;
+        color: #fff;
+        font-size: 16px;
+        font-weight: normal;
+        padding: 8px 20px;
+        border-radius: 3px;
+        float: left;
+        margin: 30px 2px 0;
+    }
+    
+    .custom_md_3 .form-control {
+        border: 0;
+        border-bottom: 1px solid #ccc !important;
+        box-shadow: none;
+        border-radius: 0;
+        padding-right: 0 !important;
+        padding-left: 0 !important;
+        font: 600 100%/1.5 Quicksand, sans-serif;
+        padding: 7px 6px !important;
+        border-radius: 2px;
+        background-color: #eee;
+        /* text-transform: capitalize; */
+    }
+    
+    h3 {
+        font: 600 100%/1.5 Quicksand, sans-serif;
+        color: #025f54;
+    }
+    
+    button.btn.btn-primary {
+        margin-top: 10px;
+    }
+    
+    .swal-overlay {
+        background-color: rgb(141, 44, 44);
+    }
+    
+        .bdy {
+    background-image: linear-gradient( 
+-65deg, rgb(44 132 158)56%, rgb(18 43 136)56%);
+}
+    
+</style>
+
+<body class="bdy">
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 pt-2">
+            <h6 class="f1 d-block text-right text-white mr-5"><img src="{%static 'image/icon/mailicon.png'%}"
+                    class="nav-mail-icon" style="height: 2vh;" />&nbsp;info@divsolution.com</h6>
+        </div>
+    </div>
+    <section class="login_section">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-4 col-lg-4 offset-md-8 offset-lg-8">
+                    <div class="login-box">
+                        <div class="d-flex justify-content-center">
+                        <h2 class="text-white">DITS</h2>
+                        </div>
+                        <div class="text-center">
+                            <form method="POST">
+                                {% csrf_token %}
+                                {% if messages %}
+                                    <ul class="messages list-unstyled">
+                                        {% for message in messages %}
+                                        <li {% if message.tags %} class="{{ message.tags }} text-danger" {% endif %}>{{ message }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    <h6 class="text-white">{% trans "Time Left"%}  = <span id="timer"></span></h6>
+                                    <h5 class="text-white"> {% trans "Enter Your OTP Sent to Registered Email"%} </h5>
+                                    <h6 class="text-white"> {% trans "Your otp will expire in 5 minutes"%} </h6>
+                                {% endif %}
+                                <label class="text-success">OTP</label>&nbsp<input type="text" class="form-control" name="otp"><br>
+                                <button class="btn btn-primary w-50 fm" style="background-color: gold;border-color: gold;color:black">{% trans "Submit "%} </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+<script>
+    document.getElementById('timer').innerHTML =
+  003 + ":" + 20;
+startTimer();
+
+function startTimer() {
+  var presentTime = document.getElementById('timer').innerHTML;
+  var timeArray = presentTime.split(/[:]+/);
+  var m = timeArray[0];
+  var s = checkSecond((timeArray[1] - 1));
+  if(s==59){m=m-1}
+  //if(m<0){alert('timer completed')}
+  
+  document.getElementById('timer').innerHTML =
+    m + ":" + s;
+  console.log(m)
+  setTimeout(startTimer, 1000);
+}
+
+function checkSecond(sec) {
+  if (sec < 10 && sec >= 0) {sec = "0" + sec}; // add zero in front of numbers < 10
+  if (sec < 0) {sec = "59"};
+  return sec;
+}
+</script>
+</html>

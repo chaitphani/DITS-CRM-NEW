@@ -1,0 +1,162 @@
+{% extends 'dashboard/temp/dash-index.html' %}
+{% load i18n %}
+
+{% load static %}
+{% block addsecurity %}
+
+<div id="content" class="cn2 ">
+  <div class="row">
+    <div class="card card-hd">
+        <a><i class="fa fa-plus" aria-hidden="true" style="font-size: 25px;"></i>&nbsp; {% trans "Add Security Question" %}</a>
+    </div>
+</div>
+  <div class="container-fluid sq">
+    <div class="row-fluid">
+      <div class="span6">
+        <div class="widget-box">
+          <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+            <h5> {% trans "Security Questions" %} </h5>
+          </div>
+          <div class="widget-content nopadding">
+            <form action="{%url 'securityque'%}" method="POST" class="form-horizontal">
+               {% csrf_token %}
+              <div class="control-group">
+                <label class="control-label"> {% trans "Name :" %}</label>
+                <div class="controls">
+                  <input type="text" class="span11 form-control" name="name" placeholder=" name" />
+                </div>
+              </div><br>
+              <div>
+                <button type="submit" class="btn btn-success b1 btn-block">{% trans "Save " %} </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div><br>
+
+  <div class="container-fluid card dash-cnt">
+  <table class="table table-bordered taable-sm table-stripe" id="sq">
+      <thead class="thead-dark">
+          <tr>
+              <th class="text-center">{% trans "NAME " %}</th>
+
+
+              <th class="text-center"> {% trans "Action" %} </th>
+          </tr>
+      </thead>
+      <tbody>
+        {% for s in sq %}
+          <tr>
+              <td class="text-center">{{ s.name }}</td>
+
+
+
+              <input type="hidden" name="{{ sq.id }}" value="">
+              <td class="r1" style="text-align:center">
+                  <i class="fa fa-edit edit" data-toggle="modal" data-target="#myModal_{{s.id}}"></i>
+                  <i class="fa fa-trash del" data-toggle="modal" data-target="#myModals_{{s.id}}"></i>
+              </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+      <tfoot class="text-center thead-dark">
+        <th>{% trans "Name " %} </th>
+        <th> {% trans "Action" %} </th>
+      </tfoot>
+  </table>
+  {% for s in sq %}
+  <div class="modal fade" id="myModal_{{s.id}}">
+    <div class="modal-dialog ">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="text-success"> {% trans "Edit Security Question Detail Type" %}</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body" style="padding-left:10%">
+        <div class="row">
+          <form method="POST" action="{% url 'update_securityque_type' s.id %}" >
+            {%csrf_token%}
+            <div class="form-group">
+              <label>{% trans "Edit Security Question Name " %} </label>
+              <input type="text" class="form-control" name="name" aria-describedby="emailHelp" value={{s.name}} >
+
+            </div>
+
+            <button type="submit" class="btn btn-primary">{% trans "Submit" %} </button>
+          </form>
+        </div>
+
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Close " %}</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  {%endfor%}
+
+  {% for s in sq %}
+  <div class="modal fade" id="myModals_{{s.id}}">
+    <div class="modal-dialog ">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="text-success">{% trans "Delete securityquestion Type " %} </h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body" style="padding-left:10%">
+        <div class="row">
+          <form method="POST" action="{% url 'delete_securityque_type' s.id %}" >
+            {%csrf_token%}
+            <div class="form-group">
+            <b>{% trans "Are you sure want to delete data " %} </b> <br><br>
+
+            <a class="btn btn-danger" type="button" href="{% url 'delete_securityque_type' s.id %}">{% trans "Delete " %} </a>
+
+            </div>
+
+          </form>
+        </div>
+
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Close " %} </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  {%endfor%}
+
+
+  </div>
+
+</div>
+
+{%endblock%}
+
+
+{% block js%}
+<script>
+$(document).ready(function() {
+  $('#sq').DataTable();
+} );
+</script>
+
+{% endblock %}

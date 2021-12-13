@@ -1,0 +1,82 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Dits-CRM Login</title>
+    <link rel="icon" href="{% static 'image/logo.png' %}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/e17ceb6b9c.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet">
+    <script src="{%static 'bootstrap/4.5.2/js/bootstrap.4.min.js'%}"></script>
+    <link rel="stylesheet" href="{%static 'bootstrap/4.5.2/css/bootstrap.4.min.css'%}">
+
+    <style>
+        .loginform {
+            border: 2px solid white;
+            border-radius: 5%;
+        }
+        
+        .f1 {
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .btn-default {
+            background-color: #ED0010;
+            border: 1px solid #ED0010;
+            color: white;
+        }
+        
+        .flex-center {
+            display: flex;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .login-card {
+            margin-top: 7%;
+        }
+        
+        .bx-shadow {
+            box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
+        }
+        
+        .body1 {
+           
+    background-image: linear-gradient( 
+-65deg, rgb(44 132 158)56%, rgb(18 43 136)56%);
+
+        }
+        
+        .nav-mail-icon {
+            height: 2vh;
+        }
+        
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            color: white;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class=" body1 container-fluied" style="height:100vh;">
+
+        <div class="section">
+            {% block clientlogin %}{%endblock%} {% block clientsignup %}{%endblock%}
+        </div>
+
+    </div>
+
+</body>
+
+</html>

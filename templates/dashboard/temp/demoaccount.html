@@ -1,0 +1,90 @@
+{% extends 'dashboard/temp/clientview.html' %}
+{% load i18n %}
+
+{% load static %}
+
+{%block demoaccount%}
+<div class="container-fluid" style="margin-top: 2%;">
+   <h4 class="text-info"><b> {% trans "Demo Accounts Profile" %} </b></h4>
+   <hr>
+
+<table class="table table-bordered table-sm " style="border-collapse:collapse;" id="account_table_data">
+				    <thead class="thead-dark">
+				        <tr>
+				            <th>{% trans "MT4 ACC " %} </th>
+				            <th> {% trans "Group " %} </th>
+				            <th> {% trans "Currency " %} </th>
+				            <th>{% trans "Profile" %} </th>
+				            <th> {% trans "leverage" %} </th>
+                    <th> {% trans "Balance" %} </th>
+                      <th>{% trans "Equity " %} </th>
+
+
+
+				        </tr>
+				    </thead>
+				    <tbody>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+
+					<td></td>
+					<td></td>
+				</tbody>
+				</table>
+
+</div>
+{%endblock%}
+{% block demoaccountjs %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $.ajax({
+	  {% with request.GET.u_id|add:"0" as u_id %}
+      url: `{% url 'UserDemoAccountAPIView' u_id %}`,
+	  {%endwith%}
+      type: 'GET',
+      beforeSend: function(){
+        $('#cover-spin').show(0);
+      },
+      complete: function(){
+        $('#cover-spin').hide(0);
+      },
+      success: function(response){
+        if (response.status==0) {
+			console.log(response);
+
+          for (var i = 0; i < response.data.length; i++){
+            var a=response.data[i].added_on;
+            var b= a.substring(0, 10);
+
+            var s=parseInt(response.data[i].balance,10);
+            var n = s.toFixed(2);
+
+            var p=parseInt(response.data[i].equity,10);
+            var q = p.toFixed(2);
+
+            res_data = `<tr><td>${response.data[i].login}</td>
+            <td>${response.data[i].group}</td>
+          	<td>${response.data[i].cu_type}</td>
+	<td>${b}</td>
+
+		<td>${response.data[i].leverage}</td>
+      <td>${n}</td>
+      <td>${q}</td>
+
+
+
+            </tr>`
+            $('#account_table_data').append(res_data)
+          }
+        } else if (response.status==1) {
+          alert('data not get from api. Please check')
+        }
+      }
+    });
+  });
+</script>
+
+{% endblock demoaccountjs %}

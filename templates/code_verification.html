@@ -1,0 +1,121 @@
+<!DOCTYPE html> {% load static %}
+
+<html class="loading" lang="en" data-textdirection="ltr">
+
+<!-- Mirrored from pixinvent.com/stack-responsive-bootstrap-4-admin-template/html/ltr/vertical-menu-template/layout-2-columns.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 21 Feb 2019 08:16:01 GMT -->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="Stack admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
+    <meta name="keywords" content="admin template, stack admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="author" content="PIXINVENT">
+    <title>Hanmenghui</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="apple-touch-icon" href="../../../app-assets/images/ico/apple-icon-120.png">
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="{%static 'bootstrap/4.5.2/js/bootstrap.4.min.js'%}"></script>
+    <link rel="stylesheet" href="{%static 'bootstrap/4.5.2/css/bootstrap.4.min.css'%}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .f1 {
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        #id_code {
+            display: block;
+            width: 100%;
+            height: calc(1.5em + .75rem + 2px);
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #122b88;
+            border-radius: .25rem;
+            transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="conatier-fluid" style="background-color: #112a8c;height: 100vh;">
+        <nav class="navbar  navbar-expand-md navbar-expand-sm">
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="navbar-brand text-center" href="#">
+                        <img src="{%static 'image/logo.png'%}" class="d-md-block d-sm-block">
+                    </a>
+                </li>
+
+
+            </ul>
+
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <h6 class="f1 d-block text-right text-white"><img src="{%static 'image/icon/mailicon.png'%}" style="height: 2vh;" />&nbsp;&nbsp;&nbsp;support@hme158.com</h6>
+
+                </li>
+            </ul>
+        </nav>
+
+
+        <div class="container" style="margin-top:13%">
+            <div class="row">
+                <div class="col-md-5 col-lg-5 card oofset-md-4 offset-lg-4 pl-5 pr-5 pt-4 pb-4" style="border: 1px solid black;padding: 10px;">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <h4 class="f1 text-center fm" style="color: #112a8c;">Code Verification</h4>
+                            <hr style="border-top: 1px solid red;">
+                        </div>
+                    </div>
+
+                    {% if request.user.is_authenticated %}
+
+                    <h4 class="text-red f1" style="margin-left:5%;color:#112a8c">Hello, {{request.user.username}} </h4>
+                    {% else %} Hi user {% endif %}
+
+                    <p>
+                        {% if message %}
+                        <h4 class="text-red f1" style="padding-left:2%">{{message}}</h4>
+                        {% endif %}
+                    </p>
+
+                    <form action="" method="post" enctype='multipart/form-data'>
+                        {% csrf_token %} {{form.as_p}}
+                        <div class="center">
+                            <input type="submit" value=" SUBMIT " class="btn btn-info btn-block">
+                        </div>
+                    </form>
+
+
+                    <a href="{% url 'logout' %}" class="f1 text-center mt-3" style="text-decoration: underline;color:red">Verify
+            later</a>
+
+                </div>
+            </div>
+        </div>
+        <footer style="background-color:#122A8C;">
+            <p class="text-right mr-2  text-white small mb-0" style="margin-top:15%">Copright@2020 Hanmenghui, All rights reserved
+            </p>
+        </footer>
+    </div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,74 @@
+{% extends 'dashboard/temp/maincontent.html' %}
+{% load static %}
+
+{% block client %}
+<div class="row">
+	<div class="card card-hd">
+		<a><i class="fa fa-arrow-down" aria-hidden="true" style="font-size: 25px;"></i>&nbsp;Withdraw</a>
+	</div>
+</div>
+<div class="content-body card dash-cnt">
+	<!-- Description -->
+	<div class="container-fluid">
+		{%block table%}
+
+		<table class="table table-bordered table-sm clienttable" id="pendingwithdrawtable">
+			<thead class="thead-dark">
+				<tr>
+					<!-- <th class=" text-center th-sm"> Select</th> -->
+					<th class=" text-center th-sm">Tr.ID</th>
+					<th class=" text-center th-sm">Client ID</th>
+					<th class=" text-center th-sm">Name</th>
+					<th class=" text-center th-sm">Country</th>
+					<th class=" text-center th-sm">Tr.IP</th>
+					<th class=" text-center th-sm">Tr.Country</th>
+					<th class=" text-center th-sm">Date</th>
+					<th class=" text-center th-sm">Comment</th>
+					<th class=" text-center th-sm">Amount</th>
+					<th class=" text-center th-sm">Divepay Email</th>
+					<th class=" text-center th-sm">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for pw in w %}
+				<tr>
+					<td>{{ pw.t_id }}</td>
+					<td>{{ pw.client_id }}</td>
+					<td>{{ pw.name }}</td>
+					<td>{{ pw.country }}</td>
+					<td>{{ pw.t_ip }}</td>
+					<td>{{ pw.t_country }}</td>
+					<td>{{ pw.added_on }}</td>
+					<td>{{ pw.details }}</td>
+					<td class="text-center">{{pw.amount}}</td>
+					<td>{{pw.email}}</td>
+					<td>
+						<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+							<div class="btn-group" role="group" aria-label="First group">
+								<a href="{% url 'WithdrawApproveAPIView' pw.user.id pw.id 1 %}">
+									<button type="button" class="btn btn-info">Approve</button>&nbsp;&nbsp;
+								</a>
+								<a href="{% url 'WithdrawApproveAPIView' pw.user.id pw.id 2 %}">
+									<button type="button" class="btn btn-danger">Cancel</button>
+								</a>
+							</div>
+						</div>
+					</td>
+				</tr>
+				{%endfor%}
+			</tbody>
+
+		</table>
+		{%endblock%}
+
+	</div>
+</div>
+
+{%endblock%}
+{% block js%}
+<script>
+	$(document).ready(function () {
+		$('#pendingwithdrawtable').DataTable();
+	});
+</script>
+{%endblock%}

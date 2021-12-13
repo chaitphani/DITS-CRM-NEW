@@ -1,0 +1,491 @@
+{% extends 'clientportal/client_index.html' %}
+{% load tags %}
+{% load i18n %}
+{% load humanize %}
+{% load static %}
+{% block widgetheading %}
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+{% endblock %}
+{% block all_page %}
+
+<style>
+    .span-style {
+        color: white;
+        font-weight: 700;
+        font-size: 14px;
+        margin-left: 5px;
+        border-radius: 2px;
+        padding: 5px;
+    }
+
+    td,
+    th {
+        padding: 2px;
+        text-align: center;
+    }
+    td{
+        background: grey;
+        
+    }
+    .resetntn {
+        width: 28%;
+    }
+
+    .nav-link {
+        color: #0027ff;
+    }
+    .style-span {
+        padding: 5px;
+        font-size: 20px;
+        font-weight: 500;
+        border-radius: 5px;
+    }
+    .chartjs-render-monitor{
+        color: white;
+    }
+</style>
+<h3 class="text-center mb-4 mt-2">{% trans "MT4 ACCOUNT " %}: {{request.GET.account}}
+    <span class="ac_no"></span>
+    {% if request.GET.type != "1" %}
+        <span style="background-color: #28a745;" class="text-white style-span">{% trans "LIVE " %} </span>
+    {% endif %}
+</h3>
+
+<div class="container">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#overview"> {% trans "Overview" %} </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#finance">{% trans "Finance" %} </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#open_position">{% trans "Open Positions" %} </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#close_position"> {% trans "Close Positions" %} </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#settings" data-toggle="tab"> {% trans "Settings" %} </a>
+        </li>
+    </ul>
+    <div class="tab-content mb-3">
+        <div id="overview" class="container tab-pane active"><br>
+            <div class="card bg-secondary text-white mb-3">
+                <div class="card-body">
+                    <h3 class="card-title">{% trans "Account Details" %} </h3>
+                    <table class="table my_account_table table-sm">
+                        <tbody>
+                            <tr>
+                                <td>{% trans "Account" %} </td>
+                                <td class="text-overview ac_no">{{acc_no}}</td>
+                                <td>{% trans "Created " %} </td>
+                                <td class="text-overview">{{added_on}}</td>
+                                <td> {% trans "Total Deposits" %} </td>
+                                <td class="text-overview">{{total_deposit|floatformat:2}}</td>
+                            </tr>
+                            <tr>
+                                <td>{% trans "Balance " %} </td>
+                                <td class="text-overview">{{balance|floatformat:2}}</td>
+                                <td> {% trans "Margin Free" %} </td>
+                                <td class="text-overview">{{free_margin|floatformat:2}}</td>
+                                <td>{% trans "Total Withdraws " %} </td>
+                                <td class="text-overview">- {{wallet_withdrawls|floatformat:2}}</td>
+                            </tr>
+                            <tr>
+                                <td>{% trans "Equity " %} </td>
+                                <td class="text-overview">{{equity|floatformat:2}}</td>
+                                <td> {% trans "Margin Levels(%)" %} </td>
+                                <td class="text-overview">{{margin_level|floatformat:2}}</td>
+                                <td>{% trans "Closed P/L " %} </td>
+                                <td class="text-overview">{% if close_p_l %}{{close_p_l|floatformat:2}}{% else %} 0.00 {% endif %}</td>
+                            </tr>
+                            <tr>
+                                <td>{% trans "Margin" %} </td>
+                                <td class="text-overview">{{margin|floatformat:2}}</td>
+                                <td>{% trans "Volume" %} </td>
+                                <td class="text-overview">{{total_volume|item_division_100|floatformat:2}}</td>
+                                <td>{% trans "Open P/L " %} </td>
+                                <td class="text-overview">{% if open_p_l %}{{open_p_l|floatformat:2}}{% else %} 0.00 {% endif %}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card bg-secondary text-white mb-3">
+                <div class="card-body">
+                    <h3 class="card-title">{% trans "Statistics" %} </h3>
+                    <table class="table table-borderless my_account_table table-sm">
+                        <tbody>
+                            <tr>
+                                <td> {% trans "Total Trades" %} </td>
+                                <td class="text-overview ac_no">{{total_trades}}</td>
+                                <td> {% trans "Avg Order Duration" %} </td>
+                                <td class="text-overview">{{avg_order_duration|default:"0 sec"}}</td>
+                                <td> {% trans "Best Trade(Points)" %} </td>
+                                <td class="text-overview">
+                                    {{best_trade_points|floatformat:1|default:0}}</td>
+                            </tr>
+                            <tr>
+                                <td>{% trans "Profitability " %} </td>
+                                <td class="text-overview">{{profitability|floatformat:1|default:0}}%
+                                </td>
+                                <td> {% trans "Profitable Long Trades" %} </td>
+                                <td class="text-overview">
+                                    {{profitable_long_trades|floatformat:1|default:0}}%</td>
+                                <td>{% trans "Worst Trade(Points) " %} </td>
+                                <td class="text-overview">{{worst_trade_points|floatformat:1|default:0}}</td>
+                            </tr>
+                            <tr>
+                                <td> {% trans "Points" %} </td>
+                                <td class="text-overview">{{total_points|floatformat:1|default:0.00}}</td>
+                                <td> {% trans "Profitable Short Trades" %} </td>
+                                <td class="text-overview">
+                                    {{profitable_short_trades|floatformat:1|default:0}}%</td>
+                                <td> {% trans "Profit Factor " %} </td>
+                                <td class="text-overview">{{profit_factor}}</td>
+                            </tr>
+                            <tr>
+                                <td>{% trans "Average Win" %} </td>
+                                <td class="text-overview">{{avg_win|floatformat:1|default:0}} points</td>
+                                <td>{% trans "Best Trade(USD) " %} </td>
+                                <td class="text-overview">{{best_trade_value|floatformat:1|default:0.00}}</td>
+                                <!-- <td>Recovery Factor</td> -->
+                                <td></td>
+                                <td class="text-overview"></td>
+                            </tr>
+                            <tr>
+                                <td>{% trans "Average Loss" %} </td>
+                                <td class="text-overview">{{avg_loss|floatformat:1|default:0}} points</td>
+                                <td> {% trans "Worst Trade(USD) " %} </td>
+                                <td class="text-overview">{{worst_trade_value|floatformat:1|default:0.00}}</td>
+                                <!-- <td>Expectancy</td> -->
+                                <td></td>
+                                <td class="text-overview"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {% if values_graph_data %}
+            <div class="card mb-3">
+                <!-- <button class="btn btn-primary btn-sm">Change</button> -->
+                <div class="card-body div_displ">
+                    <h3 class="card-title text-muted text-center">Statistics(Values in %) {% trans "Withdraw Cryptos " %} </h3>
+                    <div style="width: 100%;">
+                        <canvas id="pie-chart"></canvas>
+                        <script>
+
+                        var config = {
+                            type: 'pie',
+                            data: {datasets: [{data: {{ values_graph_data|safe }},backgroundColor: ['#a83232', '#a85032', '#a87332', '#a89232', '#9ea832', '#83a832', '#3aa832', '#32a851', '#32a86d', '#32a88e', '#32a0a8', '#328ba8', '#3279a8', '#325ba8', '#3a32a8', '#5d32a8', '#7932a8', '#9232a8', '#a83298', '#a8327b', '#a83261', '#f54e4e', '#f58b4e', '#f5b24e', '#f5d64e', '#f5f54e', '#c8f54e'],label:['Trades']}],labels: {{ key_data|safe }}},
+                            options: {responsive: true}
+                            };
+
+                            window.onload = function() {
+                            var ctx = document.getElementById('pie-chart');
+                            window.myPie = new Chart(ctx, config);
+                            };
+                        </script>
+                    </div>
+                </div>
+
+                <!-- <div class="card-body" id='togle_div'>
+                    <h3 class="card-title">Statistics(Values in %)</h3>
+                    <div style="width: 100%;">
+                        <canvas id="bar-chart"></canvas>
+                        <script>
+                        var configs = {
+                            type: 'bar',
+                            data: {datasets: [{data: {{ values_graph_data|safe }},backgroundColor: ['#a83232', '#a85032', '#a87332', '#a89232', '#9ea832', '#83a832', '#3aa832', '#32a851', '#32a86d', '#32a88e', '#32a0a8', '#328ba8', '#3279a8', '#325ba8', '#3a32a8', '#5d32a8', '#7932a8', '#9232a8', '#a83298', '#a8327b', '#a83261', '#f54e4e', '#f58b4e', '#f5b24e', '#f5d64e', '#f5f54e', '#c8f54e'],label:['Trades']}],labels: {{ key_data|safe }}},
+                            options: {responsive: true}
+                            };
+                        
+                            window.onload = function() {
+                            var ctxs = document.getElementById('bar-chart');
+                            window.myBar = new Chart(ctxs, configs);
+                            };
+                        </script>
+                    </div>
+                </div> -->
+            </div>
+            {% endif %}
+        </div>
+        <div id="finance" class="container tab-pane fade"><br>
+            <div class="card bg-secondary text-white">
+                <div class="card-body">
+                    <h3 class="card-title">{% trans "Wallet Finance " %} </h3>
+                    <table class="table my_account_table table-sm table-bordered bg-secondary" id="table_id">
+                        <thead>
+                            <tr>
+                                <th> {% trans "Details" %} </th>
+                                <th> {% trans "Amount" %} </th>
+                                <th>{% trans "Currency " %} </th>
+                                <th>{% trans "Status" %} </th>
+                                <th>{% trans "Date" %} </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for list in response_list %}
+                            <tr>
+                                {% if list.comments %}
+                                <td> {{ list.transfer_type }}-{{list.comments}} </td>
+                                {% else %}
+                                <td> {{ list.transfer_type }}-{{list.transfer_to}} </td>
+                                {% endif %}
+                                <td>{{list.amount|floatformat:2|intcomma}}</td>
+                                <td>USD</td>
+                                <td>Completed</td>
+                                <td>{{list.added_on_year_val}}-{{list.added_on_month_val}}-{{list.added_on_date_val}}
+                                    {{list.added_on|date:"G:i:s"}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="open_position" class="container tab-pane fade"><br>
+            <div class="card bg-secondary text-white">
+                <div class="card-body">
+                    <h3 class="card-title">{% trans "Open Positions" %}</h3>
+                    <table class="table my_account_table table-sm table-bordered bg-secondary" id="open_positions">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th> {% trans "Ticket" %}</th>
+                                <th>{% trans "Symbol " %}</th>
+                                <th>{% trans "Volume " %}</th>
+                                <th>{% trans "Action " %}</th>
+                                <th>{% trans "Open Time " %}</th>
+                                <th>{% trans "Open Price " %}</th>
+                                <th>{% trans "Close Time " %}</th>
+                                <th> {% trans "Close Price" %}</th>
+                                <th>{% trans "Profit" %}</th>
+                                <th>{% trans "Swaps" %}</th>
+                                <th>{% trans "Commission" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for list in open_positions %}
+                            <tr>
+                                <td>{{list.4}}</td>
+                                <td>{{list.5|cut:"-"}}</td>
+                                <td>{{list.0|item_division_100|floatformat:2}}</td>
+                                <td>
+                                    {% if list.10 == 0 %}
+                                    <span style="background-color: #28a745;" class="span-style"><i
+                                            class="fa fa-angle-up font-weight-bold" aria-hidden="true"></i>&nbsp;
+                                        Buy</span>
+                                    {% else %}
+                                    <span style="background-color: #c9302c;" class="span-style"><i
+                                            class="fa fa-angle-down font-weight-bold" aria-hidden="true"></i>&nbsp;
+                                        Sell</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{list.2|date:'Y-m-d H:i'}}</td>
+                                <td>{{list.6|floatformat:2|intcomma}}</td>
+                                <td>{{list.3|date:'Y-m-d H:i'}}</td>
+                                <td>{{list.7|floatformat:2|intcomma}}</td>
+                                <td>{{list.1|floatformat:2}}</td>
+                                <td>{{list.9|floatformat:2}}</td>
+                                <td>{{list.8|floatformat:2}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="close_position" class="container tab-pane fade"><br>
+            <div class="card bg-secondary text-white">
+                <div class="card-body">
+                    <h3 class="card-title"> {% trans "Closed Positions" %} </h3>
+                    <table class="table table-sm table-bordered mb-3  bg-secondary" id="close_positions">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th> {% trans "Ticket" %}</th>
+                                <th>{% trans "Symbol " %}</th>
+                                <th>{% trans "Volume " %}</th>
+                                <th>{% trans "Action " %}</th>
+                                <th>{% trans "Open Time " %}</th>
+                                <th>{% trans "Open Price " %}</th>
+                                <th>{% trans "Close Time " %}</th>
+                                <th> {% trans "Close Price" %}</th>
+                                <th>{% trans "Profit" %}</th>
+                                <th>{% trans "Swaps" %}</th>
+                                <th>{% trans "Commission" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for list in closed_positions %}
+                            <tr>
+                                <td>{{list.4}}</td>
+                                <td>{{list.5|cut:"-"}}</td>
+                                <td>{{list.0|item_division_100|floatformat:2}}</td>
+                                <td>
+                                    {% if list.10 == 0 %}
+                                    <span style="background-color: #28a745;" class="span-style"><i
+                                            class="fa fa-angle-up font-weight-bold" aria-hidden="true"></i>&nbsp;
+                                        Buy</span>
+                                    {% else %}
+                                    <span style="background-color: #c9302c;" class="span-style"><i
+                                            class="fa fa-angle-down font-weight-bold" aria-hidden="true"></i>&nbsp;
+                                        Sell</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{list.2|date:'d F Y H:i'}}</td>
+                                <td>{{list.6|floatformat:2|intcomma}}</td>
+                                <td>{{list.3|date:'d F Y H:i'}}</td>
+                                <td>{{list.7|floatformat:2|intcomma}}</td>
+                                <td>{{list.1|floatformat:2}}</td>
+                                <td>{{list.9|floatformat:2}}</td>
+                                <td>{{list.8|floatformat:2}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div id="settings" class="container tab-pane fade"><br>
+            <div class="card bg-secondary text-white">
+                <div class="card-body">
+                    <h3 class="card-title mb-2">Settings</h3>
+                    <div class="container settingcnt">
+                        <p class="settingp">
+                            <span><i class="fa fa-hand-o-right txt-red" aria-hidden="true"></i>&nbsp;{% trans "8 to 15 characters in length " %}
+                                </span><br>
+                            <span><i class="fa fa-hand-o-right txt-red" aria-hidden="true"></i>&nbsp; {% trans "At least 1 uppercase letter" %}
+                                
+                                </span><br>
+                            <span><i class="fa fa-hand-o-right txt-red" aria-hidden="true"></i>&nbsp; {% trans "At least 1 lowercase letter" %}
+                                
+                                </span><br>
+                            <span><i class="fa fa-hand-o-right txt-red" aria-hidden="true"></i>&nbsp; {% trans "At least 1 number " %}
+                                </span><br>
+                            <span><i class="fa fa-hand-o-right txt-red" aria-hidden="true"></i>&nbsp; {% trans "Optional special characters accepted" %}
+                                </span><br>
+                    </div>
+                    <div class="col-lg-12 col-md-12 text-center">
+                        <a href="#" class="btn bg-primary btn-block text-white resetntn" data-toggle="modal"
+                            data-target="#myModal"><i class="fa fa-lock" aria-hidden="true"></i>
+                            {% trans " Reset Password" %}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="myModal">
+                <div class="modal-dialog  modal-dialog-centered">
+                    <div class="modal-content">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title"> {% trans "Confirmation Required " %}</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <b> {% trans "Reset Password For MT4 Account" %} : {% if request.GET.account %}{{request.GET.account}}{%endif %}</b>
+                        </div>
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"> Close </button>
+                            <a href="{% url 'AccountPwdResetView' %}{% if request.GET.account %}?account={{ request.GET.account }}{% endif %}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}"
+                                class="btn btn-danger">  {% trans "RESET PASSWORD" %}</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#table_id').DataTable();
+    });
+    $(document).ready(function () {
+        $('#close_positions').DataTable();
+    });
+    $(document).ready(function () {
+        $('#open_positions').DataTable();
+    });
+</script>
+
+<script>
+    $('.btn-danger').on('click', function (e) {
+        // e.preventDefault();
+        // var form = $(this).parents('form');
+        swal({
+            title: "Password Change Successfully Please Check email..!",
+            icon: "success",
+            button: "Okay",
+            closeOnConfirm: true,
+        })
+    })
+</script>
+
+<script>
+    // var docs_emele = $( "div#togle_div" ).html();
+    // console.log("-----------", docs_emele)
+    // function comment(element){
+    //     element.html('<!--' + element.html() + '-->')
+    // }
+//     function uncomment(element){
+//         var len = element.html().length;
+//         element.html(element.html().substring(4, len - 3))
+//     }
+
+//     var el = $('#togle_div');
+//     var commented = false;
+//     $('.btn-primary').click(function(){
+//         if (commented) {
+//             comment(el);
+//             console.log("-----------", docs_emele)
+//         } else {
+//             uncomment(el);
+//             console.log("-----------", docs_emele)
+//         }
+//             commented = !commented;
+      
+
+//         // setInterval(swap, 500);
+//     });
+//     var dateCat = $("#togle_div")
+  </script>
+<!-- <script>
+        var configs = {
+          type: 'bar',
+          data: {datasets: [{data: {{ values_graph_data|safe }},backgroundColor: ['#a83232', '#a85032', '#a87332', '#a89232', '#9ea832', '#83a832', '#3aa832', '#32a851', '#32a86d', '#32a88e', '#32a0a8', '#328ba8', '#3279a8', '#325ba8', '#3a32a8', '#5d32a8', '#7932a8', '#9232a8', '#a83298', '#a8327b', '#a83261', '#f54e4e', '#f58b4e', '#f5b24e', '#f5d64e', '#f5f54e', '#c8f54e'],label:['Trades']}],labels: {{ key_data|safe }}},
+          options: {responsive: true}
+        };
+    
+        window.onload = function() {
+          var ctxs = document.getElementById('bar-chart');
+          window.myBar = new Chart(ctxs, configs);
+        };
+
+    var config = {
+      type: 'pie',
+      data: {datasets: [{data: {{ values_graph_data|safe }},backgroundColor: ['#a83232', '#a85032', '#a87332', '#a89232', '#9ea832', '#83a832', '#3aa832', '#32a851', '#32a86d', '#32a88e', '#32a0a8', '#328ba8', '#3279a8', '#325ba8', '#3a32a8', '#5d32a8', '#7932a8', '#9232a8', '#a83298', '#a8327b', '#a83261', '#f54e4e', '#f58b4e', '#f5b24e', '#f5d64e', '#f5f54e', '#c8f54e'],label:['Trades']}],labels: {{ key_data|safe }}},
+      options: {responsive: true}
+    };
+
+    window.onload = function() {
+      var ctx = document.getElementById('pie-chart');
+      window.myPie = new Chart(ctx, config);
+    };
+
+
+</script> -->
+{% endblock %}

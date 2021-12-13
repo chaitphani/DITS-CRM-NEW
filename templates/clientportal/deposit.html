@@ -1,0 +1,25 @@
+{% extends 'clientportal/client_index.html' %} {% load i18n %} {%load static%} {% block all_page %}
+<div class="container mt-3" style="height:62vh">
+
+    <div class="row deposit_section" style="display: flex;justify-content: center;">
+
+        <a href="{%url 'bitcoin_payment'%}"><img src="{%static 'image/icon/BTC.png'%}" style="margin-top:4%;width:5rem" />
+        </a>
+
+        &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+
+        <a href="{%url 'usdt'%}"><img src="{%static 'image/icon/USDT.png'%}" style="margin-top:4%;width:5rem" /> </a>
+
+    </div>
+
+
+
+    <br>
+    <div class="section mt-5">
+        {%block deposit_divepay%}{%endblock%} {%block deposit_neteller%}{%endblock%} {%block deposit_skrill%}{%endblock%}
+
+
+    </div>
+</div>
+
+{%endblock%}

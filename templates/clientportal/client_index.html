@@ -1,0 +1,795 @@
+{% load i18n %} {%load static%} {% load custom_tag %}
+
+<!-- var navbarShadow = true-->
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+
+<!-- Mirrored from pixinvent.com/stack-responsive-bootstrap-4-admin-template/html/ltr/vertical-menu-template/layout-2-columns.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 21 Feb 2019 08:16:01 GMT -->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description"
+        content="Stack admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
+    <meta name="keywords"
+        content="admin template, stack admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="author" content="PIXINVENT">
+    <title>DITS</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <script src="{%static 'ajax/libs/font-awesome/font-awesome.css'%}" crossorigin="anonymous"></script>
+
+    <link rel="apple-touch-icon" href="../../../app-assets/images/ico/apple-icon-120.png">
+
+    <!-- <link rel="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css"> -->
+    <script src="{%static 'bootstrap/dataTable/dataTables.bootstrap4.min.css'%}"></script>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="{%static 'ajax/libs/jquery/jquery-3.4.1.min.js'%}"></script>
+
+    <!-- <script src=" https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script> -->
+    <script src="{%static 'ajax/libs/jquery/jquery.dataTables.min.js'%}"></script>
+
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="{%static 'ajax/libs/jquery/jquery-3.2.1.min.js'%}"></script>
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{%static 'bootstrap/4.5.2/css/bootstrap.4.min.css'%}">
+
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="{%static 'bootstrap/4.5.2/js/bootstrap.4.min.js'%}"></script>
+    <style>
+        body,
+        html {
+            height: 100%;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        #cover-spin {
+            position: fixed;
+            width: 100%;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background-color: red;
+            z-index: 9999;
+            display: none;
+        }
+        .p-card{
+            border: 1px solid #ddd;
+            background-color: #eee;
+        }
+
+.pl-25{
+    padding-left:25%;
+}
+        @-webkit-keyframes spin {
+            from {
+                -webkit-transform: rotate(0deg);
+            }
+
+            to {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        #cover-spin::after {
+            content: '';
+            display: block;
+            position: absolute;
+            left: 48%;
+            top: 40%;
+            width: 40px;
+            height: 40px;
+            border-style: solid;
+            border-color: black;
+            border-top-color: transparent;
+            border-width: 4px;
+            border-radius: 50%;
+            -webkit-animation: spin .8s linear infinite;
+            animation: spin .8s linear infinite;
+        }
+
+        .f1 {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .f-height {
+            height: 100vh;
+        }
+
+        .bg-primary {
+            background-color:#383838!important;
+        }
+
+        .txt-primary {
+            color: #122A8C !important;
+        }
+
+        .bg-secondarys {
+            background-color: #191919;
+        }
+
+        .txt-red {
+            color: #ED0010
+        }
+
+        .btn-default {
+            background-color: #ED0010;
+            border: 1px solid #ED0010;
+            color: white;
+        }
+
+        .statics {
+            background-color: black;
+            width: 106%;
+        }
+
+        .sd-icon {
+            height: 4vh;
+        }
+
+        .navk:hover {
+            background-color:#efca07 !important;
+            width: 100%;
+        }
+
+        .nav-mail-icon {
+            height: 2vh;
+        }
+
+        .list-group-item {
+            border: 1px solid rgb(25 25 25);
+            padding: 6px;
+        }
+
+        .card {
+            border: 1px solid rgb(25 25 25);
+        }
+
+        .btn-pd {
+            padding: 3px;
+        }
+
+        .profilecard {
+            width: 50%;
+            display: block;
+        }
+
+        .nav-top {
+            margin-top: -10%
+        }
+
+        .wk-75 {
+            width: 75%;
+        }
+
+        #wrapper {
+            padding-left: 0;
+            transition: all 0.5s ease;
+            position: relative;
+        }
+
+        #sidebar-wrapper {
+            z-index: 1000;
+            position: fixed;
+            left: 250px;
+            width: 0;
+            height: 100%;
+            margin-left: -250px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            background:#383838;
+            transition: all 0.5s ease;
+        }
+
+        #wrapper.toggled #sidebar-wrapper {
+            width: 250px;
+        }
+
+        .sidebar-brand {
+            position: absolute;
+            top: 0;
+            width: 250px;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .sidebar-brand h2 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 24px;
+            color: #fff;
+        }
+
+        .sidebar-nav {
+            position: absolute;
+            top: 75px;
+            width: 250px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .sidebar-nav>li {
+            text-indent: 10px;
+            line-height: 42px;
+        }
+
+        .sidebar-nav>li a {
+            display: block;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .sidebar-nav>li>a:hover,
+        .sidebar-nav>li.active>a {
+            text-decoration: none;
+            color: #fff;
+            background: #191919;
+        }
+
+        .sidebar-nav>li>a i.fa {
+            font-size: 24px;
+            width: 60px;
+        }
+
+        #navbar-wrapper {
+            width: 100%;
+            position: absolute;
+            z-index: 2;
+        }
+
+        #wrapper.toggled #navbar-wrapper {
+            position: absolute;
+            margin-right: -250px;
+        }
+
+        #navbar-wrapper .navbar {
+            border-width: 0 0 0 0;
+            background-color:#383838;
+            font-size: 15px;
+            margin-bottom: 0;
+            border-radius: 0;
+        }
+
+        #navbar-wrapper .navbar a {
+            color: #757575;
+        }
+
+        #navbar-wrapper .navbar a:hover {
+            color: white;
+        }
+
+        #content-wrapper {
+            width: 100%;
+            position: absolute;
+            padding: 15px;
+            top: 100px;
+        }
+
+        #wrapper.toggled #content-wrapper {
+            position: absolute;
+            margin-right: -250px;
+        }
+        .text-bl{
+            color:#57D9F1;
+        }
+
+        @media (min-width: 992px) {
+            #wrapper {
+                padding-left: 250px;
+            }
+
+            #wrapper.toggled {
+                padding-left: 60px;
+            }
+
+            #sidebar-wrapper {
+                width: 250px;
+            }
+
+            #wrapper.toggled #sidebar-wrapper {
+                width: 60px;
+            }
+
+            #wrapper.toggled #navbar-wrapper {
+                position: absolute;
+                margin-right: -190px;
+            }
+
+            #wrapper.toggled #content-wrapper {
+                position: absolute;
+                margin-right: -190px;
+            }
+
+            #navbar-wrapper {
+                position: relative;
+            }
+
+            #wrapper.toggled {
+                padding-left: 60px;
+            }
+
+            #content-wrapper {
+                position: relative;
+                top: 0;
+            }
+
+            #wrapper.toggled #navbar-wrapper,
+            #wrapper.toggled #content-wrapper {
+                position: relative;
+                margin-right: 60px;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 991px) {
+            #wrapper {
+                padding-left: 60px;
+            }
+
+            #sidebar-wrapper {
+                width: 60px;
+            }
+
+            #wrapper.toggled #navbar-wrapper {
+                position: absolute;
+                margin-right: -250px;
+            }
+
+            #wrapper.toggled #content-wrapper {
+                position: absolute;
+                margin-right: -250px;
+            }
+
+            #navbar-wrapper {
+                position: relative;
+            }
+
+            #wrapper.toggled {
+                padding-left: 250px;
+            }
+
+            #content-wrapper {
+                position: relative;
+                top: 0;
+            }
+
+            #wrapper.toggled #navbar-wrapper,
+            #wrapper.toggled #content-wrapper {
+                position: relative;
+                margin-right: 250px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            #wrapper {
+                padding-left: 0;
+            }
+
+            #sidebar-wrapper {
+                width: 0;
+            }
+
+            #wrapper.toggled #sidebar-wrapper {
+                width: 250px;
+            }
+
+            #wrapper.toggled #navbar-wrapper {
+                position: absolute;
+                margin-right: -250px;
+            }
+
+            #wrapper.toggled #content-wrapper {
+                position: absolute;
+                margin-right: -250px;
+            }
+
+            #navbar-wrapper {
+                position: relative;
+            }
+
+            #wrapper.toggled {
+                padding-left: 250px;
+            }
+
+            #content-wrapper {
+                position: relative;
+                top: 0;
+            }
+
+            #wrapper.toggled #navbar-wrapper,
+            #wrapper.toggled #content-wrapper {
+                position: relative;
+                margin-right: 250px;
+            }
+        }
+
+        /*
+ * Off Canvas sidebar at medium breakpoint
+ * --------------------------------------------------
+ */
+
+        .sd-icon {
+            height: 2vh;
+        }
+
+        .logoutbtn {
+            width: 50px;
+            padding-left: 10px;
+            margin-top: 3%;
+        }
+
+        .profilecard {
+            width: 50%;
+        }
+
+        .ml-5,
+        .mx-5 {
+            margin-left: 1rem !important;
+        }
+
+        .mr-5,
+        .mx-5 {
+            margin-right: 1rem !important;
+        }
+
+        /* .list-group-item {
+            overflow: scroll;
+        } */
+
+        .pl-5,
+        .px-5 {
+            padding-left: 1rem !important;
+        }
+
+        .sd-icon {
+            display: none;
+        }
+
+        .pl-4,
+        .px-4 {
+            padding-left: 0rem !important;
+        }
+
+        .nav-top {
+            margin-top: -10%;
+        }
+
+        .wk-75 {
+            width: 100%;
+        }
+        }
+
+        /*
+ * Off Canvas wider at sm breakpoint
+ * --------------------------------------------------
+ */
+        @media screen and (max-width: 34em) {
+            .card {
+                overflow: hidden;
+            }
+
+            .card-body .rotate {
+                z-index: 8;
+                float: right;
+                height: 100%;
+            }
+
+            .card-body .rotate i {
+                color: rgba(20, 20, 20, 0.15);
+                position: absolute;
+                left: 0;
+                left: auto;
+                right: -10px;
+                bottom: 0;
+                display: block;
+                -webkit-transform: rotate(-44deg);
+                -moz-transform: rotate(-44deg);
+                -o-transform: rotate(-44deg);
+                -ms-transform: rotate(-44deg);
+                transform: rotate(-44deg);
+            }
+        }
+    </style>
+    <script>
+        $('.sub-menu ul').hide();
+        $(".sub-menu a").click(function () {
+            $(this).parent(".sub-menu").children("ul").slideToggle("100");
+            $(this).find(".right").toggleClass("fa-caret-up fa-caret-down");
+        });
+    </script>
+</head>
+
+<body>
+    <div id="wrapper">
+        <aside id="sidebar-wrapper" class="bx-shadow">
+            <div class="sidebar-brand" style="background-color:#060303;">
+                <h6 class="text-white">DITS CRM</h6>
+            </div>
+            <ul class="sidebar-nav pt-3 ">
+                <li class="active">
+                    <a class="nav-link text-center text-justify">
+                        <span class="f1 text-white h6">Client Id : {{ request.user.register.client_id }}</span>
+                    </a>
+                </li>
+                <li class="text-justify">
+                    <a href="{% url 'client-dash' %}">
+                        <i class="fa fa-tachometer text-white" aria-hidden="true"></i>
+                        <span class="f1 text-white font-weight-normal h6">{% trans "My Performance" %}</span>
+                    </a>
+                </li>
+                <li class="mt-1 text-justify" data-toggle="tooltip" data-placement="right" title="Components">
+                    <a class=" nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponentsk"
+                        data-parent="#exampleAccordion">
+                        <i class="fa fa-book text-white"></i>
+                        <span class="text-white f1 h6"> {% trans "My Profile" %} <i class="fa fa-angle-down float-right mt-2"
+                                aria-hidden="true"></i>
+                        </span>
+                    </a>
+                    <ul class="sidenav-second-level collapse" id="collapseComponentsk"
+                        style="background-color: #333131;">
+                        <li class="text-justify pl-25">
+                            <a href="{%url 'profile'%}" class="text-white f1"> <i
+                                    class="fa fa-angle-double-right text-white"
+                                    aria-hidden="true"></i><span class="pl-2 h6"> {% trans "Profile" %}</span>
+                            </a>
+                        </li>
+                        <li class=" text-justify pl-25">
+                            <a href="{%url 'myaccount'%}" class="text-white f1"> <i
+                                    class="fa fa-angle-double-right text-white" aria-hidden="true"></i><span class="pl-2 h6"> {%trans "My Account"%} </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="text-justify">
+                    <a href="{%url 'liveaccount'%}">
+                        <i class="fa fa-briefcase text-success"></i> <span class="f1 text-white h6">{%trans "Open Live Account "%}
+                        </span>
+                    </a>
+                </li>
+                <li class="text-justify">
+                    <a href="{%url 'demoaccount'%}">
+                        <i class="fa fa-graduation-cap" style="color:blue"></i> <span class="f1 text-white h6">{%trans "Open Demo Account "%}
+                           </span>
+                    </a>
+                </li>
+                <li class="mt-1 text-justify" data-toggle="tooltip" data-placement="right" title="Components">
+                    <a class=" nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponentskl"
+                        data-parent="#exampleAccordion">
+                        <i class="fa fa-book text-white"></i>
+                        <span class="text-white f1 h6"> {%trans "My Payments"%}<i class="fa fa-angle-down float-right mt-2"
+                                aria-hidden="true"></i>
+                        </span>
+                    </a>
+                    <ul class="sidenav-second-level collapse" id="collapseComponentskl"
+                        style="background-color: #333131;">
+                        <li class="text-justify pl-25">
+                            <a href="{%url 'cldeposit'%}" class="text-white f1"> <i
+                                    class="fa fa-angle-double-right text-white"
+                                    aria-hidden="true"></i><span class="pl-2 h6"> {%trans "Deposit"%}</span>
+                            </a>
+                        </li>
+                        <li class=" text-justify pl-25">
+                            <a href="{%url 'clwithdraw'%}" class="text-white f1"> <i
+                                    class="fa fa-angle-double-right text-white" aria-hidden="true"></i><span class="pl-2 h6">{%trans "Withdraw"%}</span>
+                            </a>
+                        </li>
+                        <li class=" text-justify pl-25">
+                            <a href="{%url 'manage_funds'%}" class="text-white f1"> <i
+                                    class="fa fa-angle-double-right text-white" aria-hidden="true"></i>
+                                <span class="pl-2 h6"> {%trans "Transfer"%} </span>
+                            </a>
+                        </li>
+                        <li class=" text-justify pl-25">
+                            <a href="{%url 'wallet_finance'%}" class=" text-white f1"> <i
+                                    class="fa fa-angle-double-right text-white" aria-hidden="true"></i>
+                                <span class="pl-2 h6"> {%trans "Wallet Finance"%}  </span>
+
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="text-justify">
+                    <a href="{%url 'upload_document'%}">
+                        <i class="fa fa-folder text-white"></i>
+                        <span class="f1 text-white h6"> {%trans "Documents"%} </span>
+                    </a>
+                </li>
+                <li class="text-justify">
+                    <a href="{% url 'dplateform' %}">
+                        <i class="fa fa-download text-white"></i>
+                        <span class="f1 text-white h6"> {%trans "Download Platform "%}  </span>
+                    </a>
+                </li>
+                <li class="text-justify">
+                    <a href="https://divsolution.com/" target="_blank">
+                        <i class="fa fa-globe text-white" aria-hidden="true"></i>
+                        <span class="f1 pl-4 text-white h6">www.divsolution.com</span>
+                    </a>
+                </li>
+                <br>
+                <li class="active">
+                    <a class="text-center">
+                        <span class="f1 text-white h6"> {%trans "Real MT4 Accounts"%}  </span>
+                    </a>
+                    <div class="row lkrow pl-2" id="real_mt4" style="color: white;">
+                    </div>
+                </li>
+                <br>
+                <li class="active">
+                    <a class="text-center">
+                        <span class="f1 text-white h6"> {%trans "Demo MT4 Accounts"%}  </span>
+                    </a>
+                    <div class="row lkrow" id="demo_mt4" style="color:white;">
+                    </div>
+                </li>
+            </ul>
+        </aside>
+        <div id="navbar-wrapper">
+            <nav class="navbar navbar-inverse py-4">
+                <ul class="navbar-nav">
+                    <a class="" id="sidebar-toggle"><i class="fa fa-bars"></i></a> {% if request.user.is_authenticated %}
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link text-white  text-capitalize f1 h6"> {%trans "Hello"%}  &nbsp;
+                            <span class="f1 h6" style="color:#35d450">{{request.user}}</span></a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-white f1 h6"> {%trans "Wallet Balance"%}  &nbsp;:<span
+                            class="text-success h6 f1">&nbsp;&nbsp;$&nbsp;
+                            {{ request.user.userwallet_set.first.amount|floatformat:2}} USD</span></a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                 
+                    <li class="nav-item">
+                        <select name="" id="lang_select" class="form-control">
+                            <option value="en"> {%trans "Language"%}</option>
+                            <option value="zh">English/{% trans "Chinese" %}</option>
+                        </select>
+                    </li>
+                  
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                      <!-- <li class="nav-item">
+                        <a class="nav-link f1 h6 text-white" data-toggle="collapse"><img
+                                src="{%static 'image/icon/mailicon.png'%}"
+                                class="nav-mail-icon" />&nbsp;&nbsp;support@hnxinluan.cn</a>
+                    </li> -->
+                    <li class="nav-item bg-primary logoutbtn">
+                        <a class="nav-link" href="{%url 'logout'%}">
+                            <img src="{%static 'image/icon/logout.png'%}" style="height: 4vh;" />
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <section id="content-wrapper">
+            <div class="row mb-5" style="overflow: scroll;">
+                <div class="col-lg-12 col-md-12 mb-5">
+                    {% block all_page %}{%endblock%}
+                </div>
+            </div>
+        </section>
+    </div>
+    <footer class="container-fluid" style="bottom: 0;position: fixed;"> 
+       
+        <div class="row" style="background-color: #1a1a1a;">
+        <div class="offset-md-9 offset-lg-9">
+           <p class="text-white pt-2">Copyright@2020 DITS, All rights reserved</p>
+        </div>
+    </div>
+    </footer>
+
+    <script>
+        $(document).ready(function () {
+
+            $('[data-toggle=offcanvas]').click(function () {
+                $('.row-offcanvas').toggleClass('active');
+            });
+
+        });
+    </script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        function user_account() {
+            $.ajax({
+                url: `{% url 'GetAccountDetailAPIView' %}`,
+                type: 'GET',
+                beforeSend: function (response) {
+                    $('#cover-spin').show(0);
+                },
+                complete: function (response) {
+                    $('#cover-spin').hide(0);
+                },
+                success: function (response) {
+                    var live = $('#real_mt4')
+                    var demo = $('#demo_mt4')
+                    live.empty()
+                    demo.empty()
+                    for (var i = 0; i < response.data.length; i++) {
+                        if (response.data[i].server_type == 0) {
+                            live_code = `<div class="col-lg-6 text-white"><p>#${response.data[i].login}<p></div>
+            <div class="col-lg-6"><p class="plink text-success">${parseFloat(response.data[i].balance)} ${response.data[i].cu_type}<p></div>`
+                            live.append(live_code)
+                        } else if (response.data[i].server_type == 1) {
+                            demo_code = `<div class="col-lg-6 text-white"><p>#${response.data[i].login}<p></div>
+            <div class="col-lg-6"><p class="plink text-bl">${parseFloat(response.data[i].balance)} ${response.data[i].cu_type}<p></div>`
+                            demo.append(demo_code)
+                        }
+                    }
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            user_account();
+        });
+    </script>
+
+    <script>
+        const $button = document.querySelector('#sidebar-toggle');
+        const $wrapper = document.querySelector('#wrapper');
+
+        $button.addEventListener('click', (e) => {
+            e.preventDefault();
+            $wrapper.classList.toggle('toggled');
+        });
+    </script>
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <script>
+        // console.log("----------", window.location.origin)  /* ipaddress */
+        // console.log("----------", window.location.pathname)  /* variable path */
+        // console.log("----------", window.location.href)   /* absolute url  */
+
+        $("#lang_select").change(function () {
+            /* for china 11 */
+            var url = window.location.origin;
+            var link_total = window.location.href;
+            var name_path = window.location.pathname
+            var string_to_add = '/zh'
+            if (window.location.href.indexOf("zh") > -1) { document.location = link_total.replace('/zh', '') }
+            else {
+                if (window.location.href.indexOf("/en") > -1) {
+                    document.location = url + name_path.replace("/en", "/zh")
+                }
+                else {
+                    document.location = url + string_to_add + name_path
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

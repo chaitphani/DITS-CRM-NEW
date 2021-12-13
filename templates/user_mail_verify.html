@@ -1,0 +1,40 @@
+{% load i18n %} {%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>HNXINLUAN</title>
+
+    <style>
+        .cnt {
+            padding: 10px 10px;
+            border: 2px solid black;
+            width: 50%;
+            background-color: #ddd
+        }
+        
+        p1 {
+            padding: 10px 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container cnt">
+        <div class="row">
+            <img src="{%static 'images/xinlogos1.png'%}">
+        </div>
+
+        <p class="p1">{% trans "Dear " %} {{ username }}</p>
+        <p class="p1 ">{% trans "Your Registration has been successfully received. "%}</p>
+        <p class="p1 ">{% trans "Please use the code below to verify your email address and open up your HANMENGHUI Wallet "%}</p>
+
+        <p><b>{{random_id}}</b></p>
+        <p class="p1">{% trans "Thank You " %}</p>
+        <p class="p1">HANMENGHUI</p>
+    </div>
+
+
+</body>
+
+</html>

@@ -1,44 +1,42 @@
-import unicodecsv as csv
 from django.http import StreamingHttpResponse, JsonResponse
-from django.shortcuts import render,redirect,HttpResponse
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import letter, A4, landscape
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.enums import TA_CENTER, TA_RIGHT
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
-from django.contrib.auth.models import User
-from common.models import Country
-from .models import *
-from clientportal.models import *
+from django.shortcuts import render,redirect, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.db import connection
 from django.contrib.auth.decorators import login_required
-from django.views.generic import View, TemplateView
-import requests
-import jwt
-import json
-from django.core.mail import send_mail
+from django.views.generic import TemplateView
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from sportapp.models import *
-from .filters import DateRangeMaker, UserDepositsDjangoFilter, UserDepositsDjangoFilterCustomDate
-from datetime import datetime as dt
-from django.db import IntegrityError
-from django.db.models import Sum
-from datetime import datetime, timedelta, time, date
-import io
-import os
-import xlwt
-from urllib.parse import urlparse
-from rest_framework.generics import RetrieveAPIView
+from django.core.mail import send_mail
+from django.db.models import Sum, Func, Count
 from django.contrib import messages
+
+from rest_framework.generics import RetrieveAPIView
+
+import unicodecsv as csv
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter, A4, landscape
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.enums import TA_CENTER
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+import requests
+import json
+from datetime import datetime as dt
+from datetime import datetime, timedelta, date
+import io
+import xlwt
+
+from common.models import Country
+from .models import *
+from clientportal.models import *
+from sportapp.models import *
+from .filters import DateRangeMaker
 from .forms import RegisterUpdateForm
 from clientportal.models import *
+
 
 class ToPDF:
     def __init__(self, buffer, pagesize):
@@ -404,13 +402,27 @@ def lead_conversion_report(request):
     # {'reg_data': reg_data, 'docs':docs})
 
 def first_time_deposit_report(request):
-    reg_users = Register.objects.all()
+    reg_users = Transaction_Method.objects.all()
     return render(request,'dashboard/temp/first_time_deposit_report.html',{'reg_users': reg_users})
 
 
+class Month(Func):
+    function = 'EXTRACT'
+    template = "%(function)s(Month from %(expressions)s)"
+    output_field = models.IntegerField()
+
+
+class Year(Func):
+    function = 'EXTRACT'
+    template = "%(function)s(YEAR from %(expressions)s)"
+    output_field = models.IntegerField()
+
+
 def accounts_approved_report(request):
-    reg_users = Register.objects.all()
-    return render(request,'dashboard/temp/accounts_approved_report.html',{'reg_users': reg_users})              
+    
+    summary = (Uploaddocument.objects.filter(approve=True).annotate(month=Month('date_approved'), year=Year('date_approved'), total=Count('id')).values('month', 'year', 'total', 'user__register__country'))
+    return render(request,'dashboard/temp/accounts_approved_report.html', {'summary':summary})
+
 
 def search_by_id(request):
     r = None
@@ -714,19 +726,19 @@ def documents(request):
 
 @login_required(login_url='admin_login')
 def verify_document(request):
-    # import ipdb;ipdb.set_trace();
+
     if request.GET.get('u_id'):
         ui_d = request.GET.get('u_id')
     else:
         ui_d = ''
-        # messages.error(request, 'Documents already approved..!')
+
     reg_data = Register.objects.get(user_id= request.GET.get('u_id'))
     docs = Uploaddocument.objects.filter(user_id = request.GET.get('u_id')).first()
     if docs.status == 2:
-        Uploaddocument.objects.filter(user=request.GET.get('u_id')).update(type=2, approve=True)
+        Uploaddocument.objects.filter(user=request.GET.get('u_id')).update(type=2, approve=True, date_approved=datetime.now())
         docs = Uploaddocument.objects.filter(user_id = request.GET.get('u_id')).first()
     else:
-        messages="Documents were not uploaded by the client...!"
+        messages.info(request, "Documents were not uploaded by the client...!")
         return redirect('client')
     return render(request,'dashboard/temp/documents.html', {'docs':docs, 'reg_data':reg_data, 'u_id':ui_d})
 
@@ -1885,81 +1897,42 @@ class TransactionHistoryTemplateView(TemplateView):
 
 def add_money_to_wallet(request):
     
-    docs = []
-    current_amount = None
-    message1 = None
-    message2 = None
-    message3 = None
-
+    docs = ''
     user_id = request.GET.get('u_id')
 
-    currency = Addcurrency.objects.all()
-    comments = Comments.objects.all()
     reg_data = Register.objects.get(user_id=user_id)
-    user = get_object_or_404(User.objects.filter(id=user_id))
+    user = User.objects.get(id=user_id)
     user_wallet = UserWallet.objects.filter(user=user_id)
-    # user_wallet_instance = get_object_or_404(UserWallet.objects.filter(user=user_id))
+    user_document = Uploaddocument.objects.filter(user=user_id)
 
-    for x in user_wallet:
-        current_amount = x.amount
-    added_amount = request.POST.get('amount')
-    # try:
-    if added_amount:
-        action_type_list = request.POST.getlist('action_type')
-        action_type = action_type_list[0]
+    current_amount = 0
+    if len(user_wallet) > 0:
+        current_amount = user_wallet.first().amount
+        
+    if request.method == 'POST':
+        added_amount = request.POST.get('amount')
+        action_type = request.POST.get('action_type')
+        comment = request.POST.get('comments')
+        currency = request.POST.get('currency')
 
-        comment_list = request.POST.getlist('comments')
-        comment = comment_list[0]
-        try:
-            comment_instance = Comments.objects.get(id=int(comment))
-        except:
-            messages.warning(request, 'Comment data is missing..!')
-        currency_list = request.POST.getlist('currency')
-        currency = currency_list[0]
-        try:
-            entered_curr_instance = Addcurrency.objects.get(id=int(currency))
-        except:
-            messages.warning(request, 'provide a currency..!')
-        # batch_number = request.POST.get('batch_number')
+        comment_instance = Comments.objects.get(id=comment)
+        currency = Addcurrency.objects.get(id=currency)
+        trans_group = Transaction_Method.objects.create(user=user, type=action_type, comments=comment_instance, amount=added_amount, currency=currency)
+        trans_group.save()
 
         if action_type == '1':
-            if current_amount:
-                final_amount = current_amount + float(added_amount)
-                user_wallet.update(amount=final_amount)
-                trans_group = Transaction_Method(
-                    user=user,
-                    type=action_type,
-                    comments=comment_instance,
-                    amount=added_amount,
-                    currency=entered_curr_instance,
-                    # batch_number=str(batch_number),
-                    )
-                trans_group.save()
-                no = 10000 + trans_group.id
-                trans_group.batch_number = 'D'+ str(no)
-                # trans_group.batch_number = 'D100'+str(trans_group.id)
-                trans_group.save() 
-                return redirect('/dashboard/user/history/?u_id='+str(request.GET.get('u_id')))
-            else:
-                final_amount = 0 + float(added_amount)
-                user_wallet.update(amount=final_amount)
-                trans_group = Transaction_Method(
-                    user=user,
-                    type=action_type,
-                    comments=comment_instance,
-                    amount=added_amount,
-                    currency=entered_curr_instance,
-                    # batch_number=str(batch_number),
-                    )
-                trans_group.save()
-                no = 10000 + trans_group.id
-                trans_group.batch_number = 'D'+ str(no)
-                # trans_group.batch_number = 'D100'+str(trans_group.id)
-                trans_group.save() 
-                return redirect('/dashboard/user/history/?u_id='+str(request.GET.get('u_id')))
+            final_amount = current_amount + float(added_amount)
+            user_wallet.update(amount=final_amount)
+            if current_amount < 1:
+                trans_group.first_deposit_amount = added_amount
+                trans_group.first_deposit_date = datetime.now()
+
+            no = 10000 + trans_group.id
+            trans_group.batch_number = 'D'+ str(no)
+            trans_group.save() 
+            messages.success(request, 'Deposit success...')
         elif action_type == '2':
-            try:
-                user_document = Uploaddocument.objects.get(user=user_id)
+            if len(user_document) > 0:
                 if user_document.approve == True:
                     final_amount = current_amount
                     if float(added_amount) > 0:
@@ -1967,43 +1940,34 @@ def add_money_to_wallet(request):
                             final_amount = current_amount - float(added_amount)
                             user_wallet.update(amount=final_amount)
 
-                            trans_group = Transaction_Method(
-                                user=user,
-                                type=action_type,
-                                comments=comment_instance,
-                                amount=added_amount,
-                                currency=entered_curr_instance,
-                                # batch_number=str(batch_number),
-                                )
-                            trans_group.save()
                             no = 10000 + trans_group.id
                             trans_group.batch_number = 'W'+ str(no)
-                            trans_group.save() 
-                            return redirect('/dashboard/user/history/?u_id='+str(request.GET.get('u_id')))
+                            trans_group.save()
+                            messages.success(request, 'Withdraw success...')
                         else:
-                            return redirect('/dashboard/user/history/?u_id='+str(request.GET.get('u_id')))
+                            messages.error(request, 'Insufficient funds...!')
                     else:
-                        return redirect('/dashboard/user/history/?u_id='+str(request.GET.get('u_id')))
+                        messages.error(request, 'Please enter amount higher than 1..!')
                 else:
-                    # messages.error(request, 'The documents were not verified yet...!')
-                    msg = 'The documents were not verified yet...!'
-            except:
-                messages.error(request, 'User not uploaded the documents..!')
-                # return redirect('/dashboard/user/history/?u_id='+str(request.GET.get('u_id')))
+                    messages.error(request, 'The documents are not verified yet...!')
+            else:
+                messages.error(request, 'Please upload the user docs..!')
     try:
         docs = Uploaddocument.objects.get(user_id=user_id)
     except:
         pass
 
-    return render(request, 'dashboard/temp/crm_add_wallet_amount.html', {
+    currency = Addcurrency.objects.all()
+    comments = Comments.objects.all()
+
+    data = {
         'reg_data': reg_data, 
         'currency': currency,
-        # 'user_document': user_document,
         'comments': comments,
         'user_wallet': user_wallet,
-        # 'redirect_url': redirect('/dashboard/user/history/?u_id='+str(request.GET.get('u_id'))),
         'docs':docs,
-        })
+    }
+    return render(request, 'dashboard/temp/crm_add_wallet_amount.html', data)
 
 
 def trans_history(request, exporttype=None):

@@ -2,83 +2,170 @@
 {% load i18n %}
 {% load static %}
 {% block report_detail %}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.2.0/css/fixedHeader.dataTables.min.css">
+<style>
+	thead input {
+        width: 100%;
+    }
+</style>
+
 <div class="container-fluid">
-
-
-<div class="d-flex mt-3" style="background-color: #f5f5f5;border-radius: 4px;padding: 8px 15px;height: 50px;">
-    <p class="h6 pt-2">Approved Accounts</h6>
+	<div class="card mt-3" style="background-color: white;padding: 20px;">
+		<h5 class="h6 pt-2">Approved Accounts</h5>
+		<!-- <div class="row"> -->
+			<!-- <div class="col-lg-2 col-md-2"></div>
+			<div class="col-lg-2 col-md-2">
+				<div class="form-group">
+					<label for="">Month</label>
+					<select name="month" id="" class="form-control">
+						<option value="1">January</option>
+						<option value="2">February</option>
+						<option value="3">March</option>
+						<option value="4">April</option>
+						<option value="5">May</option>
+						<option value="6">June</option>
+						<option value="7">July</option>
+						<option value="8">August</option>
+						<option value="9">September</option>
+						<option value="10">October</option>
+						<option value="11">November</option>
+						<option value="12">December</option>
+					</select>
+					
+				</div>
+			</div>
+			<div class="col-lg-2 col-md-2">
+				<div class="form-group">
+					<label for="">Year</label>
+					<select id="ddlYears" name="year" class="form-control"></select>
+				</div>
+			</div>
+			<div class="col-lg-2 col-md-2">
+				<div class="form-group">
+					<label>Country</label>
+					<select class="form-control" name="country">
+						<option value="">Please select</option>
+						{% for country in countries %}
+						<option value="{{country.name}}">{{country.name}}</option>
+						{% endfor %}
+					</select>
+				</div>
+			</div> -->
+			<!-- <div class="col-lg-3 col-md-3">
+				<div class="form-group">
+					<label>Office</label>
+					<select class="form-control"> Please Select</select>
+				</div>
+			</div> -->
+			<!-- <label>Time Period</label> -->
+			<!-- <div class="col-lg-2 col-md-2">
+				<div class="form-group pt-2">
+					<a class="btn btn-success btn-block text-white mt-4">Search&nbsp;
+				
+					</a>
+				</div>
+			</div> -->
+		<!-- </div> -->
+		<!-- <div class="row">
+			<div class="col-lg-12 col-md-12">
+				<a class="btn btn-default" style="background-color: #eee;border-color: #eee;"><i class="fa fa-download"
+						aria-hidden="true"></i></a>
+			</div>
+		</div> -->
+		<table class="table table-striped mt-5 table-sm w-100 display" id="example" style="width: 100%;">
+			<thead>
+				<tr class="text-center">
+					<th>S.no</th>
+					<th>Country</th>
+					<th>Approval Count</th>
+					<th>Approval Month</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% if summary %}
+				{% for sum in summary %}
+				<tr class="text-center">
+					<td>{{forloop.counter}}</td>
+					<td>{{sum.user__register__country}}</td>
+					<td>{{sum.total}}</td>
+					<td>{{sum.year}}-{{sum.month}}</td>
+				</tr>
+				{% endfor %}
+				{% else %}
+				<tr class="text-center">
+					<td colspan="4">No data</td>
+				</tr>
+				{% endif %}
+			</tbody>
+		</table>
+	</div>
 </div>
-<div class="card mt-3" style="background-color: white;padding: 20px;">
-  <div class="row">
-    <div class="col-lg-4 col-md-4">
-        <div class="form-group">
-<label>Time Period</label>
-      {% include 'dashboard/temp/customfilter.html' %}
 
-      </div>
-    </div>
-
-    <div class="col-lg-3 col-md-3">
-        <div class="form-group">
-            <label>Select Country</label>
-        <select class="form-control"> Please Select</select>
-    </div>
-    </div>
-    <div class="col-lg-3 col-md-3">
-        <div class="form-group">
-            <label>Office</label>
-        <select class="form-control"> Please Select</select>
-    </div>
-    </div>
-    <div class="col-lg-2 col-md-2">
-        <div class="form-group pt-2">
-           <a class="btn btn-success btn-block text-white mt-4">Search&nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i>
-           </a>
-    </div>
-    </div>
-
-    </div>
-
- 
-  <div class="row">
-    <div class="col-lg-12 col-md-12">
-      <a class="btn btn-default" style="background-color: #eee;border-color: #eee;"><i class="fa fa-download" aria-hidden="true"></i></a>
-    </div>
-  </div>
-    <table class="table table-striped mt-5 table-sm w-100">
-        <thead>
-          <tr class="text-center">
-            <th scope="col" class="h6">Country</th>
-            <th scope="col" class="h6">Approval Count</th>
-            <th scope="col" class="h6">Approval Month</th>
-       
-
-
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="text-center">
-            <td>xxxxx</td>
-            <td>xxxxx</td>
-            <td>xxxxx</td>
-    
-          
-          </tr>
-    
-        </tbody>
-      </table>
-</div>
-</div>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/fixedheader/3.2.0/js/dataTables.fixedHeader.min.js"></script>
 
 <script>
-  function myFunction() {
-  var x = document.getElementById("myDIV");
-  if (x.style.display === "none") {
-    x.style.display = "block";
-  } else {
-    x.style.display = "none";
-  }
-}
-</script>
+	$(document).ready(function () {
+		// Setup - add a text input to each footer cell
+		$('#example thead tr')
+			.clone(true)
+			.addClass('filters')
+			.appendTo('#example thead');
 
+		var table = $('#example').DataTable({
+			orderCellsTop: true,
+			fixedHeader: true,
+			initComplete: function () {
+				var api = this.api();
+
+				// For each column
+				api
+					.columns()
+					.eq(0)
+					.each(function (colIdx) {
+						// Set the header cell to contain the input element
+						var cell = $('.filters th').eq(
+							$(api.column(colIdx).header()).index()
+						);
+						var title = $(cell).text();
+						$(cell).html('<input type="text" placeholder="' + title + '" />');
+
+						// On every keypress in this input
+						$(
+							'input',
+							$('.filters th').eq($(api.column(colIdx).header()).index())
+						)
+							.off('keyup change')
+							.on('keyup change', function (e) {
+								e.stopPropagation();
+
+								// Get the search value
+								$(this).attr('title', $(this).val());
+								var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+								var cursorPosition = this.selectionStart;
+								// Search the column for that value
+								api
+									.column(colIdx)
+									.search(
+										this.value != ''
+											? regexr.replace('{search}', '(((' + this.value + ')))')
+											: '',
+										this.value != '',
+										this.value == ''
+									)
+									.draw();
+
+								$(this)
+									.focus()[0]
+									.setSelectionRange(cursorPosition, cursorPosition);
+							});
+					});
+			},
+		});
+	});
+</script>
 {% endblock %}

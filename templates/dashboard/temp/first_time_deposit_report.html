@@ -2,98 +2,112 @@
 {% load i18n %}
 {% load static %}
 {% block report_detail %}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.2.0/css/fixedHeader.dataTables.min.css">
+<style>
+	thead input {
+        width: 100%;
+    }
+</style>
+
 <div class="container-fluid">
-
-
-<div class="d-flex mt-3" style="background-color: #f5f5f5;border-radius: 4px;padding: 8px 15px;height: 50px;">
-    <p class="h6 pt-2">First Time Deposit</h6>
+	<div class="card mt-3" style="background-color: white;padding: 20px;">
+		<h5 class="h6 pt-2">First Time Deposit</h5>
+		<hr>
+		<table class="table table-striped mt-5 table-sm w-100" id="example" style="width: 100%;">
+			<thead>
+				<tr class="text-center">
+					<th>Client ID</th>
+					<th>Name</th>
+					<th>Country</th>
+					<th>Currency</th>
+					<th>Amount</th>
+					<th>Date</th>
+					<th>Method</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for user in reg_users %}
+					{% if user.first_deposit_amount %}
+						<tr class="text-center">
+							<td>{{user.user.register.client_id}}</td>
+							<td>{{user.user.register.uname}}</td>
+							<td>{{user.user.register.country}}</td>
+							<td>{{user.currency}}</td>
+							<td>{{user.first_deposit_amount}}</td>
+							<td>{{user.first_deposit_date|date:'d-M-Y'}}</td>
+							<td>{{user.comments}}</td>
+						</tr>
+					{% endif %}
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
 </div>
-<div class="card mt-3" style="background-color: white;padding: 20px;">
-  <div class="row">
-    <div class="col-lg-4 col-md-4">
-        <div class="form-group">
-<label>Time Period</label>
-      {% include 'dashboard/temp/customfilter.html' %}
-
-      </div>
-    </div>
-
-    <div class="col-lg-3 col-md-3">
-        <div class="form-group">
-            <label>Select Country</label>
-        <select class="form-control"> Please Select</select>
-    </div>
-    </div>
-    <div class="col-lg-3 col-md-3">
-        <div class="form-group">
-            <label>Office</label>
-        <select class="form-control"> Please Select</select>
-    </div>
-    </div>
-    <div class="col-lg-2 col-md-2">
-        <div class="form-group pt-2">
-           <a class="btn btn-success btn-block text-white mt-4">Search&nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i>
-           </a>
-    </div>
-    </div>
-
-    </div>
-<hr>
- 
-  <div class="row">
-    <div class="col-lg-12 col-md-12">
-      <a class="btn btn-default" style="background-color: #eee;border-color: #eee;"><i class="fa fa-download" aria-hidden="true"></i></a>
-    </div>
-  </div>
-    <table class="table table-striped mt-5 table-sm w-100">
-        <thead>
-          <tr class="text-center">
-            <th scope="col" class="h6">Client ID</th>
-            <th scope="col" class="h6">Name</th>
-            <th scope="col" class="h6">Country</th>
-            <th scope="col" class="h6">City</th>
-            <th scope="col" class="h6">State</th>
-            <th scope="col" class="h6">Currency</th>
-            <th scope="col" class="h6">Amount</th>
-            <th scope="col" class="h6">Fees</th>
-            <th scope="col" class="h6">Date</th>
-            <th scope="col" class="h6">Method</th>
-
-       
-
-
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="text-center">
-            <td>xxxxx</td>
-            <td>xxxxx</td>
-            <td>xxxxx</td>
-            <td>xxxxx</td>
-            <td>xxxxx</td>
-            <td>xxxxx</td>
-            <td>xxxxx</td>
-            <td>xxxxx</td>
-            <td>xxxxx</td>
-            <td>xxxxx</td>
-    
-          
-          </tr>
-    
-        </tbody>
-      </table>
-</div>
-</div>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/fixedheader/3.2.0/js/dataTables.fixedHeader.min.js"></script>
 
 <script>
-  function myFunction() {
-  var x = document.getElementById("myDIV");
-  if (x.style.display === "none") {
-    x.style.display = "block";
-  } else {
-    x.style.display = "none";
-  }
-}
-</script>
+	$(document).ready(function () {
+		// Setup - add a text input to each footer cell
+		$('#example thead tr')
+			.clone(true)
+			.addClass('filters')
+			.appendTo('#example thead');
 
+		var table = $('#example').DataTable({
+			orderCellsTop: true,
+			fixedHeader: true,
+			initComplete: function () {
+				var api = this.api();
+
+				// For each column
+				api
+					.columns()
+					.eq(0)
+					.each(function (colIdx) {
+						// Set the header cell to contain the input element
+						var cell = $('.filters th').eq(
+							$(api.column(colIdx).header()).index()
+						);
+						var title = $(cell).text();
+						$(cell).html('<input type="text" placeholder="' + title + '" />');
+
+						// On every keypress in this input
+						$(
+							'input',
+							$('.filters th').eq($(api.column(colIdx).header()).index())
+						)
+							.off('keyup change')
+							.on('keyup change', function (e) {
+								e.stopPropagation();
+
+								// Get the search value
+								$(this).attr('title', $(this).val());
+								var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+								var cursorPosition = this.selectionStart;
+								// Search the column for that value
+								api
+									.column(colIdx)
+									.search(
+										this.value != ''
+											? regexr.replace('{search}', '(((' + this.value + ')))')
+											: '',
+										this.value != '',
+										this.value == ''
+									)
+									.draw();
+
+								$(this)
+									.focus()[0]
+									.setSelectionRange(cursorPosition, cursorPosition);
+							});
+					});
+			},
+		});
+	});
+</script>
 {% endblock %}

@@ -26,7 +26,7 @@ import datetime
 import requests, json
 
 from .models import *
-
+from common.models import Country
 from django.db.models import Count, F, Value
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
@@ -105,7 +105,6 @@ class UserSignupTemplateView(TemplateView):
 
         context = super(UserSignupTemplateView, self).get_context_data(**kwargs)
         context['sq'] = Securityque.objects.all()
-        # context['country_names'] = self.country_api_call()
         context['cmp'] = self.request.GET.get('cmp')
         context['refid'] = self.request.GET.get('refid')
 
@@ -146,7 +145,7 @@ class UserSignupTemplateView(TemplateView):
         campCode = request.POST.get('campCode', None)
         refid = request.POST.get('refid', None)
         country = request.POST.get('country')
-
+        
         if Register.objects.all():
             last_user_client_id = Register.objects.last().client_id
             last_user_client_id += 1
@@ -160,7 +159,7 @@ class UserSignupTemplateView(TemplateView):
 
         profile = Profile.objects.create(user_id=user_obj.id)
         user_wall = UserWallet.objects.create(user_id=user_obj.id, register_id=register.id)
-
+        # user_docs = 
         camp_data_api = requests.get(f'http://ib-admin.divsolution.com/api/v1/get-campaign-list').json()
 
         if campCode == None and refid == None:

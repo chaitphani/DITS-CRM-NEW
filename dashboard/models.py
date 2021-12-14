@@ -43,15 +43,6 @@ class Addleadsregions(BaseModel):
     def __str__(self):
         return self.name
 
-class Addsalesnotes(BaseModel):
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
-    user = models.ForeignKey(Register, on_delete=models.SET_NULL, null=True)
-    note = models.CharField(max_length=1000, null=True, blank=True)
-    client_id = models.CharField(max_length=10, null=True, blank=True)
-
-    def __str__(self):
-        return self.note
-
 class Leads_access_level(BaseModel):
     name=models.CharField(max_length=100)
     def __str__(self):
@@ -122,6 +113,9 @@ class Transaction_Method(BaseModel):
     amount=models.FloatField()
     currency=models.ForeignKey('dashboard.Addcurrency',on_delete=models.CASCADE,null=True,blank=True)
     batch_number=models.CharField(max_length=100)
+    
+    first_deposit_amount = models.FloatField(default=0)
+    first_deposit_date = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.user.username

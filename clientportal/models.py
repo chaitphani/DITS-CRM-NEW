@@ -59,7 +59,8 @@ class Uploaddocument(BaseModel):
     type = models.IntegerField(default=1, choices=type)
     status = models.IntegerField(default=1, choices=status_choices)
     approve = models.BooleanField(default=False)
-
+    date_approved = models.DateTimeField(null=True, blank=True)
+    
     def __str__(self):
         return "{} {}".format(self.user, self.approve)
 

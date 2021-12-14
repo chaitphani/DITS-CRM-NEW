@@ -30,7 +30,7 @@ class BaseModel(models.Model):
 
 
 class Country(models.Model):
-    country_code = models.CharField(max_length=5)
+    country_code = models.CharField(max_length=5, unique=True)
     name = models.CharField(max_length=255)
     slug = models.SlugField(null=True, blank=True, editable=False, max_length=500)
 

@@ -223,28 +223,23 @@ class UserLiveAccountAPIView(APIView):
     permission_classes = (AllowAny,)
     authentication_classes = (SessionAuthentication,)
     user_model = User
-    print("User model-------", user_model)
     live_account_api_url = "https://demodc.use.6i.nullpoint.io/userinfoget"
 
     def request_send(self, jwt_dict_data=None, url=None):
-        print("in request send method--------")
         encoded_return_data = "request_message={0}".format(encode_jwt(data=jwt_dict_data))
         response_api = requests.post(url, data=encoded_return_data, verify=False)
         return decode_jwt(data=response_api.text)
 
     def get(self, *args, **kwargs):
-        print("in get method--------")
         if not self.kwargs.get('user_id'):
             return render_response(status=1, error="Please provide user_id params in get.")
 
         user_obj = self.user_model.objects.filter(id=self.kwargs.get('user_id'))
-        print("user object----------")
         if not user_obj.exists():
             return render_response(status=1, error="Please provide vaild user_id params in get.")
 
         lst = []
         for i in user_obj.first().liveaccount_set.all():
-            print("Value of I-----", i)
             api_data = jwt_decode.account_get_data
             api_data['account'] = "{0}".format(i.account_no)
             api_data['server'] = "Real"

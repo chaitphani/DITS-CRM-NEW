@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from .models import (
-    Contact, Profile, Register, Emailtemplate, Profile,RegisterUserCampaign, Mt4trades, Mt4users
+    Contact, Profile, Register, Emailtemplate, Profile,RegisterUserCampaign, Mt4trades, Mt4users, Addsalesnotes
 )
 
 
@@ -19,3 +19,4 @@ admin.site.register(Register, RegisterAdmin)
 admin.site.register(Profile)
 admin.site.register(Emailtemplate)
 admin.site.register(RegisterUserCampaign)
+admin.site.register(Addsalesnotes)

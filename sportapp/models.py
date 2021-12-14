@@ -50,7 +50,7 @@ class Register(BaseModel):
     lname = models.CharField(max_length=100)
     uname = models.CharField(max_length=100)
     dob = models.DateField(max_length=8)
-    verify=models.BooleanField(default=False)
+    verify = models.BooleanField(default=False)
     email = models.CharField(max_length=50, unique=True)
     mob = models.CharField(max_length=13)
     pwd1 = models.CharField(max_length=100)
@@ -139,3 +139,13 @@ class RegisterUserCampaign(BaseModel):
     
     def __str__(self):
             return '{}-{}'.format(self.register, self.ref_code)
+
+
+class Addsalesnotes(BaseModel):
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(Register, on_delete=models.SET_NULL, null=True)
+    note = models.CharField(max_length=1000, null=True, blank=True)
+    client_id = models.CharField(max_length=10, null=True, blank=True)
+
+    def __str__(self):
+        return self.note

@@ -568,41 +568,41 @@ def get_object_or_none(Models, request):
 
 @login_required(login_url='login_client')
 def upload_document(request):
-    documents = get_object_or_none(Uploaddocument, request)
-    if not documents:
-        if request.method == 'POST':
-            docs = Uploaddocument.objects.create(
-                user=request.user,
-                poifront=request.FILES.get('pidentityfront'),
-                poiback=request.FILES.get('pidentityback'),
-                poafront=request.FILES.get('paddressfront'),
-                poaback=request.FILES.get('paddressback'),
-                crs=request.FILES.get('crscans'),
-                odoc=request.FILES.get('otherdoc')
-            )
-            docs.status=2
-            docs.save()
-            # return redirect('dashboard')
-        return render(request,'clientportal/edit_document.html',{'documents':documents})
-    else:
-        user_doc = get_object_or_404(Uploaddocument,user=request.user)
-        if request.method == 'POST':
-            if request.FILES.get('pidentityfront'):
-                user_doc.poifront = request.FILES.get('pidentityfront')
-            if request.FILES.get('pidentityback'):
-                user_doc.poiback = request.FILES.get('pidentityback')
-            if request.FILES.get('paddressfront'):
-                user_doc.poafront = request.FILES.get('paddressfront')
-            if request.FILES.get('paddressback'):
-                user_doc.poaback = request.FILES.get('paddressback')
-            if request.FILES.get('crscans'):
-                user_doc.crs = request.FILES.get('crscans')
-            if request.FILES.get('otherdoc'):
-                user_doc.odoc = request.FILES.get('otherdoc')
-            user_doc.status=2
-            user_doc.save()
-            # return redirect('profile')
-        return render(request,'clientportal/edit_document.html',{'user_doc':user_doc,'documents':documents})
+    # documents = get_object_or_none(Uploaddocument, request)
+    # if not documents:
+    if request.method == 'POST':
+        docs = Uploaddocument.objects.create(
+            user=request.user,
+            poifront=request.FILES.get('pidentityfront'),
+            poiback=request.FILES.get('pidentityback'),
+            poafront=request.FILES.get('paddressfront'),
+            poaback=request.FILES.get('paddressback'),
+            crs=request.FILES.get('crscans'),
+            odoc=request.FILES.get('otherdoc')
+        )
+        docs.status=2
+        docs.save()
+    return render(request,'clientportal/edit_document.html')
+
+    # else:
+    #     user_doc = get_object_or_404(Uploaddocument,user=request.user)
+    #     if request.method == 'POST':
+    #         if request.FILES.get('pidentityfront'):
+    #             user_doc.poifront = request.FILES.get('pidentityfront')
+    #         if request.FILES.get('pidentityback'):
+    #             user_doc.poiback = request.FILES.get('pidentityback')
+    #         if request.FILES.get('paddressfront'):
+    #             user_doc.poafront = request.FILES.get('paddressfront')
+    #         if request.FILES.get('paddressback'):
+    #             user_doc.poaback = request.FILES.get('paddressback')
+    #         if request.FILES.get('crscans'):
+    #             user_doc.crs = request.FILES.get('crscans')
+    #         if request.FILES.get('otherdoc'):
+    #             user_doc.odoc = request.FILES.get('otherdoc')
+    #         user_doc.status=2
+    #         user_doc.save()
+    #         # return redirect('profile')
+    #     return render(request,'clientportal/edit_document.html',{'user_doc':user_doc,'documents':documents})
 
 
 def forget_password(request):
@@ -1543,3 +1543,5 @@ def performance(request):
 
 
 # cursor.execute(f"select MT4_TRADES.PROFIT from(MT4_TRADES join MT4_USERS on MT4_TRADES.LOGIN=MT4_USERS.LOGIN) join MT4_GROUPS on MT4_USERS.GROUP=MT4_GROUPS.GROUP where MT4_TRADES.LOGIN like '%{log}%' and MT4_TRADES.COMMENT = '' and MT4_TRADES.CLOSE_TIME = '1970-01-01 00:00:00' and MT4_GROUPS.COMPANY like '%Henan Xinluan Information%' ")
+
+

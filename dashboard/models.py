@@ -1,9 +1,10 @@
+from django.contrib.auth import default_app_config
 from django.db import models
+from django.forms.models import model_to_dict, modelformset_factory
 from common.models import BaseModel
 from django.contrib.auth.models import User
 from sportapp.models import Register
 
-# Create your models here.
 
 class Securityque(BaseModel):
     name  = models.CharField(max_length=300)
@@ -24,7 +25,9 @@ class Addcurrency(BaseModel):
         return self.name
 
 class Adddepartment(BaseModel):
+
     name=models.CharField(max_length=200)
+    
     def __str__(self):
         return self.name
 
@@ -79,20 +82,55 @@ class Depositpaymentgetway(BaseModel):
 
 
 class Agentusercreate(BaseModel):
+
+    choice_field = (('on', 'on'), (False, False))
+
     user=models.OneToOneField(User,on_delete=models.CASCADE)
     firstname = models.CharField(max_length=100)
     lastname = models.CharField(max_length=100)
     username = models.CharField(max_length=100)
     email = models.CharField(max_length=100)
-    department = models.CharField(max_length=100)
-    office = models.CharField(max_length=100)
-    brandvisibility = models.CharField(max_length=100)
-    accesslevel = models.CharField(max_length=100)
-    leadsaccesslevel = models.CharField(max_length=100)
-    leadsregions = models.CharField(max_length=1000)
     password = models.CharField(max_length=100)
     confirmpassword = models.CharField(max_length=100)
 
+    department = models.ForeignKey(Adddepartment, on_delete=models.SET_NULL, null=True)
+    office = models.ForeignKey(Addoffice, on_delete=models.SET_NULL, null=True)
+    brandvisibility = models.ForeignKey(Addbrand, on_delete=models.SET_NULL, null=True)
+    accesslevel = models.ForeignKey(Access_level, on_delete=models.SET_NULL, null=True)
+    leadsaccesslevel = models.ForeignKey(Leads_access_level, on_delete=models.SET_NULL, null=True)
+    leadsregions = models.ForeignKey(Addleadsregions, on_delete=models.SET_NULL, null=True)
+
+    # permissions
+    client_edit = models.CharField(max_length=5, choices=choice_field, default=False)
+    log_changes_view = models.CharField(max_length=5, choices=choice_field, default=False)
+    change_status_compliances = models.CharField(max_length=5, choices=choice_field, default=False)
+    note_add = models.CharField(max_length=5, choices=choice_field, default=False)
+    note_edit = models.CharField(max_length=5, choices=choice_field, default=False)
+    note_delete = models.CharField(max_length=5, choices=choice_field, default=False)
+    sales_agent_edit = models.CharField(max_length=5, choices=choice_field, default=False)
+    sales_notes_and_follow_ups = models.CharField(max_length=5, choices=choice_field, default=False)
+    mt4_demo_account_settings = models.CharField(max_length=5, choices=choice_field, default=False)
+    mt4_demo_account_balance_operation = models.CharField(max_length=5, choices=choice_field, default=False)
+    mt4_demo_account_changelog = models.CharField(max_length=5, choices=choice_field, default=False)
+    mt4_live_account_changelog = models.CharField(max_length=5, choices=choice_field, default=False)
+    docs_upload = models.CharField(max_length=5, choices=choice_field, default=False)
+    docs_delete = models.CharField(max_length=5, choices=choice_field, default=False)
+    pending_clients = models.CharField(max_length=5, choices=choice_field, default=False)
+    pending_clients_actions = models.CharField(max_length=5, choices=choice_field, default=False)
+    pending_partners = models.CharField(max_length=5, choices=choice_field, default=False)
+    pending_partner_actions = models.CharField(max_length=5, choices=choice_field, default=False)
+    pending_leverage_change_request = models.CharField(max_length=5, choices=choice_field, default=False)
+    view_finances = models.CharField(max_length=5, choices=choice_field, default=False)
+    deposit_actions = models.CharField(max_length=5, choices=choice_field, default=False)
+    withdrawal_actions = models.CharField(max_length=5, choices=choice_field, default=False)
+    lead_add = models.CharField(max_length=5, choices=choice_field, default=False)
+    saless_assignment_admin = models.CharField(max_length=5, choices=choice_field, default=False)
+    view_management_dashboard = models.CharField(max_length=5, choices=choice_field, default=False)
+    accounts_approved = models.CharField(max_length=5, choices=choice_field, default=False)
+    equity_change_report = models.CharField(max_length=5, choices=choice_field, default=False)
+    first_time_deposits = models.CharField(max_length=5, choices=choice_field, default=False)
+    lead_conversion_report = models.CharField(max_length=5, choices=choice_field, default=False)
+    
     def __str__(self):
         if self.firstname:
             return self.firstname

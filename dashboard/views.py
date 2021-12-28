@@ -1181,34 +1181,63 @@ class CreateUserTemplateView(TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        username_var = self.request.POST.get('uname')
-        email_var = self.request.POST.get('email')
+        
+        fname = request.POST.get('fname')
+        lname = request.POST.get('lname')
+        username = request.POST.get('uname')
+        email = request.POST.get('email')
         pwd1 = request.POST.get('pwd1')
         pwd2 = request.POST.get('pwd2')
-        if User.objects.filter(username=username_var).exists():
+
+        if User.objects.filter(username=username).exists():
             return self.get(request, error="Username or email has been already taken", *args, **kwargs)
         if pwd1 != pwd2:
             return self.get(request, error="Password Don't Match", *args, **kwargs)
-        user_obj = User.objects.create_user(username=username_var, password=pwd1, email=email_var)
-        fname = request.POST.get('fname')
-        lname = request.POST.get('lname')
-        uname = request.POST.get('uname')
-        email = request.POST.get('email')
-        department = request.POST.get('department')
-        office = request.POST.get('office')
-        brandvisibility = request.POST.get('brandvisibility')
-        accesslevel =  request.POST.get('accesslevel')
-        leadaccesslevel = request.POST.getlist('leadsaccesslevel')
-        leadsregions = request.POST.get('leadsregions')
 
-        register = Agentusercreate(firstname=fname,lastname=lname, username=uname,email=email, department=department,
-                   office=office,brandvisibility= brandvisibility,accesslevel= accesslevel,leadsaccesslevel =leadaccesslevel,
-                   leadsregions= leadsregions,password=pwd1,confirmpassword=pwd2,user_id=user_obj.id)
-        register.save()
-        SalesAssignment.objects.create(agent=register)
+        user_obj = User.objects.create_user(username=username, password=pwd1, email=email)
+
+        department = Adddepartment.objects.get(id=request.POST.get('department'))
+        office = Addoffice.objects.get(id=request.POST.get('office'))
+        brandvisibility = Addbrand.objects.get(id=request.POST.get('brandvisibility'))
+        accesslevel = Access_level.objects.get(id=request.POST.get('accesslevel'))
+        leadaccesslevel = Leads_access_level.objects.get(id=request.POST.get('leadsaccesslevel'))
+        leadsregions = Addleadsregions.objects.get(id=request.POST.get('leadsregions'))
+
+        try:
+            register = Agentusercreate.objects.create(user=user_obj, firstname=fname, lastname=lname, username=username, email=email, department=department, office=office, brandvisibility=brandvisibility, accesslevel=accesslevel, leadsaccesslevel=leadaccesslevel,leadsregions=leadsregions, password=pwd1, confirmpassword=pwd2, 
+            client_edit=request.POST.get('client_edit', False), 
+            log_changes_view=request.POST.get('log_changes_view', False), 
+            change_status_compliances=request.POST.get('change_status_compliances', False), 
+            note_add=request.POST.get('note_add', False), 
+            note_edit=request.POST.get('note_edit', False), 
+            note_delete=request.POST.get('note_delete', False), 
+            sales_agent_edit=request.POST.get('sales_agent_edit', False), 
+            sales_notes_and_follow_ups=request.POST.get('sales_notes_and_follow_ups', False), 
+            mt4_demo_account_settings=request.POST.get('mt4_demo_account_settings', False), 
+            mt4_demo_account_balance_operation=request.POST.get('mt4_demo_account_balance_operation', False), mt4_demo_account_changelog=request.POST.get('mt4_demo_account_changelog', False), 
+            mt4_live_account_changelog=request.POST.get('mt4_live_account_changelog', False), 
+            docs_upload=request.POST.get('docs_upload', False), 
+            docs_delete=request.POST.get('docs_delete', False), 
+            pending_clients=request.POST.get('pending_clients', False), 
+            pending_clients_actions=request.POST.get('pending_clients_actions', False), 
+            pending_partners=request.POST.get('pending_partners', False), 
+            pending_partner_actions=request.POST.get('pending_partner_actions', False), 
+            pending_leverage_change_request=request.POST.get('pending_leverage_change_request', False), 
+            view_finances=request.POST.get('view_finances', False), 
+            deposit_actions=request.POST.get('deposit_actions', False), 
+            withdrawal_actions=request.POST.get('withdrawal_actions', False), 
+            lead_add=request.POST.get('lead_add', False), 
+            saless_assignment_admin=request.POST.get('saless_assignment_admin', False), 
+            view_management_dashboard=request.POST.get('view_management_dashboard', False), 
+            accounts_approved=request.POST.get('accounts_approved', False), 
+            equity_change_report=request.POST.get('equity_change_report', False), 
+            first_time_deposits=request.POST.get('first_time_deposits', False), 
+            lead_conversion_report=request.POST.get('lead_conversion_report', False))
+            register.save()
+            SalesAssignment.objects.create(agent=register)
+        except Exception as e:
+            print('----in except-----', e)
         return redirect(agents)
-
-
 
 
 class ClientdetailTemplateView(TemplateView):
@@ -2309,3 +2338,4 @@ class AgentDetailApiView(APIView):
 #     camp_list = RegisterUserCampaign.objects.filter(ref_code=ref_id)
 #     data = json.dumps(list(camp_list))
 #     return JsonResponse(data, safe=False)
+

@@ -2,8 +2,8 @@ from django.contrib import admin
 from django.urls import path,include,re_path
 from . import views
 
-urlpatterns = [
-    # path('profile',views.profile, name='profile'),
+urlpatterns = (
+
     path('performance',views.performance, name='performance'),
 
     path('',views.dashboard, name='dashboard'),
@@ -14,7 +14,6 @@ urlpatterns = [
 
     path('deposit_by_merchant',views.deposit_by_merchant,name='deposit_by_merchant'),
     path('withdraw_by_merchant',views.withdraw_by_merchant,name='withdraw_by_merchant'),
-
 
     path('deposit_client',views.deposit, name='cldeposit'),
     path('deposit_divepay',views.deposit_divepay,name='deposit_divepay'),
@@ -57,4 +56,4 @@ urlpatterns = [
 
     path('client_dash',views.client_dash,name='client-dash'),
 
-]
+)

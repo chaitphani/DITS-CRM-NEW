@@ -878,3 +878,4 @@ class WithdrawApproveAPIView(APIView):
             status=type
         )
         return redirect('pendingwithdraw')
+

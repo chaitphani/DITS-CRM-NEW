@@ -1,6 +1,6 @@
 from django import forms
 from sportapp.models import Register
-from dashboard.models import Addaccounttype
+from dashboard.models import Addaccounttype, Agentusercreate
 
 
 class DateInput(forms.DateInput):
@@ -96,3 +96,9 @@ class RegisterUpdateForm(forms.ModelForm):
 
 	# 	# A user was found with this as a username, raise an error.
 	# 	raise forms.ValidationError('This email address is already in use.')
+
+
+class AgentUserCreateForm(forms.ModelForm):
+	class Meta:
+		model = Agentusercreate
+		fields = '__all__'

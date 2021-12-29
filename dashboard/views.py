@@ -1250,35 +1250,62 @@ class ClientdetailTemplateView(TemplateView):
 
 
 
-def updateagent(request,id):
+def updateagent(request, id):
 
-    a  = Agentusercreate.objects.get(id=id)
+    agent_obj = Agentusercreate.objects.get(id=id)
+
     if request.method == 'POST':
-        fname = request.POST['fname']
-        lname = request.POST['lname']
-        uname = request.POST['uname']
-        email = request.POST['email']
-        department = request.POST['department']
-        office = request.POST['office']
-        brandvisibility = request.POST['brandvisibility']
-        accesslevel = request.POST['accesslevel']
-        leadsaccesslevel = request.POST['leadsaccesslevel']
-        leadsregions = request.POST['leadsregions']
+        department = Adddepartment.objects.get(id=request.POST['department'])
+        office = Addoffice.objects.get(id=request.POST['office'])
+        brandvisibility = Addbrand.objects.get(id=request.POST['brandvisibility'])
+        accesslevel = Access_level.objects.get(id=request.POST['accesslevel'])
+        leadsaccesslevel = Leads_access_level.objects.get(id=request.POST['leadsaccesslevel'])
+        leadsregions = Addleadsregions.objects.get(id=request.POST['leadsregions'])
 
-        a.update(firstname=fname,lastname=lname, username=uname,email=email,department=department,
-            office=office,brandvisibility=brandvisibility,accesslevel=accesslevel,leadsaccesslevel=leadsaccesslevel,
-            leadsregions=leadsregions)
+        Agentusercreate.objects.filter(id=id).update(firstname=request.POST['fname'], lastname=request.POST['lname'], username=request.POST['uname'], email=request.POST['email'], department=department, office=office, brandvisibility=brandvisibility, accesslevel=accesslevel, leadsaccesslevel=leadsaccesslevel, leadsregions=leadsregions)
+
+        agent_obj.log_changes_view=request.POST.get('log_changes_view', False)
+        agent_obj.client_edit=request.POST.get('client_edit', False)
+        agent_obj.change_status_compliances=request.POST.get('change_status_compliances', False)
+        agent_obj.note_add = request.POST.get('note_add', False)
+        agent_obj.note_edit = request.POST.get('note_edit', False)
+        agent_obj.note_delete = request.POST.get('note_delete', False)
+        agent_obj.sales_agent_edit=request.POST.get('sales_agent_edit', False)
+        agent_obj.sales_notes_and_follow_ups=request.POST.get('sales_notes_and_follow_ups', False)
+        agent_obj.mt4_demo_account_settings=request.POST.get('mt4_demo_account_settings', False)
+        agent_obj.mt4_demo_account_balance_operation=request.POST.get('mt4_demo_account_balance_operation', False)
+        agent_obj.mt4_demo_account_changelog=request.POST.get('mt4_demo_account_changelog', False)
+        agent_obj.mt4_live_account_changelog=request.POST.get('mt4_live_account_changelog', False)
+        agent_obj.docs_upload=request.POST.get('docs_upload', False)
+        agent_obj.docs_delete=request.POST.get('docs_delete', False)
+        agent_obj.pending_clients=request.POST.get('pending_clients', False)
+        agent_obj.pending_clients_actions=request.POST.get('pending_clients_actions', False)
+        agent_obj.pending_partners=request.POST.get('pending_partners', False)
+        agent_obj.pending_partner_actions=request.POST.get('pending_partner_actions', False)
+        agent_obj.pending_leverage_change_request=request.POST.get('pending_leverage_change_request', False)
+        agent_obj.view_finances=request.POST.get('view_finances', False)
+        agent_obj.deposit_actions=request.POST.get('deposit_actions', False)
+        agent_obj.withdrawal_actions=request.POST.get('withdrawal_actions', False)
+        agent_obj.lead_add=request.POST.get('lead_add', False)
+        agent_obj.saless_assignment_admin=request.POST.get('saless_assignment_admin', False)
+        agent_obj.view_management_dashboard=request.POST.get('view_management_dashboard', False)
+        agent_obj.accounts_approved=request.POST.get('accounts_approved', False)
+        agent_obj.equity_change_report=request.POST.get('equity_change_report', False)
+        agent_obj.first_time_deposits=request.POST.get('first_time_deposits', False)
+        agent_obj.lead_conversion_report=request.POST.get('lead_conversion_report', False)
+        agent_obj.save()
         return redirect('agents')
-    else:
-        context = {}
-        context['department'] = Adddepartment.objects.all()
-        context['office'] = Addoffice.objects.all()
-        context['brand'] = Addbrand.objects.all()
-        context['accesslevel'] = Access_level.objects.all()
-        context['leadsaccesslevel'] = Leads_access_level.objects.all()
-        context['leadsregions'] = Addleadsregions.objects.all()
-        context['ag'] = a
-        return render(request,'dashboard/temp/updateagent.html', context=context)
+
+    data = {
+            'department':Adddepartment.objects.all(),
+            'office':Addoffice.objects.all(),
+            'brand':Addbrand.objects.all(),
+            'accesslevel':Access_level.objects.all(),
+            'leadsaccesslevel':Leads_access_level.objects.all(),
+            'leadsregions':Addleadsregions.objects.all(),
+            'agent':agent_obj,
+        }
+    return render(request,'dashboard/temp/updateagent.html', data)
 
 
 # class DespositHistoryTemplateView(TemplateView):

@@ -99,7 +99,8 @@ class Agentusercreate(BaseModel):
     accesslevel = models.ForeignKey(Access_level, on_delete=models.SET_NULL, null=True)
     leadsaccesslevel = models.ForeignKey(Leads_access_level, on_delete=models.SET_NULL, null=True)
     leadsregions = models.ForeignKey(Addleadsregions, on_delete=models.SET_NULL, null=True)
-
+    active_status = models.BooleanField(default=True)
+    
     # permissions
     client_edit = models.CharField(max_length=5, choices=choice_field, default=False)
     log_changes_view = models.CharField(max_length=5, choices=choice_field, default=False)

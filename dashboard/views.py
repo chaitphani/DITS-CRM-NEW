@@ -703,12 +703,6 @@ def exportData(data_list, exporttype, table_name, title_headers):
 
 
 @login_required(login_url='admin_login')
-def agents(request):
-    agents = Agentusercreate.objects.all()
-    return render(request,'dashboard/temp/crm_agent.html',{'agents':agents})
-
-
-@login_required(login_url='admin_login')
 def adduser(request):
     return render(request,'dashboard/temp/crm_adduser.html')
 
@@ -1167,79 +1161,6 @@ class LiveAccountRetrieve(RetrieveAPIView):
     serializer_class=RegisterSerializer
 
 
-class CreateUserTemplateView(TemplateView):
-    template_name = 'dashboard/temp/crm_adduser.html'
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(CreateUserTemplateView, self).get_context_data(**kwargs)
-        context['department'] = Adddepartment.objects.all()
-        context['office'] = Addoffice.objects.all()
-        context['brand'] = Addbrand.objects.all()
-        context['accesslevel'] = Access_level.objects.all()
-        context['leadsaccesslevel'] = Leads_access_level.objects.all()
-        context['leadsregions'] = Addleadsregions.objects.all()
-        return context
-
-    def post(self, request, *args, **kwargs):
-        
-        fname = request.POST.get('fname')
-        lname = request.POST.get('lname')
-        username = request.POST.get('uname')
-        email = request.POST.get('email')
-        pwd1 = request.POST.get('pwd1')
-        pwd2 = request.POST.get('pwd2')
-
-        if User.objects.filter(username=username).exists():
-            return self.get(request, error="Username or email has been already taken", *args, **kwargs)
-        if pwd1 != pwd2:
-            return self.get(request, error="Password Don't Match", *args, **kwargs)
-
-        user_obj = User.objects.create_user(username=username, password=pwd1, email=email)
-
-        department = Adddepartment.objects.get(id=request.POST.get('department'))
-        office = Addoffice.objects.get(id=request.POST.get('office'))
-        brandvisibility = Addbrand.objects.get(id=request.POST.get('brandvisibility'))
-        accesslevel = Access_level.objects.get(id=request.POST.get('accesslevel'))
-        leadaccesslevel = Leads_access_level.objects.get(id=request.POST.get('leadsaccesslevel'))
-        leadsregions = Addleadsregions.objects.get(id=request.POST.get('leadsregions'))
-
-        try:
-            register = Agentusercreate.objects.create(user=user_obj, firstname=fname, lastname=lname, username=username, email=email, department=department, office=office, brandvisibility=brandvisibility, accesslevel=accesslevel, leadsaccesslevel=leadaccesslevel,leadsregions=leadsregions, password=pwd1, confirmpassword=pwd2, 
-            client_edit=request.POST.get('client_edit', False), 
-            log_changes_view=request.POST.get('log_changes_view', False), 
-            change_status_compliances=request.POST.get('change_status_compliances', False), 
-            note_add=request.POST.get('note_add', False), 
-            note_edit=request.POST.get('note_edit', False), 
-            note_delete=request.POST.get('note_delete', False), 
-            sales_agent_edit=request.POST.get('sales_agent_edit', False), 
-            sales_notes_and_follow_ups=request.POST.get('sales_notes_and_follow_ups', False), 
-            mt4_demo_account_settings=request.POST.get('mt4_demo_account_settings', False), 
-            mt4_demo_account_balance_operation=request.POST.get('mt4_demo_account_balance_operation', False), mt4_demo_account_changelog=request.POST.get('mt4_demo_account_changelog', False), 
-            mt4_live_account_changelog=request.POST.get('mt4_live_account_changelog', False), 
-            docs_upload=request.POST.get('docs_upload', False), 
-            docs_delete=request.POST.get('docs_delete', False), 
-            pending_clients=request.POST.get('pending_clients', False), 
-            pending_clients_actions=request.POST.get('pending_clients_actions', False), 
-            pending_partners=request.POST.get('pending_partners', False), 
-            pending_partner_actions=request.POST.get('pending_partner_actions', False), 
-            pending_leverage_change_request=request.POST.get('pending_leverage_change_request', False), 
-            view_finances=request.POST.get('view_finances', False), 
-            deposit_actions=request.POST.get('deposit_actions', False), 
-            withdrawal_actions=request.POST.get('withdrawal_actions', False), 
-            lead_add=request.POST.get('lead_add', False), 
-            saless_assignment_admin=request.POST.get('saless_assignment_admin', False), 
-            view_management_dashboard=request.POST.get('view_management_dashboard', False), 
-            accounts_approved=request.POST.get('accounts_approved', False), 
-            equity_change_report=request.POST.get('equity_change_report', False), 
-            first_time_deposits=request.POST.get('first_time_deposits', False), 
-            lead_conversion_report=request.POST.get('lead_conversion_report', False))
-            register.save()
-            SalesAssignment.objects.create(agent=register)
-        except Exception as e:
-            print('----in except-----', e)
-        return redirect(agents)
-
-
 class ClientdetailTemplateView(TemplateView):
     template_name = 'dashboard/temp/client.html'
 
@@ -1247,65 +1168,6 @@ class ClientdetailTemplateView(TemplateView):
         context = super(ClientdetailTemplateView, self).get_context_data(**kwargs)
         context['country_names'] = Country.objects.all()
         return context
-
-
-
-def updateagent(request, id):
-
-    agent_obj = Agentusercreate.objects.get(id=id)
-
-    if request.method == 'POST':
-        department = Adddepartment.objects.get(id=request.POST['department'])
-        office = Addoffice.objects.get(id=request.POST['office'])
-        brandvisibility = Addbrand.objects.get(id=request.POST['brandvisibility'])
-        accesslevel = Access_level.objects.get(id=request.POST['accesslevel'])
-        leadsaccesslevel = Leads_access_level.objects.get(id=request.POST['leadsaccesslevel'])
-        leadsregions = Addleadsregions.objects.get(id=request.POST['leadsregions'])
-
-        Agentusercreate.objects.filter(id=id).update(firstname=request.POST['fname'], lastname=request.POST['lname'], username=request.POST['uname'], email=request.POST['email'], department=department, office=office, brandvisibility=brandvisibility, accesslevel=accesslevel, leadsaccesslevel=leadsaccesslevel, leadsregions=leadsregions)
-
-        agent_obj.log_changes_view=request.POST.get('log_changes_view', False)
-        agent_obj.client_edit=request.POST.get('client_edit', False)
-        agent_obj.change_status_compliances=request.POST.get('change_status_compliances', False)
-        agent_obj.note_add = request.POST.get('note_add', False)
-        agent_obj.note_edit = request.POST.get('note_edit', False)
-        agent_obj.note_delete = request.POST.get('note_delete', False)
-        agent_obj.sales_agent_edit=request.POST.get('sales_agent_edit', False)
-        agent_obj.sales_notes_and_follow_ups=request.POST.get('sales_notes_and_follow_ups', False)
-        agent_obj.mt4_demo_account_settings=request.POST.get('mt4_demo_account_settings', False)
-        agent_obj.mt4_demo_account_balance_operation=request.POST.get('mt4_demo_account_balance_operation', False)
-        agent_obj.mt4_demo_account_changelog=request.POST.get('mt4_demo_account_changelog', False)
-        agent_obj.mt4_live_account_changelog=request.POST.get('mt4_live_account_changelog', False)
-        agent_obj.docs_upload=request.POST.get('docs_upload', False)
-        agent_obj.docs_delete=request.POST.get('docs_delete', False)
-        agent_obj.pending_clients=request.POST.get('pending_clients', False)
-        agent_obj.pending_clients_actions=request.POST.get('pending_clients_actions', False)
-        agent_obj.pending_partners=request.POST.get('pending_partners', False)
-        agent_obj.pending_partner_actions=request.POST.get('pending_partner_actions', False)
-        agent_obj.pending_leverage_change_request=request.POST.get('pending_leverage_change_request', False)
-        agent_obj.view_finances=request.POST.get('view_finances', False)
-        agent_obj.deposit_actions=request.POST.get('deposit_actions', False)
-        agent_obj.withdrawal_actions=request.POST.get('withdrawal_actions', False)
-        agent_obj.lead_add=request.POST.get('lead_add', False)
-        agent_obj.saless_assignment_admin=request.POST.get('saless_assignment_admin', False)
-        agent_obj.view_management_dashboard=request.POST.get('view_management_dashboard', False)
-        agent_obj.accounts_approved=request.POST.get('accounts_approved', False)
-        agent_obj.equity_change_report=request.POST.get('equity_change_report', False)
-        agent_obj.first_time_deposits=request.POST.get('first_time_deposits', False)
-        agent_obj.lead_conversion_report=request.POST.get('lead_conversion_report', False)
-        agent_obj.save()
-        return redirect('agents')
-
-    data = {
-            'department':Adddepartment.objects.all(),
-            'office':Addoffice.objects.all(),
-            'brand':Addbrand.objects.all(),
-            'accesslevel':Access_level.objects.all(),
-            'leadsaccesslevel':Leads_access_level.objects.all(),
-            'leadsregions':Addleadsregions.objects.all(),
-            'agent':agent_obj,
-        }
-    return render(request,'dashboard/temp/updateagent.html', data)
 
 
 # class DespositHistoryTemplateView(TemplateView):
@@ -2253,116 +2115,147 @@ def sales_assignment(request):
     context['sales_assignments'] = sales_assignments
     return render(request,'dashboard/temp/crm_sales_assignment.html', context=context)
 
-'''
-new data for new CRM project...........
-
-'''
-from django.http import JsonResponse
-from django.db import connection
-from rest_framework.views import APIView
-from rest_framework.response import Response
 
 
-from sportapp.models import RegisterUserCampaign
-from rest_framework import serializers
+class CreateUserTemplateView(TemplateView):
+    template_name = 'dashboard/temp/crm_adduser.html'
 
-class registerCampaign(serializers.ModelSerializer):
+    def get_context_data(self, *args, **kwargs):
+        context = super(CreateUserTemplateView, self).get_context_data(**kwargs)
+        context['department'] = Adddepartment.objects.all()
+        context['office'] = Addoffice.objects.all()
+        context['brand'] = Addbrand.objects.all()
+        context['accesslevel'] = Access_level.objects.all()
+        context['leadsaccesslevel'] = Leads_access_level.objects.all()
+        context['leadsregions'] = Addleadsregions.objects.all()
+        return context
 
-    class Meta:
-        model = RegisterUserCampaign
-        fields = '__all__'
-        depth = 1
-
-
-class AgentDetailApiView(APIView):
-
-    def get_object(self, ref_id):
-        try:
-            reg_data = RegisterUserCampaign.objects.filter(ref_code=ref_id)
-            return reg_data
-        except:
-            return None
-
-    def get(self, request, ref_id, format=None):
-
-        snippet = self.get_object(ref_id)
-        serializer = registerCampaign(snippet, many=True)
-        return Response(serializer.data)
-
-
-# def trades_data(request):
-
-#     pro_data = []
-#     with connection.cursor() as cursor:
-#         cursor.execute(f"select MT4_TRADES.PROFIT, MT4_TRADES.LOGIN, MT4_USERS.NAME, MT4_TRADES.SYMBOL, MT4_TRADES.OPEN_TIME, MT4_TRADES.CLOSE_TIME, MT4_TRADES.VOLUME, MT4_USERS.BALANCE from MT4_TRADES JOIN MT4_USERS ON MT4_USERS.LOGIN=MT4_TRADES.LOGIN where MT4_TRADES.SYMBOL not like ''")
-#         profit = cursor.fetchall()
-
-#     for pro in profit:
-#         pro_data.append(pro)
-
-#     data = {'mt4_data':pro_data}
-#     return JsonResponse(data, safe=False)
-
-
-# def open_trades_data(request):
-
-#     # url = f'http://ib-portal.divsolution.com/api/v1/ib_users'
-#     # json_data = requests.get(url).json()
-
-#     # for data1 in json_data:
-#     #     print(data1['ib_id'])
-#     #     print(data1['client_id'])
-
-#     open_data = []
-#     with connection.cursor() as cursor:
-#         cursor.execute(f"select MT4_TRADES.PROFIT, MT4_TRADES.LOGIN, MT4_USERS.NAME, MT4_TRADES.SYMBOL, MT4_TRADES.OPEN_TIME, MT4_TRADES.CLOSE_TIME, MT4_TRADES.VOLUME, MT4_USERS.BALANCE from MT4_TRADES JOIN MT4_USERS ON MT4_USERS.LOGIN=MT4_TRADES.LOGIN where date_format(MT4_TRADES.CLOSE_TIME, '%Y-%m-%d') like '1970-01-01'")
-#         profit = cursor.fetchall()
-
-#     for pro in profit:
-#         open_data.append(pro)
-
-#     data = {'open_trades':open_data}
-#     # data['ib_list'] = json_data
-
-#     return JsonResponse(data, safe=False)
-
-
-# def depo_with_data(request):
-
-#     depo_data = []
-#     with connection.cursor() as cursor:
-#         cursor.execute(f"select MT4_TRADES.PROFIT, MT4_TRADES.LOGIN, MT4_USERS.NAME, MT4_TRADES.SYMBOL, MT4_TRADES.OPEN_TIME, MT4_TRADES.CLOSE_TIME, MT4_TRADES.VOLUME, MT4_USERS.BALANCE, MT4_TRADES.CMD from MT4_TRADES JOIN MT4_USERS ON MT4_USERS.LOGIN=MT4_TRADES.LOGIN where MT4_TRADES.CMD like '6' or MT4_TRADES.CMD like '5'")
-#         profit = cursor.fetchall()
+    def post(self, request, *args, **kwargs):
         
-#         for pro in profit:
-#             depo_data.append(pro)
+        fname = request.POST.get('fname')
+        lname = request.POST.get('lname')
+        username = request.POST.get('uname')
+        email = request.POST.get('email')
+        pwd1 = request.POST.get('pwd1')
+        pwd2 = request.POST.get('pwd2')
 
-#     data = {'depo_data':depo_data}
-#     return JsonResponse(data, safe=False)
+        if User.objects.filter(username=username).exists():
+            return self.get(request, error="Username or email has been already taken", *args, **kwargs)
+        if pwd1 != pwd2:
+            return self.get(request, error="Password Don't Match", *args, **kwargs)
+
+        user_obj = User.objects.create_user(username=username, password=pwd1, email=email)
+
+        department = Adddepartment.objects.get(id=request.POST.get('department'))
+        office = Addoffice.objects.get(id=request.POST.get('office'))
+        brandvisibility = Addbrand.objects.get(id=request.POST.get('brandvisibility'))
+        accesslevel = Access_level.objects.get(id=request.POST.get('accesslevel'))
+        leadaccesslevel = Leads_access_level.objects.get(id=request.POST.get('leadsaccesslevel'))
+        leadsregions = Addleadsregions.objects.get(id=request.POST.get('leadsregions'))
+
+        try:
+            register = Agentusercreate.objects.create(user=user_obj, firstname=fname, lastname=lname, username=username, email=email, department=department, office=office, brandvisibility=brandvisibility, accesslevel=accesslevel, leadsaccesslevel=leadaccesslevel,leadsregions=leadsregions, password=pwd1, confirmpassword=pwd2, 
+            client_edit=request.POST.get('client_edit', False), 
+            log_changes_view=request.POST.get('log_changes_view', False), 
+            change_status_compliances=request.POST.get('change_status_compliances', False), 
+            note_add=request.POST.get('note_add', False), 
+            note_edit=request.POST.get('note_edit', False), 
+            note_delete=request.POST.get('note_delete', False), 
+            sales_agent_edit=request.POST.get('sales_agent_edit', False), 
+            sales_notes_and_follow_ups=request.POST.get('sales_notes_and_follow_ups', False), 
+            mt4_demo_account_settings=request.POST.get('mt4_demo_account_settings', False), 
+            mt4_demo_account_balance_operation=request.POST.get('mt4_demo_account_balance_operation', False), mt4_demo_account_changelog=request.POST.get('mt4_demo_account_changelog', False), 
+            mt4_live_account_changelog=request.POST.get('mt4_live_account_changelog', False), 
+            docs_upload=request.POST.get('docs_upload', False), 
+            docs_delete=request.POST.get('docs_delete', False), 
+            pending_clients=request.POST.get('pending_clients', False), 
+            pending_clients_actions=request.POST.get('pending_clients_actions', False), 
+            pending_partners=request.POST.get('pending_partners', False), 
+            pending_partner_actions=request.POST.get('pending_partner_actions', False), 
+            pending_leverage_change_request=request.POST.get('pending_leverage_change_request', False), 
+            view_finances=request.POST.get('view_finances', False), 
+            deposit_actions=request.POST.get('deposit_actions', False), 
+            withdrawal_actions=request.POST.get('withdrawal_actions', False), 
+            lead_add=request.POST.get('lead_add', False), 
+            saless_assignment_admin=request.POST.get('saless_assignment_admin', False), 
+            view_management_dashboard=request.POST.get('view_management_dashboard', False), 
+            accounts_approved=request.POST.get('accounts_approved', False), 
+            equity_change_report=request.POST.get('equity_change_report', False), 
+            first_time_deposits=request.POST.get('first_time_deposits', False), 
+            lead_conversion_report=request.POST.get('lead_conversion_report', False))
+            register.save()
+            SalesAssignment.objects.create(agent=register)
+        except Exception as e:
+            print('----in except-----', e)
+        return redirect(agents)
 
 
-# def my_client_data(request):
-
-#     # url = f'http://crm.divsolution.com/dashboard/agent-data/{}'
-#     # json_data = requests.get(url).json()
-#     # print(json_data)
-
-#     client_data = []
-#     with connection.cursor() as cursor:
-#         cursor.execute(f"select MT4_USERS.NAME, MT4_USERS.LOGIN, MT4_USERS.EMAIL, MT4_USERS.BALANCE, sum(MT4_TRADES.VOLUME) from MT4_USERS JOIN MT4_TRADES ON MT4_USERS.LOGIN=MT4_TRADES.LOGIN GROUP BY MT4_USERS.EMAIL")
-#         profit = cursor.fetchall()
-
-#         for pro in profit:
-#             client_data.append(pro)
-
-#     data = {'client_data':client_data,}
-#     return JsonResponse(data, safe=False)
+@login_required(login_url='admin_login')
+def agents(request):
+    agents = Agentusercreate.objects.filter(active_status=True)
+    return render(request,'dashboard/temp/crm_agent.html',{'agents':agents})
 
 
+def updateagent(request, id):
 
-# def agent_details(request, ref_id):
+    agent_obj = Agentusercreate.objects.get(id=id)
 
-#     camp_list = RegisterUserCampaign.objects.filter(ref_code=ref_id)
-#     data = json.dumps(list(camp_list))
-#     return JsonResponse(data, safe=False)
+    if request.method == 'POST':
+        department = Adddepartment.objects.get(id=request.POST['department'])
+        office = Addoffice.objects.get(id=request.POST['office'])
+        brandvisibility = Addbrand.objects.get(id=request.POST['brandvisibility'])
+        accesslevel = Access_level.objects.get(id=request.POST['accesslevel'])
+        leadsaccesslevel = Leads_access_level.objects.get(id=request.POST['leadsaccesslevel'])
+        leadsregions = Addleadsregions.objects.get(id=request.POST['leadsregions'])
 
+        Agentusercreate.objects.filter(id=id).update(firstname=request.POST['fname'], lastname=request.POST['lname'], username=request.POST['uname'], email=request.POST['email'], department=department, office=office, brandvisibility=brandvisibility, accesslevel=accesslevel, leadsaccesslevel=leadsaccesslevel, leadsregions=leadsregions)
+
+        agent_obj.log_changes_view=request.POST.get('log_changes_view', False)
+        agent_obj.client_edit=request.POST.get('client_edit', False)
+        agent_obj.change_status_compliances=request.POST.get('change_status_compliances', False)
+        agent_obj.note_add = request.POST.get('note_add', False)
+        agent_obj.note_edit = request.POST.get('note_edit', False)
+        agent_obj.note_delete = request.POST.get('note_delete', False)
+        agent_obj.sales_agent_edit=request.POST.get('sales_agent_edit', False)
+        agent_obj.sales_notes_and_follow_ups=request.POST.get('sales_notes_and_follow_ups', False)
+        agent_obj.mt4_demo_account_settings=request.POST.get('mt4_demo_account_settings', False)
+        agent_obj.mt4_demo_account_balance_operation=request.POST.get('mt4_demo_account_balance_operation', False)
+        agent_obj.mt4_demo_account_changelog=request.POST.get('mt4_demo_account_changelog', False)
+        agent_obj.mt4_live_account_changelog=request.POST.get('mt4_live_account_changelog', False)
+        agent_obj.docs_upload=request.POST.get('docs_upload', False)
+        agent_obj.docs_delete=request.POST.get('docs_delete', False)
+        agent_obj.pending_clients=request.POST.get('pending_clients', False)
+        agent_obj.pending_clients_actions=request.POST.get('pending_clients_actions', False)
+        agent_obj.pending_partners=request.POST.get('pending_partners', False)
+        agent_obj.pending_partner_actions=request.POST.get('pending_partner_actions', False)
+        agent_obj.pending_leverage_change_request=request.POST.get('pending_leverage_change_request', False)
+        agent_obj.view_finances=request.POST.get('view_finances', False)
+        agent_obj.deposit_actions=request.POST.get('deposit_actions', False)
+        agent_obj.withdrawal_actions=request.POST.get('withdrawal_actions', False)
+        agent_obj.lead_add=request.POST.get('lead_add', False)
+        agent_obj.saless_assignment_admin=request.POST.get('saless_assignment_admin', False)
+        agent_obj.view_management_dashboard=request.POST.get('view_management_dashboard', False)
+        agent_obj.accounts_approved=request.POST.get('accounts_approved', False)
+        agent_obj.equity_change_report=request.POST.get('equity_change_report', False)
+        agent_obj.first_time_deposits=request.POST.get('first_time_deposits', False)
+        agent_obj.lead_conversion_report=request.POST.get('lead_conversion_report', False)
+        agent_obj.save()
+        return redirect('agents')
+
+    data = {
+            'department':Adddepartment.objects.all(),
+            'office':Addoffice.objects.all(),
+            'brand':Addbrand.objects.all(),
+            'accesslevel':Access_level.objects.all(),
+            'leadsaccesslevel':Leads_access_level.objects.all(),
+            'leadsregions':Addleadsregions.objects.all(),
+            'agent':agent_obj,
+        }
+    return render(request,'dashboard/temp/updateagent.html', data)
+
+
+def remove_agent(request, id):
+    agent_obj = Agentusercreate.objects.get(id=id, active_status=True)
+    agent_obj.active_status = False
+    agent_obj.save()
+    return redirect(agents)

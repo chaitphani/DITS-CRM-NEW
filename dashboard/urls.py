@@ -71,9 +71,6 @@ urlpatterns = [
     path('liveaccount',views.liveaccount,name='dashliveaccount'),
     path('dashfinance/<exporttype>',views.finance,name='dashfinance'),
     path('dashfinance',views.finance,name='dashfinance'),
-    path('agents',views.agents,name='agents'),
-    path('agent/<int:id>/edit',views.updateagent,name='updateagent'),
-    path('agent/add',views.CreateUserTemplateView.as_view(), name='adduser'),
     path('documents/',views.documents,name='documents'),
     path('deposithistory',views.DespositHistoryTemplateView.as_view(),name='deposithistory'),
     path('deposithistory/<exporttype>', views.depositHistoryExport,name='deposithistoryexport'),
@@ -113,6 +110,11 @@ urlpatterns = [
     # path('clients-data',views.my_client_data,name="my_client_data"),
     # path('json-data',views.JsonData.as_view(),name="json_data"),
 
-    path('agent-data/<int:ref_id>',views.AgentDetailApiView.as_view(),name="agent_details"),
+    # path('agent-data/<int:ref_id>',views.AgentDetailApiView.as_view(),name="agent_details"),
+
+    path('agents',views.agents,name='agents'),
+    path('agent/<int:id>/edit',views.updateagent,name='updateagent'),
+    path('agent/add',views.CreateUserTemplateView.as_view(), name='adduser'),
+    path('agent/<int:id>/remove', views.remove_agent, name='remove_agent')
 
 ]

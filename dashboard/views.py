@@ -2116,22 +2116,9 @@ def sales_assignment(request):
     return render(request,'dashboard/temp/crm_sales_assignment.html', context=context)
 
 
-
-class CreateUserTemplateView(TemplateView):
-    template_name = 'dashboard/temp/crm_adduser.html'
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(CreateUserTemplateView, self).get_context_data(**kwargs)
-        context['department'] = Adddepartment.objects.all()
-        context['office'] = Addoffice.objects.all()
-        context['brand'] = Addbrand.objects.all()
-        context['accesslevel'] = Access_level.objects.all()
-        context['leadsaccesslevel'] = Leads_access_level.objects.all()
-        context['leadsregions'] = Addleadsregions.objects.all()
-        return context
-
-    def post(self, request, *args, **kwargs):
-        
+def createAgent(request):
+    
+    if request.method == 'POST':
         fname = request.POST.get('fname')
         lname = request.POST.get('lname')
         username = request.POST.get('uname')
@@ -2187,7 +2174,16 @@ class CreateUserTemplateView(TemplateView):
             SalesAssignment.objects.create(agent=register)
         except Exception as e:
             print('----in except-----', e)
-        return redirect(agents)
+
+    data = {}
+    data['department'] = Adddepartment.objects.all()
+    data['office'] = Addoffice.objects.all()
+    data['brand'] = Addbrand.objects.all()
+    data['accesslevel'] = Access_level.objects.all()
+    data['leadsaccesslevel'] = Leads_access_level.objects.all()
+    data['leadsregions'] = Addleadsregions.objects.all()
+
+    return render(request, 'dashboard/temp/crm_adduser.html', data)
 
 
 @login_required(login_url='admin_login')

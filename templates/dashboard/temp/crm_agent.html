@@ -25,7 +25,7 @@
                 <th>{% trans "Email" %}</th>
                 <th>{% trans "Office" %}</th>
                 <th>{% trans "Department" %}</th>
-                <th> {% trans "Registered Date" %}</th>
+                <th>{% trans "Registered Date" %}</th>
                 <th>{% trans "Role" %}</th>
                 <th>{% trans "Action " %}</th>
             </tr>
@@ -34,12 +34,12 @@
             {% for agent in agents %}
             <tr class="text-center">
                 <td>{{forloop.counter}}</td>
-                <td>{{agent.username|title}}</td>
+                <td>{{agent.username}}</td>
                 <td>{{agent.email}}</td>
-                <td>{{agent.office|title}}</td>
-                <td class="text-uppercase">{{agent.department|title}}</td>
+                <td>{{agent.office|upper}}</td>
+                <td class="text-uppercase">{{agent.department}}</td>
                 <td>{{agent.added_on|date:'d-M-Y'}}</td>
-                <td>{{agent.accesslevel}}</td>
+                <td>{{agent.accesslevel|title}}</td>
                 <td>
                     <a class="btn btn-warning btn-sm" href="{% url 'updateagent' agent.id %}">
                         <i class="fa fa-pen"></i>  {% trans "Edit" %} 
@@ -54,7 +54,7 @@
         </tbody>
     </table>
 </div>
-
+<!-- scripts starts -->
 <script>
     $('.del-btn').on('click', function(e){
         var action = confirm('Are you sure to remove..?');
@@ -67,8 +67,6 @@
 </script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
 <script>
-    $(document).ready( function () {
-        $('#example').DataTable();
-    } );
+    $('#example').DataTable();
 </script>
 {% endblock %}

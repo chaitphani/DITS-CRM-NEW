@@ -113,8 +113,8 @@ urlpatterns = [
     # path('agent-data/<int:ref_id>',views.AgentDetailApiView.as_view(),name="agent_details"),
 
     path('agents',views.agents,name='agents'),
+    path('agent/add',views.createAgent, name='adduser'),
     path('agent/<int:id>/edit',views.updateagent,name='updateagent'),
-    path('agent/add',views.CreateUserTemplateView.as_view(), name='adduser'),
     path('agent/<int:id>/remove', views.remove_agent, name='remove_agent')
 
 ]

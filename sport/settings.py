@@ -33,8 +33,8 @@ DEBUG = True
 # EMAIL_HOST = 'smtp.gmail.com'
 # EMAIL_USE_TLS = True
 # EMAIL_PORT = 587
-# EMAIL_HOST_USER = 'ditstaskmanager@gmail.com'
-# EMAIL_HOST_PASSWORD = 'Dits@123'
+# EMAIL_HOST_USER = ''
+# EMAIL_HOST_PASSWORD = ''
 ALLOWED_HOSTS = ["*"]
 
 
@@ -104,17 +104,6 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        # 'ENGINE': 'mysql.connector.django',
-        # 'ENGINE': 'django.db.backends.mysql',
-        # 'NAME': 'new_dits',
-        # 'USER': 'dits',
-        # 'PASSWORD': 'Divsolution@98765',
-        # 'HOST': 'localhost',
-        # 'PORT': '3306',
-        # 'OPTIONS': {
-        #     'sql_mode': 'traditional',
-        #     "init_command":"SET foreign_key_checks = 0;",
-        # }
     }
 }
 
